@@ -1,16 +1,13 @@
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Hashtable;
-import java.util.Collections;
+
 /**
  * Aggiungi qui una descrizione della classe IntervalSet
- * 
- * @author (il tuo nome) 
+ *
+ * @author (il tuo nome)
  * @version (un numero di versione o una data)
  */
-public class IntervalSet extends SemioticGroup<Interval>
-{
+public class IntervalSet extends SemioticGroup<Interval> {
 
     public PitchClass projectedReferencePitch;
 
@@ -43,10 +40,10 @@ public class IntervalSet extends SemioticGroup<Interval>
     }
      */
 
-    public IntervalSet(ArrayList<PitchClass> pitches, int index){
+    public IntervalSet(ArrayList<PitchClass> pitches, int index) {
         super();
         projectedReferencePitch = pitches.get(index).clone();
-        for(int n = index + 1; n < index + pitches.size(); n++)
+        for (int n = index + 1; n < index + pitches.size(); n++)
             add(pitches.get(index).getInterval(pitches.get(n % pitches.size())));
         //System.out.print("pitches.size() " + pitches.size() + " number of interv " + size() + " starting index " + index);
     }
@@ -62,33 +59,33 @@ public class IntervalSet extends SemioticGroup<Interval>
     }
      */
 
-    public boolean overlays(IntervalSet subsumingSet){
-        if(size() == 0)
+    public boolean overlays(IntervalSet subsumingSet) {
+        if (size() == 0)
             return true;
         int n = 0;
         int start = -1;
-        for(int i = 0; i < subsumingSet.size(); i++)
-            if(get(0).equals(subsumingSet.get(i))){
+        for (int i = 0; i < subsumingSet.size(); i++)
+            if (get(0).equals(subsumingSet.get(i))) {
                 start = i;
                 n++;
                 break;
             }
-        if(start == -1)
+        if (start == -1)
             return false;
-        for(int i = start + 1; i < subsumingSet.size() + start + 1; i++){
-            if(n == size())
+        for (int i = start + 1; i < subsumingSet.size() + start + 1; i++) {
+            if (n == size())
                 return true;
-            if(get(n).equals(subsumingSet.get(i % subsumingSet.size())))
+            if (get(n).equals(subsumingSet.get(i % subsumingSet.size())))
                 n++;
         }
         return false;
     }
 
-    public static PitchClass[] randomPitchBinary(){
+    public static PitchClass[] randomPitchBinary() {
         Archinovica.initializeSpace();
         PitchClass[] pitchBinary = new PitchClass[12];
-        for(int i = 0; i < 12; i++){
-            if(Math.random() > 0.5)
+        for (int i = 0; i < 12; i++) {
+            if (Math.random() > 0.5)
                 pitchBinary[i] = new PitchClass(i);
         }
         System.out.println(Arrays.asList(pitchBinary));

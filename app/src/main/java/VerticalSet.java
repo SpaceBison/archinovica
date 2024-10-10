@@ -1,68 +1,66 @@
-
-import java.util.Collections;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.Collections;
+
 /**
  * Aggiungi qui una descrizione della classe VerticalSet
- * 
- * @author (il tuo nome) 
+ *
+ * @author (il tuo nome)
  * @version (un numero di versione o una data)
  */
-public class VerticalSet extends PitchSet
-{
+public class VerticalSet extends PitchSet {
     public VerticalSearcher mySearcher;
+
     /**
      * Costruttore degli oggetti di classe  VerticalSet
      */
-    public VerticalSet()
-    {
+    public VerticalSet() {
 
     }
 
-    public VerticalSet(PitchClass[] pP){
+    public VerticalSet(PitchClass[] pP) {
         super(pP);
         add(new RecursiveSearchPoint());
     }
 
-    public VerticalSet(PitchSet ps){
+    public VerticalSet(PitchSet ps) {
         super(ps);
     }
 
-    public boolean isProjected(PitchClass projectedPitch){
+    public boolean isProjected(PitchClass projectedPitch) {
         int insertionIndex = Collections.binarySearch(this, projectedPitch);
         insertionIndex = -insertionIndex - 1;
         add(projectedPitch);
         Collections.sort(this);
 
-        class IntervalSetTree{
-            IntervalSet mySet;
-            ArrayList<IntervalSet> branches;
+        class IntervalSetTree {
+            final IntervalSet mySet;
+            final ArrayList<IntervalSet> branches;
             IntervalSetTree child;
 
-            IntervalSetTree(IntervalSet set){
+            IntervalSetTree(IntervalSet set) {
                 mySet = set;
                 branches = new ArrayList<IntervalSet>();
             }
 
-            void addOverlayed(IntervalSet overlayed){
+            void addOverlayed(IntervalSet overlayed) {
                 branches.add(overlayed);
             }
 
-            void addChild(IntervalSetTree aTree){
-                if(child != null){
+            void addChild(IntervalSetTree aTree) {
+                if (child != null) {
                     child.addChild(aTree);
                     return;
                 }
                 child = aTree;
             }
 
-            boolean oneToOneCorrispondent(ArrayList<IntervalSet> availableOverlayedSets){
-                for(IntervalSet overlayedSet: branches){
-                    if(!availableOverlayedSets.contains(overlayedSet))
+            boolean oneToOneCorrispondent(ArrayList<IntervalSet> availableOverlayedSets) {
+                for (IntervalSet overlayedSet : branches) {
+                    if (!availableOverlayedSets.contains(overlayedSet))
                         continue;
-                    ArrayList<IntervalSet> subAvailable = (ArrayList)availableOverlayedSets.clone();
+                    ArrayList<IntervalSet> subAvailable = (ArrayList) availableOverlayedSets.clone();
                     subAvailable.remove(overlayedSet);
-                    if(child == null || child.oneToOneCorrispondent(subAvailable))
+                    if (child == null || child.oneToOneCorrispondent(subAvailable))
                         return true;
                 }
                 return false;
@@ -74,19 +72,19 @@ public class VerticalSet extends PitchSet
         ArrayList<IntervalSet> intervalSets = analyseIntervals(this);
         IntervalSetTree completeTree = null;
         IntervalSetTree subTree = null;
-        for(IntervalSet is: intervalSets){
+        for (IntervalSet is : intervalSets) {
             boolean acceptablePitch = false;
             subTree = new IntervalSetTree(is);
-            for(IntervalSet projectedSet: myIntervalSets)
-                if(is.overlays(projectedSet)){
+            for (IntervalSet projectedSet : myIntervalSets)
+                if (is.overlays(projectedSet)) {
                     acceptablePitch = true;
                     subTree.addOverlayed(projectedSet);
                 }
-            if(!acceptablePitch){
+            if (!acceptablePitch) {
                 remove(projectedPitch);
                 return false;
             }
-            if(completeTree == null)
+            if (completeTree == null)
                 completeTree = subTree;
             else
                 completeTree.addChild(subTree);
@@ -95,20 +93,20 @@ public class VerticalSet extends PitchSet
         return completeTree.oneToOneCorrispondent(myIntervalSets);
     }
 
-    public boolean limited(){
+    public boolean limited() {
         return size() == totalProjectedPitches;
     }
-    
-    public PitchSet copyArray(){
+
+    public PitchSet copyArray() {
         return new VerticalSet(this);
     }
 
-    public static VerticalSearcher spotCheck(){
+    public static VerticalSearcher spotCheck() {
         //Archinovica.initializeSpace();
         //new Archinovica();
         PitchClass[] pitchBinary = new PitchClass[12];
-        for(int i = 0; i < 12; i++){
-            if(Math.random() > 0.5)
+        for (int i = 0; i < 12; i++) {
+            if (Math.random() > 0.5)
                 pitchBinary[i] = new PitchClass(i);
         }
         VerticalSet vs = new VerticalSet(pitchBinary);

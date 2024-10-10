@@ -1,45 +1,41 @@
-
-import java.util.Hashtable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
-public abstract class PitchSet extends SemioticGroup<PitchClass> implements Cloneable
-{
+public abstract class PitchSet extends SemioticGroup<PitchClass> implements Cloneable {
     public PitchClass[] pitchArray, projectedPitches;
     public int totalProjectedPitches;
     public PitchClass center;
     public ArrayList<IntervalSet> myIntervalSets;
 
-    public PitchSet(){
+    public PitchSet() {
         projectedPitches = new PitchClass[12];
         totalProjectedPitches = 0;
         myIntervalSets = new ArrayList<IntervalSet>();
     }
 
-    public PitchSet(PitchClass[] pP){
+    public PitchSet(PitchClass[] pP) {
         projectedPitches = pP;
         totalProjectedPitches = 0;
         ArrayList<PitchClass> projectedList = new ArrayList<PitchClass>();
-        for(int i = 0; i < 12; i++)
-            if(projectedPitches[i] != null){
+        for (int i = 0; i < 12; i++)
+            if (projectedPitches[i] != null) {
                 projectedList.add(projectedPitches[i]);
                 totalProjectedPitches++;
             }
         myIntervalSets = analyseIntervals(projectedList);
     }
 
-    public PitchSet(PitchSet ps){
+    public PitchSet(PitchSet ps) {
         //super();
         myIntervalSets = ps.myIntervalSets;
-        for(PitchClass pc: ps)
+        for (PitchClass pc : ps)
             add(pc.clone());
         //pitchArray = new PitchClass[12];
     }
 
-    public ArrayList<IntervalSet> analyseIntervals(ArrayList<PitchClass> pitches){
+    public ArrayList<IntervalSet> analyseIntervals(ArrayList<PitchClass> pitches) {
         ArrayList<IntervalSet> intervalSets = new ArrayList<IntervalSet>();
-        for(int i = 0; i < pitches.size(); i++)
+        for (int i = 0; i < pitches.size(); i++)
             intervalSets.add(new IntervalSet(pitches, i));
         return intervalSets;
     }
@@ -77,48 +73,48 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
     }
      */
 
-    public PitchClass getCenter(){
-        if(center != null)
+    public PitchClass getCenter() {
+        if (center != null)
             return center;
         int minimumDistances = Integer.MAX_VALUE;
-        for(PitchClass p: this){
+        for (PitchClass p : this) {
             int totalDistances = 0;
-            for(PitchClass p1: this)
-                if(p != p1)
+            for (PitchClass p1 : this)
+                if (p != p1)
                     totalDistances += p.getDistance(p1);
-            if(totalDistances < minimumDistances){
+            if (totalDistances < minimumDistances) {
                 minimumDistances = totalDistances;
                 center = p;
             }
         }
-        if(center == null){
+        if (center == null) {
             System.out.println("NO CENTER FOUND!");
-            center = (RecursiveSearchPoint)Archinovica.ORIGIN;
+            center = Archinovica.ORIGIN;
         }
         return center;
     }
 
-    public void transpose(Interval interval){
+    public void transpose(Interval interval) {
         //System.out.println("TRANSPOSING SET: " + interval);
-        for(PitchClass p: this)
+        for (PitchClass p : this)
             p.transpose(interval);
     }
-    
-    public PitchClass[] getArrayBySignified(){
-        if(pitchArray != null)
+
+    public PitchClass[] getArrayBySignified() {
+        if (pitchArray != null)
             return pitchArray;
         pitchArray = new PitchClass[12];
-        for(PitchClass pc: this){
+        for (PitchClass pc : this) {
             pitchArray[pc.signifier] = pc;
         }
         return pitchArray;
     }
 
-    public PitchClass[] getArray(){
-        if(pitchArray != null)
+    public PitchClass[] getArray() {
+        if (pitchArray != null)
             return pitchArray;
         pitchArray = new PitchClass[12];
-        if(size() == 0)
+        if (size() == 0)
             return pitchArray;
 
         PitchClass referencePitch = get(0);
@@ -128,32 +124,32 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
         //System.out.println("REFERENCE SET:" + referenceSet);
         //System.out.println("MYINTERVAL SETS: " + myIntervalSets);
 
-        for(IntervalSet is: myIntervalSets)
-            if(referenceSet.equals(is)){
+        for (IntervalSet is : myIntervalSets)
+            if (referenceSet.equals(is)) {
                 //System.out.println("PRP: " + is.projectedReferencePitch);
                 //System.out.println("IS: " + is);
                 transposition = referencePitch.getInterval(is.projectedReferencePitch);
                 break;
             }
         //System.out.println("TRANSPOSITION: " + transposition);
-        for(PitchClass pc: this)
+        for (PitchClass pc : this)
             pitchArray[(pc.signifier + transposition.signifier) % 12] = pc;
         return pitchArray;
     }
 
     @Override
-    public void clear(){
+    public void clear() {
         center = null;
         pitchArray = null;
         super.clear();
     }
 
-    public static PitchSet randomSpotCheck(){
+    public static PitchSet randomSpotCheck() {
         //Archinovica.initializeSpace();
         new Archinovica(null);
         PitchClass[] pitchBinary = new PitchClass[12];
-        for(int i = 0; i < 12; i++){
-            if(Math.random() > 0.5)
+        for (int i = 0; i < 12; i++) {
+            if (Math.random() > 0.5)
                 pitchBinary[i] = new PitchClass(i);
         }
         return null;
@@ -174,22 +170,22 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
     }
      */
 
-    public void print(){
+    public void print() {
         System.out.println(this);
         printPitchArray();
     }
 
-    public void printPitchArray(){
+    public void printPitchArray() {
         System.out.println(Arrays.asList(getArray()));
     }
 
     @Override
-    public String toString(){
-        return "PitchSet | PROJECTED: " + totalProjectedPitches + " " + Arrays.asList(projectedPitches)+ " | FOUND: " + size() + " " + super.toString();
+    public String toString() {
+        return "PitchSet | PROJECTED: " + totalProjectedPitches + " " + Arrays.asList(projectedPitches) + " | FOUND: " + size() + " " + super.toString();
     }
 
     @Override
-    public PitchSet clone(){
+    public PitchSet clone() {
         PitchSet ps = copyArray();
         ps.projectedPitches = projectedPitches;
         ps.myIntervalSets = myIntervalSets;
@@ -199,15 +195,15 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
 
     public abstract PitchSet copyArray();
 
-    public String getSetRecord(){
+    public String getSetRecord() {
         String a = "";
-        for(PitchClass pc: this){
-            a  += "fifths\n";
-            a  += pc.signified[0] + "\n";
-            a  += "thirds\n";
-            a  += pc.signified[1] + "\n";
+        for (PitchClass pc : this) {
+            a += "fifths\n";
+            a += pc.signified[0] + "\n";
+            a += "thirds\n";
+            a += pc.signified[1] + "\n";
         }
-        
+
         return a.substring(0, a.length() - 1);
     }
 

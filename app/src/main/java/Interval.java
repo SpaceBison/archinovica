@@ -1,32 +1,27 @@
-
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.Collections;
+
 /**
  * Aggiungi qui una descrizione della classe Interval
- * 
- * @author (il tuo nome) 
+ *
+ * @author (il tuo nome)
  * @version (un numero di versione o una data)
  */
-public class Interval extends SemioticFunction
-{
+public class Interval extends SemioticFunction {
     public int normativeType;
     public ArrayList<SemioticFunction> solutions;
 
     /**
      * Costruttore degli oggetti di classe  Interval
      */
-    public Interval(int empInt)
-    {
+    public Interval(int empInt) {
         super(null, empInt);
     }
 
-    public Interval(int[] normInt)
-    {
+    public Interval(int[] normInt) {
         super(normInt, -1);
     }
 
-    public Interval(SemioticFunction sf){
+    public Interval(SemioticFunction sf) {
         super(sf.signified, sf.signifier);
     }
 
@@ -59,8 +54,8 @@ public class Interval extends SemioticFunction
     }
      */
 
-    public void addInterval(Interval interval){
-        for(int i = 0; i < 2; i++)
+    public void addInterval(Interval interval) {
+        for (int i = 0; i < 2; i++)
             signified[i] = signified[i] + interval.signified[i];
 
     }
@@ -86,15 +81,15 @@ public class Interval extends SemioticFunction
     return true;
     }
      */
-    public int getFoundPitches(){
+    public int getFoundPitches() {
         return 1;
     }
 
-    public int expressDistance(){
-        if(!limited)
+    public int expressDistance() {
+        if (!limited)
             return -1;
         int d = 0;
-        for(int i: signified)
+        for (int i : signified)
             d += Math.abs(i);
         return d;
     }
@@ -105,22 +100,21 @@ public class Interval extends SemioticFunction
      */
 
     @Override
-    public Interval clone(){
-        if(limited)
+    public Interval clone() {
+        if (limited)
             return new Interval(new int[]{signified[0], signified[1]});
         return new Interval(signifier);
     }
 
     @Override
-    public String toString(){
+    public String toString() {
 
         String a = "[";
-        if(limited){
-            for(int i: signified)
+        if (limited) {
+            for (int i : signified)
                 a += i + " ";
             a = a.substring(0, a.length() - 1) + "]";
-        }
-        else
+        } else
             a += signifier + "]";
         return a;
     }

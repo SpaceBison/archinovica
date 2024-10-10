@@ -1,22 +1,21 @@
-
-
 import java.util.ArrayList;
+
 /**
  * Aggiungi qui una descrizione della classe SubSpace
- * 
- * @author (il tuo nome) 
+ *
+ * @author (il tuo nome)
  * @version (un numero di versione o una data)
  */
-public class RecursiveSearchPoint extends PitchClass
-{
+public class RecursiveSearchPoint extends PitchClass {
     public GenerativeSearcher mySearcher; //depreciated
     public RecursiveSearchPoint[] neighbors;
     public ArrayList<RecursiveSearchPoint> children;
     public static final int[][] TRANSFORMATION_GROUP = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
     public RecursiveSearchPoint parent;
     private int generations;
+
     //initialize independent subspace
-    public RecursiveSearchPoint(){
+    public RecursiveSearchPoint() {
         super(new int[]{0, 0});
         children = new ArrayList<RecursiveSearchPoint>();
         neighbors = new RecursiveSearchPoint[4];
@@ -24,7 +23,7 @@ public class RecursiveSearchPoint extends PitchClass
         generations = 0;
     }
 
-    public RecursiveSearchPoint(SemioticFunction sf){
+    public RecursiveSearchPoint(SemioticFunction sf) {
         super(new int[]{sf.signified[0], sf.signified[1]});
         children = new ArrayList<RecursiveSearchPoint>();
         neighbors = new RecursiveSearchPoint[4];
@@ -33,7 +32,7 @@ public class RecursiveSearchPoint extends PitchClass
     }
 
     //initialize dependent subspace
-    public RecursiveSearchPoint(int neighborIndex, RecursiveSearchPoint source, boolean animate){
+    public RecursiveSearchPoint(int neighborIndex, RecursiveSearchPoint source, boolean animate) {
         super(TRANSFORMATION_GROUP[neighborIndex], source);
         //mySearcher = source.mySearcher;
         neighbors = new RecursiveSearchPoint[4];
@@ -42,32 +41,31 @@ public class RecursiveSearchPoint extends PitchClass
         addNeighbor(source, (neighborIndex + 2) % 4);
         RecursiveSearchPoint[] kittyCorners = new RecursiveSearchPoint[]{source.neighbors[(neighborIndex + 3) % 4],
                 source.neighbors[(neighborIndex + 1) % 4]};
-        for(RecursiveSearchPoint r: kittyCorners)
-            if(r != null && r.neighbors[neighborIndex] != null)
+        for (RecursiveSearchPoint r : kittyCorners)
+            if (r != null && r.neighbors[neighborIndex] != null)
                 addNeighbor(r.neighbors[neighborIndex]);
         //mySearcher.addSubSpace(this);
         //System.out.println(this);
-        if(animate){
+        if (animate) {
             Archinovica.animateGeneration(this, source.signified);
         }
     }
 
-    public ArrayList<RecursiveSearchPoint> generateNeighbors(PitchSet searchDestination, boolean animate){
+    public ArrayList<RecursiveSearchPoint> generateNeighbors(PitchSet searchDestination, boolean animate) {
         boolean found = false;
         ArrayList<RecursiveSearchPoint> solutions = new ArrayList<RecursiveSearchPoint>();
-        if(parent == this)
+        if (parent == this)
             generations++;
-        if(children.size() == 0){
-            for(int i = 0; i < 4; i++)
-                if(neighbors[i] == null){
+        if (children.size() == 0) {
+            for (int i = 0; i < 4; i++)
+                if (neighbors[i] == null) {
                     RecursiveSearchPoint child = bearChild(i, animate);
                     children.add(child);
-                    if(searchDestination.isProjected(child))
+                    if (searchDestination.isProjected(child))
                         solutions.add(child);
                 }
-        }
-        else
-            for(RecursiveSearchPoint child: children)
+        } else
+            for (RecursiveSearchPoint child : children)
                 solutions.addAll(child.generateNeighbors(searchDestination, animate));
         return solutions;
         /*
@@ -108,7 +106,7 @@ public class RecursiveSearchPoint extends PitchClass
     }
      */
 
-    public RecursiveSearchPoint bearChild(int i, boolean animate){
+    public RecursiveSearchPoint bearChild(int i, boolean animate) {
         RecursiveSearchPoint child = new RecursiveSearchPoint(i, this, animate);
         //Archinovica.gui.displayStaticSign(child);
         //System.out.println("NEW CHILD: " + child);
@@ -121,24 +119,24 @@ public class RecursiveSearchPoint extends PitchClass
     return (child.getSubSpaces() == mySearcher.size()) && mySearcher.pitchFound(child);
     }
      */
-    public void addNeighbor(RecursiveSearchPoint rsp){
+    public void addNeighbor(RecursiveSearchPoint rsp) {
         addNeighbor(rsp, getTransType(rsp));
     }
 
-    public void addNeighbor(RecursiveSearchPoint rss, int index){
+    public void addNeighbor(RecursiveSearchPoint rss, int index) {
         neighbors[index] = rss;
         rss.neighbors[(index + 2) % 4] = this;
     }
 
-    public int getTransType(RecursiveSearchPoint rsp){
+    public int getTransType(RecursiveSearchPoint rsp) {
         int[] trans = getTransformation(rsp);
         return getTransType(trans);
     }
 
-    public int getTransType(int[] trans){
-        for(int i = 0; i < 4; i++){
+    public int getTransType(int[] trans) {
+        for (int i = 0; i < 4; i++) {
             //System.out.println(TRANSFORMATION_GROUP[i][0] + ", " + TRANSFORMATION_GROUP[i][1]);
-            if(TRANSFORMATION_GROUP[i][0] == trans[0] && TRANSFORMATION_GROUP[i][1] == trans[1])
+            if (TRANSFORMATION_GROUP[i][0] == trans[0] && TRANSFORMATION_GROUP[i][1] == trans[1])
                 return i;
         }
         System.out.println("ERROR! INVALID NEIGHBOR TRANFORMATION: [" + trans[0] + ", " + trans[1] + "]");
@@ -146,12 +144,12 @@ public class RecursiveSearchPoint extends PitchClass
         return -1;
     }
 
-    public int getDistanceSearched(){
+    public int getDistanceSearched() {
         return generations;
     }
 
     @Override
-    public RecursiveSearchPoint clone(){
+    public RecursiveSearchPoint clone() {
         return new RecursiveSearchPoint(this);
     }
     /*public int getSubSpaces(){
