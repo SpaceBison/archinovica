@@ -16,6 +16,7 @@ public class Archinovica {
     public static boolean legacyBehavior; //when true, will behave like version 0.9
 
     private Listener listener = null;
+    private RecursiveSearchPoint.GenerateNeighborsCallback generateNeighborsCallback = null;
 
     //public LiveReceiver liveRec;
 
@@ -109,7 +110,7 @@ public class Archinovica {
         lastSet.transpose(transposition);
     }
 
-    public PitchClass[] updateIntonation(boolean[] pitchBinary, RecursiveSearchPoint.GenerateNeighborsCallback callback) {
+    public PitchClass[] updateIntonation(boolean[] pitchBinary) {
 
         boolean isntEmptySet = false;
         for (boolean b : pitchBinary) {
@@ -138,8 +139,8 @@ public class Archinovica {
         if (commonTone == -1) {
             if (lastSet == null) {
                 lastSet = new VerticalSet(soundingPitchClasses);
-                searcher = new VerticalSearcher(lastSet);
-                lastSet = searcher.limitSet(setting, callback);
+                searcher = new VerticalSearcher(lastSet, generateNeighborsCallback);
+                lastSet = searcher.limitSet(setting, generateNeighborsCallback);
                 //System.out.println(lastSet);
                 int i = 0;
                 while (soundingPitchClasses[i] == null) {
@@ -147,15 +148,15 @@ public class Archinovica {
                 }
                 transposeSet(i);
             } else {
-                HorizontalSet projectedSet = new HorizontalSet(soundingPitchClasses, callback);
-                searcher = new HorizontalSearcher(lastSet, projectedSet);
-                lastSet = searcher.limitSet(setting, callback);
+                HorizontalSet projectedSet = new HorizontalSet(soundingPitchClasses, generateNeighborsCallback);
+                searcher = new HorizontalSearcher(lastSet, projectedSet, generateNeighborsCallback);
+                lastSet = searcher.limitSet(setting, generateNeighborsCallback);
             }
             //lastSet = lastSet.transformSet(transformationSet);
         } else {
             lastSet = new VerticalSet(soundingPitchClasses);
-            searcher = new VerticalSearcher(lastSet);
-            lastSet = searcher.limitSet(setting, callback);
+            searcher = new VerticalSearcher(lastSet, generateNeighborsCallback);
+            lastSet = searcher.limitSet(setting, generateNeighborsCallback);
             transposeSet(commonTone);
         }
         soundingPitchClasses = lastSet.getArray();
@@ -226,9 +227,14 @@ public class Archinovica {
         this.listener = listener;
     }
 
+    public void setGenerateNeighborsCallback(RecursiveSearchPoint.GenerateNeighborsCallback generateNeighborsCallback) {
+        this.generateNeighborsCallback = generateNeighborsCallback;
+    }
+
     public interface Listener {
 
         void onIntonationUpdated(PitchClass[] soundingPitchClasses);
+
         void onProgressionUndone();
 
     }

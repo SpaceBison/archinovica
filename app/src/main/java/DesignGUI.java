@@ -2022,7 +2022,7 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
                 chord.myPedaling = 0;
                 anArch.setPedaling(chord.myPedaling);
-                anArch.updateIntonation(pitchBinary, callback);
+                anArch.updateIntonation(pitchBinary);
                 PitchClass[] archiArray = anArch.soundingPitchClasses;
 
                 if (!areFormallyEqual(progressionArray, archiArray)) {
@@ -2050,7 +2050,7 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                         anArch.undoProgression();
                         chord.myPedaling = i;
                         anArch.setPedaling(chord.myPedaling);
-                        anArch.updateIntonation(pitchBinary, callback);
+                        anArch.updateIntonation(pitchBinary);
                         archiDestination = anArch.soundingPitchClasses[destinationIndex];
                         progressionTransformation = progressionPointOfReference.getTransformation(progressionDestination);
                         archiTransformation = archiPointOfReference.getTransformation(archiDestination);

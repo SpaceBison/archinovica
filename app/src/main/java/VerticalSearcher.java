@@ -1,3 +1,4 @@
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -8,14 +9,14 @@ import java.util.Collections;
  * @version (un numero di versione o una data)
  */
 public class VerticalSearcher extends GenerativeSearcher {
-    public VerticalSearcher(PitchSet unlimitedSet) {
-        super(unlimitedSet, unlimitedSet);
+    public VerticalSearcher(PitchSet unlimitedSet, @Nullable RecursiveSearchPoint.GenerateNeighborsCallback callback) {
+        super(unlimitedSet, unlimitedSet, callback);
     }
 
     public PitchSet limitSet(int setting, RecursiveSearchPoint.GenerateNeighborsCallback callback) {
         while (!((VerticalSet) mySourceSet).limited()) {
             //System.out.println("SEARCHING for vertical results");
-            findNextPitches(callback);
+            findNextPitches();
             for (PotentialPitch pp : myGrid) {
                 if (pp.getSources().size() == mySourceSet.size()) {
                     mySourceSet.add(new RecursiveSearchPoint(pp));

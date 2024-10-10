@@ -34,7 +34,6 @@ public class LiveReceiver implements Receiver {
     private ArrayList<ShortMessage> commands = new ArrayList<ShortMessage>();
     private ArrayList<ShortMessage> undeterminedSet = new ArrayList<ShortMessage>();
     private final ArrayList<Integer> soundingPitches = new ArrayList<Integer>();
-    private final GUI gui = new GUI(this);
     private final Timer clock = new Timer();
     private long time = System.currentTimeMillis(), recTime;
     private Cunctator verrucosus = new Cunctator();
@@ -45,6 +44,7 @@ public class LiveReceiver implements Receiver {
     public static final int LEFTPED = 67;
     public static final int RIGHTPED = 64;
 
+    private Listener listener;
 
     //depreciated?
     public boolean useVirtualPiano = false;
@@ -660,7 +660,9 @@ public class LiveReceiver implements Receiver {
             }
              */
 
-            gui.chordProgression.recordPitchBend(pbM, timeStamp);
+            if (listener != null) {
+                listener.onRecordPitchBend(pbM, timeStamp);
+            }
         } catch (Exception e) {
         }
     }
@@ -695,7 +697,7 @@ public class LiveReceiver implements Receiver {
      */
 
     public ArrayList<ShortMessage> updateIntonation(boolean[] ps, ArrayList<ShortMessage> sms) {
-        PitchClass[] pcs = archinovica.updateIntonation(ps, callback);
+        PitchClass[] pcs = archinovica.updateIntonation(ps);
         for (int i = 0; i < 12; i++) { // calculate the transposition of all pitches
             PitchClass p = pcs[i];
             if (p != null && !useBuiltIn) {
@@ -753,6 +755,10 @@ public class LiveReceiver implements Receiver {
             }
         }
         return sms;
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 
     class Cunctator extends TimerTask {
@@ -824,15 +830,7 @@ public class LiveReceiver implements Receiver {
         }
     }
 
-    public void displayDamper() {
-
-        /*System.out.print("DAMPER: ");
-        for(ShortMessage sm: damperMessages){
-        System.out.print(sm.getData1() + ", " );
-        }
-        System.out.println();
-         */
+    public interface Listener {
+        void onRecordPitchBend(ShortMessage pbM, long timeStamp);
     }
-
-
 }

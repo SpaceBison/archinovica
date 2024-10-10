@@ -48,6 +48,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
     public GUI(Archinovica archinovica, @Nullable LiveReceiver r) {
         addKeyBindings();
         if (r != null) {
+            r.setListener(chordProgression::recordPitchBend);
             myRec = r;
         }
 
@@ -67,6 +68,8 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                 eraseLastChord();
             }
         });
+
+        archinovica.setGenerateNeighborsCallback(generateNeighborsCallback);
 
         display = new JFrame("Archinovica");
         display.setBounds(0, 0, 600, 600);
@@ -1119,7 +1122,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                     archinovica.setPedaling(ped);
                 }
                 if (!c.noPitches()) {
-                    archinovica.updateIntonation(c.set, generateNeighborsCallback);
+                    archinovica.updateIntonation(c.set);
                     c.setAssociatedSigns();
                 }
             }
@@ -1162,7 +1165,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                 }
                 if (!c.noPitches()) {
                     PitchSet reference = archinovica.lastSet;
-                    archinovica.updateIntonation(c.set, generateNeighborsCallback);
+                    archinovica.updateIntonation(c.set);
                     c.setAssociatedSigns();
                     c.setAssociatedPitchSet();
                     if (reference != null) {
@@ -1209,7 +1212,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                     PitchSet reference = archinovica.lastSet;
                     int[] oldRelativeCoordinates = new int[2];
                     System.arraycopy(c.relativeCoordinates, 0, oldRelativeCoordinates, 0, 2);
-                    archinovica.updateIntonation(c.set, callback);
+                    archinovica.updateIntonation(c.set);
                     c.setAssociatedSigns();
                     c.setAssociatedPitchSet();
                     if (!firstChord) {
@@ -1806,7 +1809,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                 Archinovica anArch = new Archinovica();
                 anArch.setLastChord(mySource.clone());
                 anArch.setPedaling(i);
-                anArch.updateIntonation(targetPitches, callback);
+                anArch.updateIntonation(targetPitches);
                 int[] actualRelativeCoordinates = anArch.lastSet.getCenter().getTransformation(mySource.getCenter());
                 boolean pedalingIsCorrect = true;
                 for (int n = 0; n < 2; n++) {

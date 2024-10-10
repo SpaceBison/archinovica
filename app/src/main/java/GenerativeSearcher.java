@@ -12,7 +12,11 @@ import java.util.Comparator;
 
 public abstract class GenerativeSearcher {
     public Grid myGrid;
-    public PitchSet mySourceSet, myProjectedSet, mySearchableSources;
+    public PitchSet mySourceSet;
+    public PitchSet myProjectedSet;
+    public PitchSet mySearchableSources;
+
+    private RecursiveSearchPoint.GenerateNeighborsCallback callback;
 
     /**
      * Un esempio di header di metodo - aggiungi i tuoi commenti
@@ -21,13 +25,14 @@ public abstract class GenerativeSearcher {
      * @return il risultato prodotto dal metodo
      */
 
-    public GenerativeSearcher(PitchSet source, PitchSet projected) {
+    public GenerativeSearcher(PitchSet source, PitchSet projected, @Nullable RecursiveSearchPoint.GenerateNeighborsCallback callback) {
         mySourceSet = source;
         myProjectedSet = projected;
+        this.callback = callback;
         resetSearch();
     }
 
-    public ArrayList<RecursiveSearchPoint> findNextPitches(@Nullable RecursiveSearchPoint.GenerateNeighborsCallback callback) {
+    public ArrayList<RecursiveSearchPoint> findNextPitches() {
         ArrayList<RecursiveSearchPoint> solutions = new ArrayList<RecursiveSearchPoint>();
         // System.out.println("MYGRID: " + myGrid);
         while (solutions.size() == 0) {

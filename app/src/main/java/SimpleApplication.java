@@ -1,7 +1,8 @@
 public class SimpleApplication {
 
     public static void main(String[] args) {
-        new SimpleReceiver();
+        Archinovica archinovica = new Archinovica();
+        new GUI(archinovica, null);
     }
 
 }

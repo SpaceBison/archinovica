@@ -12,12 +12,12 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @version (a version number or a date)
  */
 public class SimpleReceiver implements Receiver {
+    private final Archinovica archinovica;
     public Receiver rec;
     public TimerTask timerTask;
     public Timer clock;
     public LinkedBlockingQueue<ShortMessage> commands;
     public int transposition, bendAdjustment;
-    public GUI gui;
     public long delay;
     public static final int MIDPED = 66, LEFTPED = 67, RIGHTPED = 64;
     public boolean rightPedal, leftPedal, middlePedal;
@@ -30,11 +30,8 @@ public class SimpleReceiver implements Receiver {
      * detected)
      */
 
-    public static void main(String[] args) {
-        new SimpleReceiver();
-    }
-
-    public SimpleReceiver() {
+    public SimpleReceiver(Archinovica archinovica) {
+        this.archinovica = archinovica;
 
         try {
             rec = MidiSystem.getReceiver();
@@ -56,7 +53,6 @@ public class SimpleReceiver implements Receiver {
 
         clock = new Timer();
         commands = new LinkedBlockingQueue<ShortMessage>();
-        gui = new GUI(null);
     }
 
     public void send(MidiMessage message, long timeStamp) {
@@ -139,7 +135,7 @@ public class SimpleReceiver implements Receiver {
                             }
 
                             if (rightPedal != sm.getData2() > 0) {
-                                gui.archinovica.setPedaling(pedaling);
+                                archinovica.setPedaling(pedaling);
                             }
                             rightPedal = sm.getData2() > 0;
                             break;
@@ -152,13 +148,13 @@ public class SimpleReceiver implements Receiver {
                                 pedaling += 2;
                             }
                             if (leftPedal != (sm.getData2() > 0)) {
-                                gui.archinovica.setPedaling(pedaling);
+                                archinovica.setPedaling(pedaling);
                             }
 
                             leftPedal = sm.getData2() > 0;
 
                             if (middlePedal && leftPedal) {
-                                gui.archinovica.undoProgression();
+                                archinovica.undoProgression();
                             }
                             break;
                         case MIDPED:
@@ -235,7 +231,7 @@ public class SimpleReceiver implements Receiver {
     }
 
     public ArrayList<ShortMessage> updateIntonation(boolean[] ps, ArrayList<ShortMessage> sms) {
-        PitchClass[] pcs = gui.archinovica.updateIntonation(ps, callback);
+        PitchClass[] pcs = archinovica.updateIntonation(ps);
         for (int i = 0; i < 12; i++) { // calculate the transposition of all pitches
             PitchClass p = pcs[i];
             if (p != null) {

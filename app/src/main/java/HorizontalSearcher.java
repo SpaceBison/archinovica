@@ -1,3 +1,4 @@
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,21 +10,20 @@ import java.util.Comparator;
  * @version (un numero di versione o una data)
  */
 public class HorizontalSearcher extends GenerativeSearcher {
-    public ArrayList<HorizontalSet> potentialSets, solutions;
+    public ArrayList<HorizontalSet> potentialSets = new ArrayList<HorizontalSet>();
+    public ArrayList<HorizontalSet> solutions = new ArrayList<HorizontalSet>();
     public HorizontalSet untransposedSet;
 
-    public HorizontalSearcher(PitchSet source, HorizontalSet projection) {
-        super(source, projection);
+    public HorizontalSearcher(PitchSet source, HorizontalSet projection, @Nullable RecursiveSearchPoint.GenerateNeighborsCallback callback) {
+        super(source, projection, callback);
         untransposedSet = projection;
-        potentialSets = new ArrayList<HorizontalSet>();
-        solutions = new ArrayList<HorizontalSet>();
     }
 
     @Override
     public PitchSet limitSet(int setting, RecursiveSearchPoint.GenerateNeighborsCallback callback) {
 
         while (solutions.size() < 4) {
-            ArrayList<RecursiveSearchPoint> nextPitches = findNextPitches(callback);
+            ArrayList<RecursiveSearchPoint> nextPitches = findNextPitches();
             ArrayList<HorizontalSet> foundThisIteration = new ArrayList<HorizontalSet>();
             // System.out.println("HS: nextPitches: " + nextPitches);
             for (RecursiveSearchPoint rsp : nextPitches) {
@@ -138,110 +138,6 @@ public class HorizontalSearcher extends GenerativeSearcher {
         public int compare(HorizontalSet a, HorizontalSet b) {
             int difference = a.getCentralityIndex() - b.getCentralityIndex();
             return difference;
-        }
-    }
-
-    public static PitchSet spotCheck() {
-        PitchClass[] pitchBinary = new PitchClass[12];
-        boolean hasAtleastOnePitch = false;
-        boolean hasAtLeastOneNull = false;
-        for (int i = 0; i < 12; i++) {
-            if (Math.random() > 0.5) {
-                pitchBinary[i] = new PitchClass(i);
-                hasAtleastOnePitch = true;
-            } else {
-                hasAtLeastOneNull = true;
-            }
-        }
-        if (!hasAtleastOnePitch) {
-            int randomIndex = (int) (12 * Math.random());
-            pitchBinary[randomIndex] = new PitchClass(randomIndex);
-        }
-        if (!hasAtLeastOneNull) {
-            int randomIndex = (int) (12 * Math.random());
-            pitchBinary[randomIndex] = null;
-        }
-
-        VerticalSet vs = new VerticalSet(pitchBinary);
-        VerticalSearcher vSearch = new VerticalSearcher(vs);
-        PitchSet lastSet = vSearch.limitSet(0, callback);
-
-        PitchClass[] pitchBinary1 = new PitchClass[12];
-        hasAtleastOnePitch = false;
-        hasAtLeastOneNull = false;
-        for (int i = 0; i < 12; i++) {
-            if (Math.random() > 0.25 && pitchBinary[i] == null) {
-                pitchBinary1[i] = new PitchClass(i);
-                hasAtleastOnePitch = true;
-            } else {
-                hasAtLeastOneNull = true;
-            }
-        }
-        while (!hasAtleastOnePitch) {
-            int randomIndex = (int) (12 * Math.random());
-            if (pitchBinary[randomIndex] == null) {
-                pitchBinary1[randomIndex] = new PitchClass(randomIndex);
-                hasAtleastOnePitch = true;
-            }
-        }
-        if (!hasAtLeastOneNull) {
-            int randomIndex = (int) (12 * Math.random());
-            pitchBinary1[randomIndex] = null;
-        }
-        HorizontalSet projectedSet = new HorizontalSet(pitchBinary1, callback);
-        HorizontalSearcher hs = new HorizontalSearcher(lastSet, projectedSet);
-        PitchSet set = hs.limitSet(0, callback);
-        System.out.println("Set: " + set);
-        return set;
-    }
-
-    public static PitchSet spotCheck(PitchSet lastSet) {
-        PitchClass[] pitchBinary = lastSet.getArray();
-
-        PitchClass[] pitchBinary1 = new PitchClass[12];
-        boolean hasAtleastOnePitch = false;
-        boolean hasAtLeastOneNull = false;
-        for (int i = 0; i < 12; i++) {
-            if (Math.random() > 0.25 && pitchBinary[i] == null) {
-                pitchBinary1[i] = new PitchClass(i);
-                hasAtleastOnePitch = true;
-            } else {
-                hasAtLeastOneNull = true;
-            }
-        }
-        while (!hasAtleastOnePitch) {
-            int randomIndex = (int) (12 * Math.random());
-            if (pitchBinary[randomIndex] == null) {
-                pitchBinary1[randomIndex] = new PitchClass(randomIndex);
-                hasAtleastOnePitch = true;
-            }
-        }
-        if (!hasAtLeastOneNull) {
-            int randomIndex = (int) (12 * Math.random());
-            pitchBinary1[randomIndex] = null;
-        }
-        //System.out.println("CONSTRUCTING PROJECTEDSET");
-        HorizontalSet projectedSet = new HorizontalSet(pitchBinary1, callback);
-        //System.out.println("CONSTRUCTING HORIZONTALSEARCHER");
-        HorizontalSearcher hs = new HorizontalSearcher(lastSet, projectedSet);
-        //System.out.println("LIMITING HORIZONTALSET");
-        PitchSet set = hs.limitSet((int) (Math.random() * 4), callback);
-        //System.out.println("LIMITED SET: " + set);
-        return set;
-    }
-
-    public static void inifinitTest() {
-        PitchSet lastSet = spotCheck();
-        long max = 0L;
-        for (int i = 0; i < 100000; i++) {
-            long milis = System.currentTimeMillis();
-            lastSet = spotCheck(lastSet);
-            long runTime = System.currentTimeMillis() - milis;
-            max = Math.max(max, runTime);
-            System.out.println("Test Number: " + i + " run time: " + runTime + " max run time: " + max);
-            if (i % 1000 == 0) {
-                max = 0;
-            }
         }
     }
 

@@ -1,8 +1,9 @@
 public class LiveApplication {
 
     public static void main(String[] args) {
-        new Archinovica();
-        new LiveReceiver();
+        Archinovica archinovica = new Archinovica();
+        LiveReceiver liveReceiver = new LiveReceiver(archinovica);
+        new GUI(archinovica, liveReceiver);
     }
 
 }

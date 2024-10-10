@@ -112,7 +112,7 @@ public class SetAnalysis {
                 for (Integer pc : chord) {
                     pitchBinary[pc] = true;
                 }
-                anArch.updateIntonation(pitchBinary, callback);
+                anArch.updateIntonation(pitchBinary);
                 PitchClass[] archiArray = anArch.soundingPitchClasses;
                 if (i == 0) {
                     for (Integer pc : chord) {
