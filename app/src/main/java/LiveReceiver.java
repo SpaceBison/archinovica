@@ -9,25 +9,27 @@ import java.util.*;
  */
 public class LiveReceiver implements Receiver {
 
+    public static boolean compositionMode = false;
+    private static boolean damperAlmostOff;
+    private static boolean rightPedal = false;
+    private static boolean leftPedal = false;
+    private static boolean sustainMode = false;
+    private static boolean useBuiltIn;
+    public static int transposition = 0;
+    public static int bendAdjustment = 0;
+    private static final int[] keyTransposition = new int[128];
+    private static final int[] PitchBendCatalogue = new int[16]; //value of 'transposition' at the time of noteOn
+
 
     private final Archinovica archinovica;
     private Receiver rec;
-    private Synthesizer synth;
+    private final Synthesizer synth;
     // always resonating unless told to clear (middle pedal)
     private final boolean damper = true;
     public boolean recordOutput = false;
     private boolean middlePedal = false;
-    public static boolean compositionMode;
-    private static boolean damperAlmostOff;
-    private static boolean rightPedal;
-    private static boolean leftPedal;
-    private static boolean sustainMode;
-    private static boolean useBuiltIn;
+
     private int pedaling = 0;
-    public static int transposition;
-    public static int bendAdjustment;
-    private static int[] keyTransposition;
-    private static final int[] PitchBendCatalogue = new int[16]; //value of 'transposition' at the time of noteOn
     private final long delay = 40L;
     private final boolean[] pitchSet = new boolean[12];
     private ArrayList<ShortMessage> damperMessages = new ArrayList<ShortMessage>();
@@ -40,54 +42,16 @@ public class LiveReceiver implements Receiver {
     public Sequence outFile;
     //public AdditiveSynthesizer addSynth;
 
-    public static final int MIDPED = 66;
-    public static final int LEFTPED = 67;
-    public static final int RIGHTPED = 64;
-
     private Listener listener;
 
-    //depreciated?
-    public boolean useVirtualPiano = false;
-
-    public LiveReceiver(Archinovica archinovica) {
+    public LiveReceiver(Archinovica archinovica, Receiver receiver, Synthesizer synthesizer) {
         this.archinovica = archinovica;
 
-        compositionMode = false; // defalut is performance mode
-        useBuiltIn = false;
-
-
-        rightPedal = false;
-        leftPedal = false;
-        sustainMode = false;//true;//for Polymath default
-        transposition = 0; // transpose by 0 EQ'd semitones to begin
-        bendAdjustment = 0;
-
-        keyTransposition = new int[128];
-
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                rec.close();
-            }
-        });
+        rec = receiver;
+        synth = synthesizer;
 
         for (int i = 0; i < 12; i++) {
             pitchSet[i] = false;
-        }
-
-        try {
-            if (useVirtualPiano) {
-                rec = new Piano();
-            } else {
-                rec = MidiSystem.getReceiver();
-            }
-            synth = MidiSystem.getSynthesizer();
-            Transmitter trans = MidiSystem.getTransmitter();
-            trans.setReceiver(this);
-        } catch (MidiUnavailableException e) {
-            System.out.println(e);
-            System.out.println("CREATING VIRTUAL INSTRUMENT");
-            rec = new Piano();
         }
 
         //addSynth = new AdditiveSynthesizer();
@@ -161,7 +125,7 @@ public class LiveReceiver implements Receiver {
     }
 
     public void useBuiltInMidi() {
-        rec = new Piano();
+        rec = new Piano(synth);
         useBuiltIn = true;
     }
 
@@ -298,7 +262,7 @@ public class LiveReceiver implements Receiver {
                         pedalOn = 1;
                     }
                     switch (sm.getData1()) {
-                        case RIGHTPED:
+                        case Constants.RIGHTPED:
 
                             pedaling = 0;
                             if (leftPedal) {
@@ -341,7 +305,7 @@ public class LiveReceiver implements Receiver {
                                 }
                             }
                             break;
-                        case LEFTPED:
+                        case Constants.LEFTPED:
 
                             pedaling = 0;
                             if (sm.getData2() > 0) {
@@ -368,7 +332,7 @@ public class LiveReceiver implements Receiver {
                             //System.out.println("LP: " + leftPedal);
                             //System.out.println("PEDALING: " + pedaling);
                             break;
-                        case MIDPED:
+                        case Constants.MIDPED:
                             middlePedal = pedalOn > 0;
                             if (sm.getData2() < 125 && !leftPedal) {
                                 if (damperMessages.size() > 0) {
@@ -787,13 +751,13 @@ public class LiveReceiver implements Receiver {
         System.out.println();
     }
 
-    public class Piano implements Receiver {
+    public static class Piano implements Receiver {
         public Synthesizer synth;
         public MidiChannel[] channels;
 
-        public Piano() {
+        public Piano(Synthesizer synthesizer) {
             try {
-                synth = MidiSystem.getSynthesizer();
+                synth = synthesizer;
                 synth.open();
                 channels = synth.getChannels();
             } catch (MidiUnavailableException e) {

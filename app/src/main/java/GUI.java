@@ -43,8 +43,6 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             KeyEvent.VK_H, KeyEvent.VK_I, KeyEvent.VK_J, KeyEvent.VK_K, KeyEvent.VK_L, KeyEvent.VK_M, KeyEvent.VK_N, KeyEvent.VK_O, KeyEvent.VK_P,
             KeyEvent.VK_Q, KeyEvent.VK_R, KeyEvent.VK_S, KeyEvent.VK_T, KeyEvent.VK_U, KeyEvent.VK_V, KeyEvent.VK_W, KeyEvent.VK_X, KeyEvent.VK_Y, KeyEvent.VK_Z};
 
-    private final RecursiveSearchPoint.GenerateNeighborsCallback generateNeighborsCallback = this::animateGeneration;
-
     public GUI(Archinovica archinovica, @Nullable LiveReceiver r) {
         addKeyBindings();
         if (r != null) {
@@ -69,7 +67,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             }
         });
 
-        archinovica.setGenerateNeighborsCallback(generateNeighborsCallback);
+        archinovica.setGenerateNeighborsCallback(this::animateGeneration);
 
         display = new JFrame("Archinovica");
         display.setBounds(0, 0, 600, 600);
@@ -1050,8 +1048,8 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                         if (sm.getCommand() == ShortMessage.NOTE_ON
                                 || sm.getCommand() == ShortMessage.NOTE_OFF
                                 || (sm.getCommand() == ShortMessage.CONTROL_CHANGE
-                                && (sm.getData1() == LiveReceiver.RIGHTPED
-                                || sm.getData1() == LiveReceiver.LEFTPED))) {
+                                && (sm.getData1() == Constants.RIGHTPED
+                                || sm.getData1() == Constants.LEFTPED))) {
                             addEvent(t.get(i));
                             if (sm.getCommand() == ShortMessage.NOTE_ON) {
                                 System.out.println("NOTE ON: " + sm.getData1());
@@ -1237,9 +1235,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             try {
                 int num = 0;
                 if (isLeft) {
-                    num = LiveReceiver.LEFTPED;
+                    num = Constants.LEFTPED;
                 } else {
-                    num = LiveReceiver.RIGHTPED;
+                    num = Constants.RIGHTPED;
                 }
                 int d2 = 127;
                 if (lift) {
@@ -1646,7 +1644,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                     return "";
                 case ShortMessage.CONTROL_CHANGE:
                     switch (sm.getData1()) {
-                        case LiveReceiver.RIGHTPED:
+                        case Constants.RIGHTPED:
                             if (sm.getData2() > 0) {
                                 rChange = 1;
                                 return "R+";
@@ -1654,7 +1652,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                                 rChange = -1;
                                 return "R-";
                             }
-                        case LiveReceiver.LEFTPED:
+                        case Constants.LEFTPED:
                             if (sm.getData2() > 0) {
                                 lChange = 1;
                                 return "L+";

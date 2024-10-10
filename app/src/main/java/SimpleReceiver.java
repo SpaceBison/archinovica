@@ -1,4 +1,7 @@
-import javax.sound.midi.*;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiMessage;
+import javax.sound.midi.Receiver;
+import javax.sound.midi.ShortMessage;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -12,17 +15,22 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @version (a version number or a date)
  */
 public class SimpleReceiver implements Receiver {
+
     private final Archinovica archinovica;
-    public Receiver rec;
+    private final Receiver rec;
+
     public TimerTask timerTask;
-    public Timer clock;
-    public LinkedBlockingQueue<ShortMessage> commands;
-    public int transposition, bendAdjustment;
-    public long delay;
-    public static final int MIDPED = 66, LEFTPED = 67, RIGHTPED = 64;
-    public boolean rightPedal, leftPedal, middlePedal;
+    public Timer clock = new Timer();
+    public LinkedBlockingQueue<ShortMessage> commands = new LinkedBlockingQueue<ShortMessage>();
+    // transpose by 0 EQ'd semitones to begin
+    public int transposition = 0;
+    public int bendAdjustment = 0;
+    public long delay = 30L;
+    public boolean rightPedal = false;
+    public boolean leftPedal = false;
+    public boolean middlePedal = false;
     public boolean useDelay = true, sustain = true;
-    public int[] chanTrans;
+    public int[] chanTrans = new int[16];
     /*
      * In theory, it may be possible to avoid any delay window,
      * by sending the note on message immediately, followed by
@@ -30,29 +38,9 @@ public class SimpleReceiver implements Receiver {
      * detected)
      */
 
-    public SimpleReceiver(Archinovica archinovica) {
+    public SimpleReceiver(Archinovica archinovica, Receiver receiver) {
         this.archinovica = archinovica;
-
-        try {
-            rec = MidiSystem.getReceiver();
-            Transmitter trans = MidiSystem.getTransmitter();
-            trans.setReceiver(this);
-        } catch (MidiUnavailableException e) {
-            JOptionPane.showMessageDialog(null,
-                    "No MIDI device found. Don't panic! If you're trying to perform\nlive on the Archinoivca, please connect a MIDI keyboard to the \ncomputer, and then restart the software.");
-        }
-
-        transposition = 0; // transpose by 0 EQ'd semitones to begin
-        bendAdjustment = 0;
-        chanTrans = new int[16];
-
-        delay = 30L;
-        rightPedal = false;
-        leftPedal = false;
-        middlePedal = false;
-
-        clock = new Timer();
-        commands = new LinkedBlockingQueue<ShortMessage>();
+        rec = receiver;
     }
 
     public void send(MidiMessage message, long timeStamp) {
@@ -125,7 +113,7 @@ public class SimpleReceiver implements Receiver {
                     break;
                 case ShortMessage.CONTROL_CHANGE:
                     switch (sm.getData1()) {
-                        case RIGHTPED:
+                        case Constants.RIGHTPED:
                             int pedaling = 0;
                             if (leftPedal) {
                                 pedaling += 1;
@@ -139,7 +127,7 @@ public class SimpleReceiver implements Receiver {
                             }
                             rightPedal = sm.getData2() > 0;
                             break;
-                        case LEFTPED:
+                        case Constants.LEFTPED:
                             pedaling = 0;
                             if (sm.getData2() > 0) {
                                 pedaling += 1;
@@ -157,7 +145,7 @@ public class SimpleReceiver implements Receiver {
                                 archinovica.undoProgression();
                             }
                             break;
-                        case MIDPED:
+                        case Constants.MIDPED:
                             //System.out.println(sm.getData2());
                             middlePedal = sm.getData2() > 0;
                             if (middlePedal) {
