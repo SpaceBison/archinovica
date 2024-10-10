@@ -1,3 +1,4 @@
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 /**
@@ -32,7 +33,7 @@ public class RecursiveSearchPoint extends PitchClass {
     }
 
     //initialize dependent subspace
-    public RecursiveSearchPoint(int neighborIndex, RecursiveSearchPoint source, boolean animate) {
+    public RecursiveSearchPoint(int neighborIndex, RecursiveSearchPoint source) {
         super(TRANSFORMATION_GROUP[neighborIndex], source);
         //mySearcher = source.mySearcher;
         neighbors = new RecursiveSearchPoint[4];
@@ -46,14 +47,9 @@ public class RecursiveSearchPoint extends PitchClass {
                 addNeighbor(r.neighbors[neighborIndex]);
             }
         }
-        //mySearcher.addSubSpace(this);
-        //System.out.println(this);
-        if (animate) {
-            Archinovica.animateGeneration(this, source.signified);
-        }
     }
 
-    public ArrayList<RecursiveSearchPoint> generateNeighbors(PitchSet searchDestination, boolean animate) {
+    public ArrayList<RecursiveSearchPoint> generateNeighbors(PitchSet searchDestination, @Nullable GenerateNeighborsCallback callback) {
         boolean found = false;
         ArrayList<RecursiveSearchPoint> solutions = new ArrayList<RecursiveSearchPoint>();
         if (parent == this) {
@@ -62,7 +58,12 @@ public class RecursiveSearchPoint extends PitchClass {
         if (children.size() == 0) {
             for (int i = 0; i < 4; i++) {
                 if (neighbors[i] == null) {
-                    RecursiveSearchPoint child = bearChild(i, animate);
+                    RecursiveSearchPoint child = bearChild(i);
+
+                    if (callback != null) {
+                        callback.onChildGenerated(child, signified);
+                    }
+
                     children.add(child);
                     if (searchDestination.isProjected(child)) {
                         solutions.add(child);
@@ -71,7 +72,7 @@ public class RecursiveSearchPoint extends PitchClass {
             }
         } else {
             for (RecursiveSearchPoint child : children) {
-                solutions.addAll(child.generateNeighbors(searchDestination, animate));
+                solutions.addAll(child.generateNeighbors(searchDestination, callback));
             }
         }
         return solutions;
@@ -113,11 +114,8 @@ public class RecursiveSearchPoint extends PitchClass {
     }
      */
 
-    public RecursiveSearchPoint bearChild(int i, boolean animate) {
-        RecursiveSearchPoint child = new RecursiveSearchPoint(i, this, animate);
-        //Archinovica.gui.displayStaticSign(child);
-        //System.out.println("NEW CHILD: " + child);
-        return child;
+    public RecursiveSearchPoint bearChild(int i) {
+        return new RecursiveSearchPoint(i, this);
     }
 
     /*public boolean isLastChild(RecursiveSearchPoint child){
@@ -178,4 +176,8 @@ public class RecursiveSearchPoint extends PitchClass {
     return a;
     }
      */
+
+    public interface GenerateNeighborsCallback {
+        void onChildGenerated(SemioticFunction sf, int[] signified);
+    }
 }

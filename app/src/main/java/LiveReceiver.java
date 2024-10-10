@@ -8,39 +8,56 @@ import java.util.*;
  * @version (a version number or a date)
  */
 public class LiveReceiver implements Receiver {
-    public Receiver rec;
-    public Synthesizer synth;
-    public boolean damper, recordOutput, middlePedal;
-    public static boolean compositionMode, damperAlmostOff, rightPedal,
-            leftPedal, sustainMode, useBuiltIn;
-    public int pedaling;
-    public static int transposition, bendAdjustment;
-    public static int[] keyTransposition, PitchBendCatalogue = new int[16]; //value of 'transposition' at the time of noteOn
-    public long delay = 40L;
-    public boolean[] pitchSet;
-    public ArrayList<ShortMessage> damperMessages, commands, undeterminedSet;
-    public ArrayList<Integer> soundingPitches;
-    public GUI gui;
-    public Timer clock;
-    public long time, recTime;
-    public Cunctator verrucosus;
+
+
+    private final Archinovica archinovica;
+    private Receiver rec;
+    private Synthesizer synth;
+    // always resonating unless told to clear (middle pedal)
+    private final boolean damper = true;
+    public boolean recordOutput = false;
+    private boolean middlePedal = false;
+    public static boolean compositionMode;
+    private static boolean damperAlmostOff;
+    private static boolean rightPedal;
+    private static boolean leftPedal;
+    private static boolean sustainMode;
+    private static boolean useBuiltIn;
+    private int pedaling = 0;
+    public static int transposition;
+    public static int bendAdjustment;
+    private static int[] keyTransposition;
+    private static final int[] PitchBendCatalogue = new int[16]; //value of 'transposition' at the time of noteOn
+    private final long delay = 40L;
+    private final boolean[] pitchSet = new boolean[12];
+    private ArrayList<ShortMessage> damperMessages = new ArrayList<ShortMessage>();
+    private ArrayList<ShortMessage> commands = new ArrayList<ShortMessage>();
+    private ArrayList<ShortMessage> undeterminedSet = new ArrayList<ShortMessage>();
+    private final ArrayList<Integer> soundingPitches = new ArrayList<Integer>();
+    private final GUI gui = new GUI(this);
+    private final Timer clock = new Timer();
+    private long time = System.currentTimeMillis(), recTime;
+    private Cunctator verrucosus = new Cunctator();
     public Sequence outFile;
     //public AdditiveSynthesizer addSynth;
-    public static final int MIDPED = 66, LEFTPED = 67, RIGHTPED = 64;
+
+    public static final int MIDPED = 66;
+    public static final int LEFTPED = 67;
+    public static final int RIGHTPED = 64;
 
 
-    public boolean useVirtualPiano;
+    //depreciated?
+    public boolean useVirtualPiano = false;
 
-    public LiveReceiver() {
-        useVirtualPiano = false;//depreciated?
+    public LiveReceiver(Archinovica archinovica) {
+        this.archinovica = archinovica;
+
         compositionMode = false; // defalut is performance mode
         useBuiltIn = false;
 
 
-        damper = true; // always resonating unless told to clear (middle pedal)
         rightPedal = false;
         leftPedal = false;
-        middlePedal = false;
         sustainMode = false;//true;//for Polymath default
         transposition = 0; // transpose by 0 EQ'd semitones to begin
         bendAdjustment = 0;
@@ -54,21 +71,10 @@ public class LiveReceiver implements Receiver {
             }
         });
 
-        undeterminedSet = new ArrayList<ShortMessage>();
-        soundingPitches = new ArrayList<Integer>();
-
-        time = System.currentTimeMillis();
-        recordOutput = false;
-        pedaling = 0;
-        verrucosus = new Cunctator();
-        clock = new Timer();
-        commands = new ArrayList<ShortMessage>();
-        damperMessages = new ArrayList<ShortMessage>();
-        gui = new GUI(this);
-        pitchSet = new boolean[12];
         for (int i = 0; i < 12; i++) {
             pitchSet[i] = false;
         }
+
         try {
             if (useVirtualPiano) {
                 rec = new Piano();
@@ -94,10 +100,6 @@ public class LiveReceiver implements Receiver {
         System.out.print("");
         }
          */
-    }
-
-    public static void main(String[] args) {
-        new LiveReceiver();
     }
 
     public static int getKeyTransValue(int index) {
@@ -307,7 +309,7 @@ public class LiveReceiver implements Receiver {
                             }
 
                             if (rightPedal != sm.getData2() > 0) {
-                                gui.archinovica.setPedaling(pedaling);
+                                archinovica.setPedaling(pedaling);
                                 if (compositionMode) {
                                     playUndeterminedSet();
                                 }
@@ -349,7 +351,7 @@ public class LiveReceiver implements Receiver {
                                 pedaling += 2;
                             }
                             if (leftPedal != (sm.getData2() > 0)) {
-                                gui.archinovica.setPedaling(pedaling);
+                                archinovica.setPedaling(pedaling);
                                 if (compositionMode) {
                                     playUndeterminedSet();
                                 }
@@ -358,7 +360,7 @@ public class LiveReceiver implements Receiver {
                             leftPedal = sm.getData2() > 0;
 
                             if (middlePedal && leftPedal) {
-                                gui.archinovica.undoProgression();
+                                archinovica.undoProgression();
                                 if (compositionMode) {
                                     playCurrentSet();
                                 }
@@ -382,7 +384,7 @@ public class LiveReceiver implements Receiver {
                             }
 
                             if (middlePedal && leftPedal) {
-                                gui.archinovica.undoProgression();
+                                archinovica.undoProgression();
                                 if (compositionMode) {
                                     playCurrentSet();
                                 }
@@ -536,7 +538,7 @@ public class LiveReceiver implements Receiver {
             ps[i] = ps[i] || pitchSet[i];
         }
 
-        gui.archinovica.undoProgression();
+        archinovica.undoProgression();
         updateIntonation(ps, undeterminedSet);
         for (ShortMessage sm : undeterminedSet) {
             processMessage(sm, 0L);
@@ -546,7 +548,7 @@ public class LiveReceiver implements Receiver {
     }
 
     public void playCurrentSet() {
-        PitchClass[] pcs = gui.archinovica.soundingPitchClasses;
+        PitchClass[] pcs = archinovica.soundingPitchClasses;
         for (int i = 0; i < 12; i++) {
             PitchClass p = pcs[i];
             if (p != null) {
@@ -693,7 +695,7 @@ public class LiveReceiver implements Receiver {
      */
 
     public ArrayList<ShortMessage> updateIntonation(boolean[] ps, ArrayList<ShortMessage> sms) {
-        PitchClass[] pcs = gui.archinovica.updateIntonation(ps);
+        PitchClass[] pcs = archinovica.updateIntonation(ps, callback);
         for (int i = 0; i < 12; i++) { // calculate the transposition of all pitches
             PitchClass p = pcs[i];
             if (p != null && !useBuiltIn) {

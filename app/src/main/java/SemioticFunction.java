@@ -111,7 +111,7 @@ public abstract class SemioticFunction implements Comparable<SemioticFunction>, 
         HorizontalSet destination = new HorizontalSet(signifier);
         ArrayList<RecursiveSearchPoint> solutions = null;
         do {
-            solutions = rsp.generateNeighbors(destination, false);
+            solutions = rsp.generateNeighbors(destination, null);
         }
         while (solutions.size() == 0);
         signified = solutions.get(0).signified;

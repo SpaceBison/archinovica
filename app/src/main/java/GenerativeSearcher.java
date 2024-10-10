@@ -1,3 +1,4 @@
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,13 +27,13 @@ public abstract class GenerativeSearcher {
         resetSearch();
     }
 
-    public ArrayList<RecursiveSearchPoint> findNextPitches(boolean animate) {
+    public ArrayList<RecursiveSearchPoint> findNextPitches(@Nullable RecursiveSearchPoint.GenerateNeighborsCallback callback) {
         ArrayList<RecursiveSearchPoint> solutions = new ArrayList<RecursiveSearchPoint>();
         // System.out.println("MYGRID: " + myGrid);
         while (solutions.size() == 0) {
             //System.out.println("SEARCHING SEARCHABLE SOURCES...");
             for (PitchClass source : mySearchableSources) {
-                solutions.addAll(((RecursiveSearchPoint) source).generateNeighbors(myProjectedSet, animate));
+                solutions.addAll(((RecursiveSearchPoint) source).generateNeighbors(myProjectedSet, callback));
             }
         }
         //System.out.println("Solutions: " + solutions);
@@ -50,7 +51,7 @@ public abstract class GenerativeSearcher {
     }
      */
 
-    public abstract PitchSet limitSet(int setting);
+    public abstract PitchSet limitSet(int setting, RecursiveSearchPoint.GenerateNeighborsCallback callback);
 
     public abstract PitchSet getSearchableSources();
 

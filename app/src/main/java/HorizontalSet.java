@@ -18,7 +18,7 @@ public class HorizontalSet extends PitchSet {
         registeredPitches = new ArrayList<PitchClass>();
     }
 
-    public HorizontalSet(PitchClass[] pP) {
+    public HorizontalSet(PitchClass[] pP, RecursiveSearchPoint.GenerateNeighborsCallback callback) {
         super(pP);
         //System.out.println("H: constructing verticalSet");
         VerticalSet vs = new VerticalSet(pP);
@@ -26,7 +26,7 @@ public class HorizontalSet extends PitchSet {
         //System.out.println("H: constructing vSearch");
         VerticalSearcher vSearch = new VerticalSearcher(vs);
         //System.out.println("H: limiting vs & adding all");
-        addAll(vSearch.limitSet(0));
+        addAll(vSearch.limitSet(0, callback));
         registeredPitches = new ArrayList<PitchClass>();
     }
 

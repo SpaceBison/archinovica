@@ -1,19 +1,22 @@
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This version seeks to fix eratic behavior.
  */
 public class Archinovica {
-    public PitchClass[] soundingPitchClasses, temperedScale;
+    public PitchClass[] soundingPitchClasses;
+    public PitchClass[] temperedScale;
     public PitchClass lastCenter; // depreciated
     public PitchSet lastSet;
     public ArrayList<PitchSet> backupSets;
     public ArrayList<PitchClass[]> backUpSoundingPCs;
     public int pedaling;
-    public static GUI gui;
+
     public static PitchClass ORIGIN;
     public static boolean legacyBehavior; //when true, will behave like version 0.9
+
+    private Listener listener = null;
+
     //public LiveReceiver liveRec;
 
     /*public Archinovica(GUI aGui){
@@ -33,20 +36,23 @@ public class Archinovica {
     }
      */
 
-    public Archinovica(GUI agui) {
-        soundingPitchClasses = new PitchClass[12];
-        backUpSoundingPCs = new ArrayList<PitchClass[]>();
-        backupSets = new ArrayList<PitchSet>();
-        temperedScale = new PitchClass[12];
-        initializeSpace();
+    public Archinovica() {
+        reset();
         PitchClass[] initialScale = new PitchClass[12];
-        gui = agui;
 
         //liveRec = lr;
         //lastCenter = pitchSpace;
         //new PitchSet(new PitchClass[]{new PitchClass(0), null, null, null, new PitchClass(4), null, null, new PitchClass(7), null, null, null, null});
 
         //myCsound = new Csound();
+    }
+
+    public void reset() {
+        soundingPitchClasses = new PitchClass[12];
+        backUpSoundingPCs = new ArrayList<PitchClass[]>();
+        backupSets = new ArrayList<PitchSet>();
+        temperedScale = new PitchClass[12];
+        initializeSpace();
     }
 
     /* public void updatePitches(boolean[] pitchBinary){
@@ -103,7 +109,7 @@ public class Archinovica {
         lastSet.transpose(transposition);
     }
 
-    public PitchClass[] updateIntonation(boolean[] pitchBinary) {
+    public PitchClass[] updateIntonation(boolean[] pitchBinary, RecursiveSearchPoint.GenerateNeighborsCallback callback) {
 
         boolean isntEmptySet = false;
         for (boolean b : pitchBinary) {
@@ -133,7 +139,7 @@ public class Archinovica {
             if (lastSet == null) {
                 lastSet = new VerticalSet(soundingPitchClasses);
                 searcher = new VerticalSearcher(lastSet);
-                lastSet = searcher.limitSet(setting);
+                lastSet = searcher.limitSet(setting, callback);
                 //System.out.println(lastSet);
                 int i = 0;
                 while (soundingPitchClasses[i] == null) {
@@ -141,15 +147,15 @@ public class Archinovica {
                 }
                 transposeSet(i);
             } else {
-                HorizontalSet projectedSet = new HorizontalSet(soundingPitchClasses);
+                HorizontalSet projectedSet = new HorizontalSet(soundingPitchClasses, callback);
                 searcher = new HorizontalSearcher(lastSet, projectedSet);
-                lastSet = searcher.limitSet(setting);
+                lastSet = searcher.limitSet(setting, callback);
             }
             //lastSet = lastSet.transformSet(transformationSet);
         } else {
             lastSet = new VerticalSet(soundingPitchClasses);
             searcher = new VerticalSearcher(lastSet);
-            lastSet = searcher.limitSet(setting);
+            lastSet = searcher.limitSet(setting, callback);
             transposeSet(commonTone);
         }
         soundingPitchClasses = lastSet.getArray();
@@ -168,39 +174,13 @@ public class Archinovica {
         //System.out.println("DONE");
         //System.out.println("SCALE: " + Arrays.asList(temperedScale));
         //System.out.println("UPDATED SOUNDING PCS: " + Arrays.asList(soundingPitchClasses));
-        if (gui != null) {
-            if (LiveReceiver.compositionMode) {
-                gui.displayStaticPitches(soundingPitchClasses);
-            } else {
-                gui.displayPitches(soundingPitchClasses);
-            }
+        if (listener != null) {
+            listener.onIntonationUpdated(soundingPitchClasses);
         }
 
         return soundingPitchClasses;
         //System.out.println("PITCHES FOUND: " + currentSet.getFoundPitches());
         //System.out.println("PITCHES PROJECTED: " + currentSet.totalProjectedPitches);
-    }
-
-    //debuging
-    public static void print(Object o) {
-
-    }
-
-    public void randomSpotCheck() {
-        boolean[] pitchBinary = new boolean[12];
-        for (int i = 0; i < 12; i++) {
-            pitchBinary[i] = (Math.random() > 0.5);
-        }
-        //updatePitches(pitchBinary);
-        updateIntonation(pitchBinary);
-
-        System.out.println(List.of(pitchBinary));
-    }
-
-    public void inifinitTest() {
-        while (true) {
-            randomSpotCheck();
-        }
     }
 
     public static PitchClass[] parsePitchBinary(String binary) {
@@ -222,25 +202,6 @@ public class Archinovica {
         ORIGIN = new PitchClass(new int[]{0, 0});
     }
 
-    public static void animateGeneration(SemioticFunction sf, int[] signified) {
-        if (gui != null) {
-            gui.animateGeneration(sf, signified);
-        }
-    }
-
-    public static void displaySigns(ArrayList<SemioticFunction> s) {
-        if (gui != null) {
-            gui.displaySigns(s);
-        }
-    }
-
-
-    public static void displaySign(SemioticFunction s) {
-        ArrayList<SemioticFunction> signs = new ArrayList<SemioticFunction>();
-        signs.add(s);
-        displaySigns(signs);
-    }
-
     public void undoProgression() {
         System.out.println("UNDO PROGRESSION");
         if (backupSets.size() == 0 || backUpSoundingPCs.size() == 0) {
@@ -251,14 +212,25 @@ public class Archinovica {
         backupSets.remove(backupSets.size() - 1);
         soundingPitchClasses = backUpSoundingPCs.get(backUpSoundingPCs.size() - 1);
         backUpSoundingPCs.remove(backUpSoundingPCs.size() - 1);
-        if (gui != null) {
-            gui.eraseLastChord();
+        if (listener != null) {
+            listener.onProgressionUndone();
         }
     }
 
     public void setLastChord(PitchSet aSet) {
         soundingPitchClasses = aSet.getArray();
         lastSet = aSet;
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    public interface Listener {
+
+        void onIntonationUpdated(PitchClass[] soundingPitchClasses);
+        void onProgressionUndone();
+
     }
 
 }

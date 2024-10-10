@@ -96,46 +96,8 @@ public class SetAnalysis {
         return allSets;
     }
 
-    public double[] average5LimVector() {
-        Archinovica anArch = new Archinovica(null);
-        anArch.setPedaling(0);
-        ArrayList<ArrayList<Integer>> allPerms = allPermutations(set);
-        double[] vector = new double[2];
-        for (ArrayList<Integer> perm : allPerms) {
-            PitchClass firstPitch = null;
-            PitchClass lastPitch = null;
-            System.out.print("     [");
-            for (Integer note : perm) {
-                System.out.print(note + ",");
-            }
-            System.out.print("]");
-            for (int i = 0; i < perm.size(); i++) {
-                boolean[] pitchBinary = new boolean[12];
-                int pc = perm.get(i);
-                pitchBinary[pc] = true;
-                anArch.updateIntonation(pitchBinary);
-                PitchClass[] archiArray = anArch.soundingPitchClasses;
-                if (i == 0) {
-                    firstPitch = archiArray[pc];
-                }
-                if (i == perm.size() - 1) {
-                    lastPitch = archiArray[pc];
-                }
-            }
-
-            double[] delta = new double[]{(lastPitch.signified[0] - firstPitch.signified[0]),
-                    (lastPitch.signified[1] - firstPitch.signified[1])};
-            vector[0] += (lastPitch.signified[0] - firstPitch.signified[0]);
-            vector[1] += (lastPitch.signified[1] - firstPitch.signified[1]);
-            System.out.println("<" + delta[0] + "," + delta[1] + ">");
-        }
-        vector[0] /= allPerms.size();
-        vector[1] /= allPerms.size();
-        return vector;
-    }
-
     public double[] average5LimVector1() {
-        Archinovica anArch = new Archinovica(null);
+        Archinovica anArch = new Archinovica();
         anArch.setPedaling(0);
         ArrayList<ArrayList<Basket>> sequences = allSequences();
         double[] vector = new double[2];
@@ -150,7 +112,7 @@ public class SetAnalysis {
                 for (Integer pc : chord) {
                     pitchBinary[pc] = true;
                 }
-                anArch.updateIntonation(pitchBinary);
+                anArch.updateIntonation(pitchBinary, callback);
                 PitchClass[] archiArray = anArch.soundingPitchClasses;
                 if (i == 0) {
                     for (Integer pc : chord) {
@@ -179,30 +141,6 @@ public class SetAnalysis {
         vector[0] /= sequences.size();
         vector[1] /= sequences.size();
         return vector;
-    }
-
-    public ArrayList<ArrayList<Integer>> allPermutations(ArrayList<Integer> aset) {
-        ArrayList<ArrayList<Integer>> allPerms = new ArrayList<ArrayList<Integer>>();
-        if (aset.size() == 1) {
-            ArrayList<Integer> perm = new ArrayList<Integer>();
-            perm.add(aset.get(0));
-            allPerms.add(perm);
-            return allPerms;
-        }
-        for (int i = 0; i < aset.size(); i++) {
-            Integer firstNote = aset.get(i);
-            ArrayList<Integer> aSubSet = new ArrayList<Integer>();
-            aSubSet.addAll(aset);
-            ((ArrayList) aSubSet).remove(i);
-            ArrayList<ArrayList<Integer>> subPerms = allPermutations(aSubSet);
-            for (ArrayList perm : subPerms) {
-                ArrayList<Integer> perm1 = new ArrayList<Integer>();
-                perm1.addAll(perm);
-                perm1.add(0, firstNote);
-                allPerms.add(perm1);
-            }
-        }
-        return allPerms;
     }
 
     public ArrayList<ArrayList<Basket>> allSequences() {

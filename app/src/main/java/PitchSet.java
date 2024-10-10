@@ -156,18 +156,6 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
         super.clear();
     }
 
-    public static PitchSet randomSpotCheck() {
-        //Archinovica.initializeSpace();
-        new Archinovica(null);
-        PitchClass[] pitchBinary = new PitchClass[12];
-        for (int i = 0; i < 12; i++) {
-            if (Math.random() > 0.5) {
-                pitchBinary[i] = new PitchClass(i);
-            }
-        }
-        return null;
-    }
-
     /*public HorizontalSearcher randomTransformationCheck(){
     PitchClass[] pitchBinary = new PitchClass[12];
     for(int i = 0; i < 12; i++){

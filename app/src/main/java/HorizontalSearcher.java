@@ -19,10 +19,11 @@ public class HorizontalSearcher extends GenerativeSearcher {
         solutions = new ArrayList<HorizontalSet>();
     }
 
-    public PitchSet limitSet(int setting) {
+    @Override
+    public PitchSet limitSet(int setting, RecursiveSearchPoint.GenerateNeighborsCallback callback) {
 
         while (solutions.size() < 4) {
-            ArrayList<RecursiveSearchPoint> nextPitches = findNextPitches(true);
+            ArrayList<RecursiveSearchPoint> nextPitches = findNextPitches(callback);
             ArrayList<HorizontalSet> foundThisIteration = new ArrayList<HorizontalSet>();
             // System.out.println("HS: nextPitches: " + nextPitches);
             for (RecursiveSearchPoint rsp : nextPitches) {
@@ -163,7 +164,7 @@ public class HorizontalSearcher extends GenerativeSearcher {
 
         VerticalSet vs = new VerticalSet(pitchBinary);
         VerticalSearcher vSearch = new VerticalSearcher(vs);
-        PitchSet lastSet = vSearch.limitSet(0);
+        PitchSet lastSet = vSearch.limitSet(0, callback);
 
         PitchClass[] pitchBinary1 = new PitchClass[12];
         hasAtleastOnePitch = false;
@@ -187,9 +188,9 @@ public class HorizontalSearcher extends GenerativeSearcher {
             int randomIndex = (int) (12 * Math.random());
             pitchBinary1[randomIndex] = null;
         }
-        HorizontalSet projectedSet = new HorizontalSet(pitchBinary1);
+        HorizontalSet projectedSet = new HorizontalSet(pitchBinary1, callback);
         HorizontalSearcher hs = new HorizontalSearcher(lastSet, projectedSet);
-        PitchSet set = hs.limitSet(0);
+        PitchSet set = hs.limitSet(0, callback);
         System.out.println("Set: " + set);
         return set;
     }
@@ -220,11 +221,11 @@ public class HorizontalSearcher extends GenerativeSearcher {
             pitchBinary1[randomIndex] = null;
         }
         //System.out.println("CONSTRUCTING PROJECTEDSET");
-        HorizontalSet projectedSet = new HorizontalSet(pitchBinary1);
+        HorizontalSet projectedSet = new HorizontalSet(pitchBinary1, callback);
         //System.out.println("CONSTRUCTING HORIZONTALSEARCHER");
         HorizontalSearcher hs = new HorizontalSearcher(lastSet, projectedSet);
         //System.out.println("LIMITING HORIZONTALSET");
-        PitchSet set = hs.limitSet((int) (Math.random() * 4));
+        PitchSet set = hs.limitSet((int) (Math.random() * 4), callback);
         //System.out.println("LIMITED SET: " + set);
         return set;
     }

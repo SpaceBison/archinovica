@@ -2012,7 +2012,7 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         }
 
         public void calculatePedals() {
-            Archinovica anArch = new Archinovica(null);
+            Archinovica anArch = new Archinovica();
             PitchClass archiPointOfReference = null;
             Pitch progressionPointOfReference = null;
             for (int index = 0; index < size(); index++) {
@@ -2022,7 +2022,7 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
                 chord.myPedaling = 0;
                 anArch.setPedaling(chord.myPedaling);
-                anArch.updateIntonation(pitchBinary);
+                anArch.updateIntonation(pitchBinary, callback);
                 PitchClass[] archiArray = anArch.soundingPitchClasses;
 
                 if (!areFormallyEqual(progressionArray, archiArray)) {
@@ -2050,7 +2050,7 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                         anArch.undoProgression();
                         chord.myPedaling = i;
                         anArch.setPedaling(chord.myPedaling);
-                        anArch.updateIntonation(pitchBinary);
+                        anArch.updateIntonation(pitchBinary, callback);
                         archiDestination = anArch.soundingPitchClasses[destinationIndex];
                         progressionTransformation = progressionPointOfReference.getTransformation(progressionDestination);
                         archiTransformation = archiPointOfReference.getTransformation(archiDestination);

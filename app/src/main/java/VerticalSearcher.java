@@ -12,10 +12,10 @@ public class VerticalSearcher extends GenerativeSearcher {
         super(unlimitedSet, unlimitedSet);
     }
 
-    public PitchSet limitSet(int setting) {
+    public PitchSet limitSet(int setting, RecursiveSearchPoint.GenerateNeighborsCallback callback) {
         while (!((VerticalSet) mySourceSet).limited()) {
             //System.out.println("SEARCHING for vertical results");
-            findNextPitches(false);
+            findNextPitches(callback);
             for (PotentialPitch pp : myGrid) {
                 if (pp.getSources().size() == mySourceSet.size()) {
                     mySourceSet.add(new RecursiveSearchPoint(pp));

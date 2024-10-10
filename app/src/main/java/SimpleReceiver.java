@@ -235,7 +235,7 @@ public class SimpleReceiver implements Receiver {
     }
 
     public ArrayList<ShortMessage> updateIntonation(boolean[] ps, ArrayList<ShortMessage> sms) {
-        PitchClass[] pcs = gui.archinovica.updateIntonation(ps);
+        PitchClass[] pcs = gui.archinovica.updateIntonation(ps, callback);
         for (int i = 0; i < 12; i++) { // calculate the transposition of all pitches
             PitchClass p = pcs[i];
             if (p != null) {
