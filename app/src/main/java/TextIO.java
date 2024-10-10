@@ -53,8 +53,9 @@ public class TextIO {
      * or stream is closed.
      */
     public static void readStandardInput() {
-        if (readingStandardInput)
+        if (readingStandardInput) {
             return;
+        }
         try {
             in.close();
         } catch (Exception e) {
@@ -73,10 +74,11 @@ public class TextIO {
      * standard input stream.
      */
     public static void readStream(InputStream inputStream) {
-        if (inputStream == null)
+        if (inputStream == null) {
             readStandardInput();
-        else
+        } else {
             readStream(new InputStreamReader(inputStream));
+        }
     }
 
     /**
@@ -86,13 +88,14 @@ public class TextIO {
      * standard input stream.
      */
     public static void readStream(Reader inputStream) {
-        if (inputStream == null)
+        if (inputStream == null) {
             readStandardInput();
-        else {
-            if (inputStream instanceof BufferedReader)
+        } else {
+            if (inputStream instanceof BufferedReader) {
                 in = (BufferedReader) inputStream;
-            else
+            } else {
                 in = new BufferedReader(inputStream);
+            }
             emptyBuffer();  // Added November 2007
             inputFileName = null;
             readingStandardInput = false;
@@ -111,8 +114,9 @@ public class TextIO {
      */
     public static void readFile(String fileName) {
         if (fileName == null) // Go back to reading standard input
+        {
             readStandardInput();
-        else {
+        } else {
             BufferedReader newin;
             try {
                 newin = new BufferedReader(new FileReader(fileName));
@@ -150,12 +154,14 @@ public class TextIO {
      * routine to shut down the Java virtual machine completely.
      */
     public static boolean readUserSelectedFile() {
-        if (fileDialog == null)
+        if (fileDialog == null) {
             fileDialog = new JFileChooser();
+        }
         fileDialog.setDialogTitle("Select File for Input");
         int option = fileDialog.showOpenDialog(null);
-        if (option != JFileChooser.APPROVE_OPTION)
+        if (option != JFileChooser.APPROVE_OPTION) {
             return false;
+        }
         File selectedFile = fileDialog.getSelectedFile();
         BufferedReader newin;
         try {
@@ -184,8 +190,9 @@ public class TextIO {
      * will be closed.
      */
     public static void writeStandardOutput() {
-        if (writingStandardOutput)
+        if (writingStandardOutput) {
             return;
+        }
         try {
             out.close();
         } catch (Exception e) {
@@ -204,10 +211,11 @@ public class TextIO {
      * standard output stream.
      */
     public static void writeStream(OutputStream outputStream) {
-        if (outputStream == null)
+        if (outputStream == null) {
             writeStandardOutput();
-        else
+        } else {
             writeStream(new PrintWriter(outputStream));
+        }
     }
 
     /**
@@ -217,9 +225,9 @@ public class TextIO {
      * standard output stream.
      */
     public static void writeStream(PrintWriter outputStream) {
-        if (outputStream == null)
+        if (outputStream == null) {
             writeStandardOutput();
-        else {
+        } else {
             out = outputStream;
             outputFileName = null;
             outputErrorCount = 0;
@@ -243,8 +251,9 @@ public class TextIO {
      */
     public static void writeFile(String fileName) {
         if (fileName == null)  // Go back to reading standard output
+        {
             writeStandardOutput();
-        else {
+        } else {
             PrintWriter newout;
             try {
                 newout = new PrintWriter(new FileWriter(fileName));
@@ -277,22 +286,25 @@ public class TextIO {
      * output destination is not changed.
      */
     public static boolean writeUserSelectedFile() {
-        if (fileDialog == null)
+        if (fileDialog == null) {
             fileDialog = new JFileChooser();
+        }
         fileDialog.setDialogTitle("Select File for Output");
         File selectedFile;
         while (true) {
             int option = fileDialog.showSaveDialog(null);
-            if (option != JFileChooser.APPROVE_OPTION)
+            if (option != JFileChooser.APPROVE_OPTION) {
                 return false;  // user canceled
+            }
             selectedFile = fileDialog.getSelectedFile();
             if (selectedFile.exists()) {
                 int response = JOptionPane.showConfirmDialog(null,
                         "The file \"" + selectedFile.getName() + "\" already exists.  Do you want to replace it?",
                         "Replace existing file?",
                         JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                if (response == JOptionPane.YES_OPTION)
+                if (response == JOptionPane.YES_OPTION) {
                     break;
+                }
             } else {
                 break;
             }
@@ -346,8 +358,9 @@ public class TextIO {
     public static void put(Object x) {
         out.print(x);
         out.flush();
-        if (out.checkError())
+        if (out.checkError()) {
             outputError("Error while writing output.");
+        }
     }
 
     /**
@@ -363,13 +376,15 @@ public class TextIO {
      *                 in the minumum number of spaces possible.
      */
     public static void put(Object x, int minChars) {
-        if (minChars <= 0)
+        if (minChars <= 0) {
             out.print(x);
-        else
+        } else {
             out.printf("%" + minChars + "s", x);
+        }
         out.flush();
-        if (out.checkError())
+        if (out.checkError()) {
             outputError("Error while writing output.");
+        }
     }
 
     /**
@@ -378,8 +393,9 @@ public class TextIO {
     public static void putln(Object x) {
         out.println(x);
         out.flush();
-        if (out.checkError())
+        if (out.checkError()) {
             outputError("Error while writing output.");
+        }
     }
 
     /**
@@ -389,8 +405,9 @@ public class TextIO {
         put(x, minChars);
         out.println();
         out.flush();
-        if (out.checkError())
+        if (out.checkError()) {
             outputError("Error while writing output.");
+        }
     }
 
     /**
@@ -399,8 +416,9 @@ public class TextIO {
     public static void putln() {
         out.println();
         out.flush();
-        if (out.checkError())
+        if (out.checkError()) {
             outputError("Error while writing output.");
+        }
     }
 
     /**
@@ -413,16 +431,18 @@ public class TextIO {
      * output.
      */
     public static void putf(String format, Object... items) {
-        if (format == null)
+        if (format == null) {
             throw new IllegalArgumentException("Null format string in TextIO.putf() method.");
+        }
         try {
             out.printf(format, items);
         } catch (IllegalFormatException e) {
             throw new IllegalArgumentException("Illegal format string in TextIO.putf() method.");
         }
         out.flush();
-        if (out.checkError())
+        if (out.checkError()) {
             outputError("Error while writing output.");
+        }
     }
 
     // *************************** Input Methods *********************************
@@ -795,9 +815,10 @@ public class TextIO {
                     s.equals("0")) {
                 ans = false;
                 break;
-            } else
+            } else {
                 errorMessage("Illegal boolean input value.",
                         "one of:  true, false, t, f, yes, no, y, n, 0, or 1");
+            }
         }
         inputErrorCount = 0;
         return ans;
@@ -832,32 +853,38 @@ public class TextIO {
 
     private static String readRealString() {   // read chars from input following syntax of real numbers
         skipWhitespace();
-        if (lookChar() == EOF)
+        if (lookChar() == EOF) {
             return null;
-        if (floatMatcher == null)
+        }
+        if (floatMatcher == null) {
             floatMatcher = floatRegex.matcher(buffer);
+        }
         floatMatcher.region(pos, buffer.length());
         if (floatMatcher.lookingAt()) {
             String str = floatMatcher.group();
             pos = floatMatcher.end();
             return str;
-        } else
+        } else {
             return null;
+        }
     }
 
     private static String readIntegerString() {  // read chars from input following syntax of integers
         skipWhitespace();
-        if (lookChar() == EOF)
+        if (lookChar() == EOF) {
             return null;
-        if (integerMatcher == null)
+        }
+        if (integerMatcher == null) {
             integerMatcher = integerRegex.matcher(buffer);
+        }
         integerMatcher.region(pos, buffer.length());
         if (integerMatcher.lookingAt()) {
             String str = integerMatcher.group();
             pos = integerMatcher.end();
             return str;
-        } else
+        } else {
             return null;
+        }
     }
 
     private static long readInteger(long min, long max) {  // read long integer, limited to specified range
@@ -896,45 +923,52 @@ public class TextIO {
             out.print("  *** Error in input: " + message + "\n");
             out.print("  *** Expecting: " + expecting + "\n");
             out.print("  *** Discarding Input: ");
-            if (lookChar() == '\n')
+            if (lookChar() == '\n') {
                 out.print("(end-of-line)\n\n");
-            else {
+            } else {
                 while (lookChar() != '\n')    // Discard and echo remaining chars on the current line of input.
+                {
                     out.print(readChar());
+                }
                 out.print("\n\n");
             }
             out.print("Please re-enter: ");
             out.flush();
             readChar();  // discard the end-of-line character
             inputErrorCount++;
-            if (inputErrorCount >= 10)
+            if (inputErrorCount >= 10) {
                 throw new IllegalArgumentException("Too many input consecutive input errors on standard input.");
-        } else if (inputFileName != null)
+            }
+        } else if (inputFileName != null) {
             throw new IllegalArgumentException("Error while reading from file \"" + inputFileName + "\":\n"
                     + message + "\nExpecting " + expecting);
-        else
+        } else {
             throw new IllegalArgumentException("Error while reading from inptu stream:\n"
                     + message + "\nExpecting " + expecting);
+        }
     }
 
     private static char lookChar() {  // return next character from input
-        if (buffer == null || pos > buffer.length())
+        if (buffer == null || pos > buffer.length()) {
             fillBuffer();
-        if (buffer == null)
+        }
+        if (buffer == null) {
             return EOF;
-        else if (pos == buffer.length())
+        } else if (pos == buffer.length()) {
             return '\n';
-        else
+        } else {
             return buffer.charAt(pos);
+        }
     }
 
     private static char readChar() {  // return and discard next character from input
         char ch = lookChar();
         if (buffer == null) {
-            if (readingStandardInput)
+            if (readingStandardInput) {
                 throw new IllegalArgumentException("Attempt to read past end-of-file in standard input???");
-            else
+            } else {
                 throw new IllegalArgumentException("Attempt to read past end-of-file in file \"" + inputFileName + "\".");
+            }
         }
         pos++;
         return ch;
@@ -944,12 +978,13 @@ public class TextIO {
         try {
             buffer = in.readLine();
         } catch (Exception e) {
-            if (readingStandardInput)
+            if (readingStandardInput) {
                 throw new IllegalArgumentException("Error while reading standard input???");
-            else if (inputFileName != null)
+            } else if (inputFileName != null) {
                 throw new IllegalArgumentException("Error while attempting to read from file \"" + inputFileName + "\".");
-            else
+            } else {
                 throw new IllegalArgumentException("Errow while attempting to read form an input stream.");
+            }
         }
         pos = 0;
         floatMatcher = null;

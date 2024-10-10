@@ -33,16 +33,19 @@ public class VerticalSearcher extends GenerativeSearcher {
     private int getMinimumPotentialDistance(PotentialPitch pp) {
         int mpd = pp.getDistanceSearched();
         ArrayList<RecursiveSearchPoint> sources = pp.getSources();
-        for (PitchClass pc : mySourceSet)
-            if (!sources.contains(pc))
+        for (PitchClass pc : mySourceSet) {
+            if (!sources.contains(pc)) {
                 mpd += ((RecursiveSearchPoint) pc).getDistanceSearched();
+            }
+        }
         return mpd;
     }
 
     private int getMinMPD() {
         int min = Integer.MAX_VALUE;
-        for (PotentialPitch pp : myGrid)
+        for (PotentialPitch pp : myGrid) {
             min = Math.min(min, getMinimumPotentialDistance(pp));
+        }
         return min;
     }
 

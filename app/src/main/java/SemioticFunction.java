@@ -28,18 +28,20 @@ public abstract class SemioticFunction implements Comparable<SemioticFunction>, 
     public SemioticFunction(int[] np, int emp) {
         //super(np);
         signified = np;
-        if (emp < 0)
+        if (emp < 0) {
             signifier = getSignifier(signified);
-        else
+        } else {
             signifier = emp;
+        }
         limited = (signified != null);
         //myClass = this;
     }
 
     public SemioticFunction(int[] transformation, SemioticFunction pc) {
         signified = new int[2];
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++) {
             signified[i] = pc.signified[i] + transformation[i];
+        }
         signifier = getSignifier(signified);
         limited = true;
         //myClass = this;
@@ -47,10 +49,12 @@ public abstract class SemioticFunction implements Comparable<SemioticFunction>, 
 
     public int getSignifier(int[] np) {
         int epc = np[0] * 7 + np[1] * 4;
-        while (epc < 0)
+        while (epc < 0) {
             epc += 12;
-        while (epc > 11)
+        }
+        while (epc > 11) {
             epc -= 12;
+        }
         return epc;
     }
 
@@ -75,26 +79,30 @@ public abstract class SemioticFunction implements Comparable<SemioticFunction>, 
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
-        if (limited && ((SemioticFunction) o).limited)
+        if (limited && ((SemioticFunction) o).limited) {
             return Arrays.equals(signified, ((SemioticFunction) o).signified);
+        }
         return signifier == ((SemioticFunction) o).signifier;
     }
 
     @Override
     public String toString() {
-        if (!limited)
+        if (!limited) {
             return signifier + "";
+        }
         String a = "[";
-        for (int i : signified)
+        for (int i : signified) {
             a += i + " ";
+        }
         a = a.substring(0, a.length() - 1) + "]";
         return "[" + signified[0] + " " + signified[1] + "]";
     }
 
     public int[] getTransformation(SemioticFunction pc) {
         int[] trans = new int[2];
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++) {
             trans[i] = pc.signified[i] - signified[i];
+        }
         return trans;
     }
 
@@ -102,8 +110,9 @@ public abstract class SemioticFunction implements Comparable<SemioticFunction>, 
         RecursiveSearchPoint rsp = new RecursiveSearchPoint();
         HorizontalSet destination = new HorizontalSet(signifier);
         ArrayList<RecursiveSearchPoint> solutions = null;
-        do
+        do {
             solutions = rsp.generateNeighbors(destination, false);
+        }
         while (solutions.size() == 0);
         signified = solutions.get(0).signified;
     }

@@ -44,8 +44,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
 
     public GUI(Receiver r) {
         addKeyBindings();
-        if (r != null)
+        if (r != null) {
             myRec = (LiveReceiver) r;
+        }
 
         display = new JFrame("Archinovica");
         display.setBounds(0, 0, 600, 600);
@@ -100,8 +101,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
 
         MidiDevice.Info[] info = MidiSystem.getMidiDeviceInfo();
         String[] items1 = new String[info.length + 1];
-        for (int i = 0; i < info.length; i++)
+        for (int i = 0; i < info.length; i++) {
             items1[i] = "Set Receiver to: " + i + " - " + info[i].toString();
+        }
         items1[info.length] = "USE BUILT IN MIDI";
         addMenu("Choose Receiver", items1, bar);
 
@@ -227,8 +229,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (states.size() > myState)
+                if (states.size() > myState) {
                     archinovica.lastSet = states.get(myState);
+                }
             }
         }
 
@@ -261,16 +264,18 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                             break;
                         }
                     }
-                    if (newSet)
+                    if (newSet) {
                         continue;
+                    }
                 } catch (Exception e) {
                     break;
                 }
 
                 int fifths = Integer.parseInt(line);
                 try {
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 2; i++) {
                         line = TextIO.getln();
+                    }
                 } catch (Exception e) {
                     break;
                 }
@@ -281,32 +286,39 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             }
         }
         states.add(vs);
-        for (VerticalSet vs1 : states)
+        for (VerticalSet vs1 : states) {
             System.out.println(vs1);
+        }
     }
 
     public void displayPitches(PitchClass[] pcs) {
         ArrayList<SemioticFunction> signs = new ArrayList<SemioticFunction>();
-        for (PitchClass pc : pcs)
-            if (pc != null)
+        for (PitchClass pc : pcs) {
+            if (pc != null) {
                 signs.add(pc);
+            }
+        }
 
         displaySigns(signs);
     }
 
     public void displayStaticPitches(PitchClass[] pcs) {
         ArrayList<SemioticFunction> signs = new ArrayList<SemioticFunction>();
-        for (PitchClass pc : pcs)
-            if (pc != null)
+        for (PitchClass pc : pcs) {
+            if (pc != null) {
                 signs.add(pc);
+            }
+        }
 
         displayStaticSigns(signs);
     }
 
     public void displayStaticSign(SemioticFunction s) {
-        for (ArrayList<Letter> ls : letters)
-            for (Letter l : ls)
+        for (ArrayList<Letter> ls : letters) {
+            for (Letter l : ls) {
                 l.fade();
+            }
+        }
         ArrayList<Letter> ls = new ArrayList<Letter>();
         ls.add(new StaticLetter(s));
         letters.add(ls);
@@ -315,12 +327,15 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
     }
 
     public void displayStaticSigns(ArrayList<? extends SemioticFunction> s) {
-        for (ArrayList<Letter> ls : letters)
-            for (Letter l : ls)
+        for (ArrayList<Letter> ls : letters) {
+            for (Letter l : ls) {
                 l.fade();
+            }
+        }
         ArrayList<Letter> ls = new ArrayList<Letter>();
-        for (SemioticFunction sf : s)
+        for (SemioticFunction sf : s) {
             ls.add(new StaticLetter(sf));
+        }
         letters.add(ls);
         repaint();
         revalidate();
@@ -345,11 +360,12 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
         }
         for (int i = 0; i < letters.size(); i++) {
             ArrayList<Letter> ls = letters.get(i);
-            for (Letter aLetter : ls)
+            for (Letter aLetter : ls) {
                 if (aLetter.fade()) {
                     letters.remove(ls);
                     break;
                 }
+            }
         }
         letters.add(l);
         animating = true;
@@ -358,13 +374,15 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
     }
 
     public void animateGeneration(SemioticFunction sign, int[] a) {
-        if (!LiveReceiver.compositionMode)
+        if (!LiveReceiver.compositionMode) {
             miscellaneousLetters.add(new MiscellaneousLetter(sign, new double[]{(double) a[0], (double) a[1]}, (int) (10 * Math.random())));
+        }
     }
 
     public void eraseLastChord() {
-        if (letters.size() > 0)
+        if (letters.size() > 0) {
             letters.remove(letters.size() - 1);
+        }
         repaint();
         revalidate();
     }
@@ -380,8 +398,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
     public int[] getCoordinateTotals(ArrayList<SemioticFunction> s) {
         int[] totals = {0, 0};
         for (SemioticFunction sign : s) {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++) {
                 totals[i] += sign.signified[i];
+            }
         }
         return totals;
     }
@@ -399,8 +418,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
         if (chordProgression != null) {
             gravity = ARTIFICIAL_GRAVITY;
             bounceFriction = ARTIFICIAL_BF;
-            if (showProgression)
+            if (showProgression) {
                 chordProgression.draw(g);
+            }
         } else {
             gravity = REAL_GRAVITY;
             bounceFriction = REAL_BF;
@@ -418,8 +438,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             for (Letter aLetter : ls) {
                 boolean animatedLetter = aLetter.draw(g);
                 animatedSet = animatedLetter || animatedSet;
-                for (int n = 0; n < 2; n++)
+                for (int n = 0; n < 2; n++) {
                     totals[n] += aLetter.mySign.signified[n];
+                }
                 numberOfSigns++;
             }
             /*if(!animatedSet){
@@ -485,11 +506,13 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
         }
          */
 
-        if (chordProgression != null)
+        if (chordProgression != null) {
             chordProgression.highlightIndex(g);
+        }
 
-        if (!LiveReceiver.compositionMode)
+        if (!LiveReceiver.compositionMode) {
             return;
+        }
 
         if (numberOfSigns == 0) {
             g.setColor(black);
@@ -538,8 +561,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
 
         }
         if (aCom != null && aCom.equals("Export MIDI")) {
-            if (sequence == null)
+            if (sequence == null) {
                 return;
+            }
             JFileChooser jchooser = new JFileChooser();
             jchooser.showSaveDialog(this);
             File midiFile = jchooser.getSelectedFile();
@@ -570,8 +594,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             chordProgression.findNeededUpdates();
         }
         if (aCom != null && aCom.equals("Print Legacy Pedal Updates")) {
-            for (LegacyChordProgression lcp : legacyProgressions)
+            for (LegacyChordProgression lcp : legacyProgressions) {
                 System.out.println(lcp);
+            }
 
         }
         if (aCom != null && aCom.startsWith("Set Receiver to: ")) {
@@ -597,22 +622,26 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             updateProjection();
         }
         if (aCom != null && aCom.startsWith("Set Start")) {
-            if (chordProgression != null)
+            if (chordProgression != null) {
                 chordProgression.setStart();
+            }
             updateProjection();
         }
         if (aCom != null && aCom.startsWith("Set End")) {
-            if (chordProgression != null)
+            if (chordProgression != null) {
                 chordProgression.setEnd();
+            }
             updateProjection();
         }
         repaint();
         display.revalidate();
-        if (numberOfSigns == 0)
+        if (numberOfSigns == 0) {
             return;
+        }
 
-        if (!autoCenter)
+        if (!autoCenter) {
             return;
+        }
 
         int a = 0;
         int b = 0;
@@ -759,8 +788,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
     public File openMIDI() {
         JFileChooser b = new JFileChooser();
         File midiFile = null;
-        if (b.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+        if (b.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             midiFile = b.getSelectedFile();
+        }
         return midiFile;
     }
 
@@ -805,8 +835,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
 
         public boolean draw(Graphics g) {
             drawCount++;
-            if (drawCount < timeStamp)
+            if (drawCount < timeStamp) {
                 return true;
+            }
             updateValues();
             Color color = g.getColor();
             g.setFont(myFont);
@@ -827,14 +858,16 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                 red /= 2;
                 red -= 1;
                 myFont = new Font("Times New Roman", Font.BOLD, fontSize);
-            } else if (animatingThis)
+            } else if (animatingThis) {
                 myFont = myFont = new Font("Times New Roman", Font.PLAIN, fontSize);
-            else
+            } else {
                 myFont = new Font("Times New Roman", Font.BOLD, fontSize);
+            }
 
             if (!bounced) {
-                if (drawCount - timeStamp <= 100)
+                if (drawCount - timeStamp <= 100) {
                     alpha = 255 * (drawCount - timeStamp) / 100;
+                }
                 myColor = new Color(red / 2, myColor.getGreen(), 127 - red / 2, alpha);
 
             } else {
@@ -853,13 +886,15 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                 velocity[0] += myVelocity[0] * bounceFriction;
                 myCoordinates[0] = getHeight() / 2 - ((getHeight() / 30) * mySign.signified[0] + offsets[0]) + myVelocity[0];
                 //System.out.println("BOUNCE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                if (!bounced)
+                if (!bounced) {
                     alpha = 255;
+                }
                 bounced = true;
-                if (Math.random() < 0.5)
+                if (Math.random() < 0.5) {
                     myColor = new Color(255, 0, 0, alpha);
-                else
+                } else {
                     myColor = new Color(0, 0, 0, alpha);
+                }
                 if (Math.abs(myVelocity[0]) < 0.5) {
                     endAnimation();
                 }
@@ -948,15 +983,17 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                 if (Math.sqrt(a) <= Math.sqrt(b)) {
                     //System.out.println("END");
                     endAnimation();
-                } else
+                } else {
                     alpha = (int) (32 - 32 * Math.sqrt(a));
+                }
 
             } else {
                 myVelocity[0] -= gravity;
             }
 
-            for (int n = 0; n < 2; n++)
+            for (int n = 0; n < 2; n++) {
                 myCoordinates[n] += myVelocity[n];
+            }
             dispXY = getDisplayCoordinates(new double[]{myCoordinates[0], myCoordinates[1]});
         }
 
@@ -985,7 +1022,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             Track[] tracks = seq.getTracks();
             for (int n = tracks.length - 1; n < tracks.length; n++) {
                 Track t = tracks[n];
-                for (int i = 0; i < t.size(); i++)
+                for (int i = 0; i < t.size(); i++) {
                     if (t.get(i).getMessage() instanceof ShortMessage) {
                         ShortMessage sm = (ShortMessage) t.get(i).getMessage();
                         if (sm.getCommand() == ShortMessage.NOTE_ON
@@ -994,8 +1031,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                                 && (sm.getData1() == LiveReceiver.RIGHTPED
                                 || sm.getData1() == LiveReceiver.LEFTPED))) {
                             addEvent(t.get(i));
-                            if (sm.getCommand() == ShortMessage.NOTE_ON)
+                            if (sm.getCommand() == ShortMessage.NOTE_ON) {
                                 System.out.println("NOTE ON: " + sm.getData1());
+                            }
                         } else {
                             /*System.out.println("C: " + sm.getCommand()
                             + " | D1: " + sm.getData1() + " | D2: " + sm.getData2());
@@ -1003,10 +1041,12 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                         }
                     } else if (t.get(i).getMessage() instanceof SysexMessage) {
                         SysexMessage sysex = (SysexMessage) t.get(i).getMessage();
-                        for (byte b : sysex.getData())
+                        for (byte b : sysex.getData()) {
                             System.out.print(b + ", ");
+                        }
                         System.out.println();
                     }
+                }
             }
             System.out.println("NUMBER OF ORIGNINAL TRACKS: " + tracks.length);
             /*
@@ -1034,24 +1074,29 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             boolean r = false;
             boolean l = false;
             int terminus = size();
-            if (!projectFull)
+            if (!projectFull) {
                 terminus = endDisplay;
+            }
             for (int i = startDisplay; i < terminus; i++) {
                 Chord c = get(i);
                 if (c.lChange != 0 || c.rChange != 0) {
-                    if (c.lChange == 1)
+                    if (c.lChange == 1) {
                         l = true;
-                    else if (c.lChange == -1)
+                    } else if (c.lChange == -1) {
                         l = false;
-                    if (c.rChange == 1)
+                    }
+                    if (c.rChange == 1) {
                         r = true;
-                    else if (c.rChange == -1)
+                    } else if (c.rChange == -1) {
                         r = false;
+                    }
                     int ped = 0;
-                    if (r)
+                    if (r) {
                         ped += 2;
-                    if (l)
+                    }
+                    if (l) {
                         ped += 1;
+                    }
                     archinovica.setPedaling(ped);
                 }
                 if (!c.noPitches()) {
@@ -1077,19 +1122,23 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             for (int i = startDisplay; i < endDisplay; i++) {
                 Chord c = get(i);
                 if (c.lChange != 0 || c.rChange != 0) {
-                    if (c.lChange == 1)
+                    if (c.lChange == 1) {
                         l = true;
-                    else if (c.lChange == -1)
+                    } else if (c.lChange == -1) {
                         l = false;
-                    if (c.rChange == 1)
+                    }
+                    if (c.rChange == 1) {
                         r = true;
-                    else if (c.rChange == -1)
+                    } else if (c.rChange == -1) {
                         r = false;
+                    }
                     int ped = 0;
-                    if (r)
+                    if (r) {
                         ped += 2;
-                    if (l)
+                    }
+                    if (l) {
                         ped += 1;
+                    }
                     archinovica.setPedaling(ped);
                 }
                 if (!c.noPitches()) {
@@ -1097,8 +1146,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                     archinovica.updateIntonation(c.set);
                     c.setAssociatedSigns();
                     c.setAssociatedPitchSet();
-                    if (reference != null)
+                    if (reference != null) {
                         c.setRelativeCoordinates(reference);
+                    }
                 }
             }
 
@@ -1116,19 +1166,23 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             for (int i = startDisplay; i < endDisplay; i++) {
                 Chord c = get(i);
                 if (c.lChange != 0 || c.rChange != 0) {
-                    if (c.lChange == 1)
+                    if (c.lChange == 1) {
                         l = true;
-                    else if (c.lChange == -1)
+                    } else if (c.lChange == -1) {
                         l = false;
-                    if (c.rChange == 1)
+                    }
+                    if (c.rChange == 1) {
                         r = true;
-                    else if (c.rChange == -1)
+                    } else if (c.rChange == -1) {
                         r = false;
+                    }
                     int ped = 0;
-                    if (r)
+                    if (r) {
                         ped += 2;
-                    if (l)
+                    }
+                    if (l) {
                         ped += 1;
+                    }
                     archinovica.setPedaling(ped);
                 }
                 if (!c.noPitches()) {
@@ -1141,11 +1195,12 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                     c.setAssociatedPitchSet();
                     if (!firstChord) {
                         c.setRelativeCoordinates(reference);
-                        for (int n = 0; n < 2; n++)
+                        for (int n = 0; n < 2; n++) {
                             if (oldRelativeCoordinates[n] != c.relativeCoordinates[n]) {
                                 c.needsUpdate();
                                 legacyProgressions.add(new LegacyChordProgression(reference, c.set, c.relativeCoordinates, chordIndex));
                             }
+                        }
                     }
                     firstChord = false;
                 }
@@ -1154,17 +1209,20 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
         }
 
         public boolean addPedal(boolean isLeft, boolean lift) {
-            if (index == 0)
+            if (index == 0) {
                 return false;
+            }
             try {
                 int num = 0;
-                if (isLeft)
+                if (isLeft) {
                     num = LiveReceiver.LEFTPED;
-                else
+                } else {
                     num = LiveReceiver.RIGHTPED;
+                }
                 int d2 = 127;
-                if (lift)
+                if (lift) {
                     d2 = 0;
+                }
                 ShortMessage aSM = new ShortMessage(ShortMessage.CONTROL_CHANGE, 0, num, d2);
                 MidiEvent me = new MidiEvent(aSM, get(index).timeStamp - 1L);
                 addEvent(me);
@@ -1176,11 +1234,13 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
         }
 
         public boolean delete() {
-            if (size() == 1 || !get(index).noPitches())
+            if (size() == 1 || !get(index).noPitches()) {
                 return false;
+            }
             remove(index);
-            if (index >= size())
+            if (index >= size()) {
                 index = size() - 1;
+            }
             return true;
         }
 
@@ -1190,15 +1250,17 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
 
         public void next() {
             index++;
-            if (index == size())
+            if (index == size()) {
                 index = 0;
+            }
 
         }
 
         public void previous() {
             index--;
-            if (index == -1)
+            if (index == -1) {
                 index = size() - 1;
+            }
         }
 
         public void addEvent(MidiEvent me) {
@@ -1221,8 +1283,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
 
             for (MidiEvent me : pitchBendRecord.get(index)) {
                 if (me != null) {
-                    if (me.getTick() == timeStamp)
+                    if (me.getTick() == timeStamp) {
                         pitchBendSet = pitchBendRecord.get(index);
+                    }
                     break;
                 }
             }
@@ -1238,8 +1301,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             }
              */
             int pitchToBend = pbM.getChannel();
-            if (pitchToBend == 13)
+            if (pitchToBend == 13) {
                 pitchToBend = 9;
+            }
             MidiEvent event = new MidiEvent(pbM, timeStamp);
             pitchBendSet[pitchToBend] = event;
 
@@ -1262,8 +1326,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                         break;
                     }
                 }
-                if (currentTime > timeStamp)
+                if (currentTime > timeStamp) {
                     return currentIndex;
+                }
                 currentIndex = i;
             }
             return currentIndex;
@@ -1289,19 +1354,23 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                 boolean l = false;
                 boolean r = false;
                 if (c.lChange != 0 || c.rChange != 0) {
-                    if (c.lChange == 1)
+                    if (c.lChange == 1) {
                         l = true;
-                    else if (c.lChange == -1)
+                    } else if (c.lChange == -1) {
                         l = false;
-                    if (c.rChange == 1)
+                    }
+                    if (c.rChange == 1) {
                         r = true;
-                    else if (c.rChange == -1)
+                    } else if (c.rChange == -1) {
                         r = false;
+                    }
                     int ped = 0;
-                    if (r)
+                    if (r) {
                         ped += 2;
-                    if (l)
+                    }
+                    if (l) {
                         ped += 1;
+                    }
                     archinovica.setPedaling(ped);
                 }
                 /*myRec.commands.addAll(c);
@@ -1312,8 +1381,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                     setRecords.add(lastSetRecord);
                     recStateStamps.remove(0);
                 }
-                for (ShortMessage message : c)
+                for (ShortMessage message : c) {
                     myRec.send(message, c.timeStamp);
+                }
                 myRec.playNotes(c.timeStamp);
             }
 
@@ -1321,8 +1391,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             for (int i = 0; i < tracks.length - 1; i++) {
                 for (int n = 0; n < tracks[i].size(); n++) {
                     MidiEvent event = tracks[i].get(n);
-                    if (!(event.getMessage() instanceof ShortMessage))
+                    if (!(event.getMessage() instanceof ShortMessage)) {
                         continue;
+                    }
                     ShortMessage sm = (ShortMessage) event.getMessage();
 
                     int trackNum = i + 16;
@@ -1355,22 +1426,25 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             outTrks = myRec.outFile.getTracks();
             //handel metadata
             for (int n = 0; n < tracks[0].size(); n++) {
-                if (!(tracks[0].get(n).getMessage() instanceof ShortMessage))
+                if (!(tracks[0].get(n).getMessage() instanceof ShortMessage)) {
                     outTrks[0].add(tracks[0].get(n));
+                }
             }
             for (int i = 0; i < tracks.length; i++) {
                 for (int n = 0; n < tracks[i].size(); n++) {
                     MidiEvent event = tracks[i].get(n);
                     if (!(event.getMessage() instanceof ShortMessage
-                            && ((ShortMessage) event.getMessage()).getCommand() == ShortMessage.PROGRAM_CHANGE))
+                            && ((ShortMessage) event.getMessage()).getCommand() == ShortMessage.PROGRAM_CHANGE)) {
                         continue;
+                    }
                     if (i < tracks.length - 1) {
                         outTrks[16 + i].add(event);
                         outTrks[16 + i + tracks.length - 1].add(event);
-                    } else
+                    } else {
                         for (int q = 0; q < 16; q++) {
                             outTrks[q].add(event);
                         }
+                    }
                 }
             }
 
@@ -1392,8 +1466,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                         case 0x00:
                             try {
                                 MidiMessage susMessage = new ShortMessage(ShortMessage.CONTROL_CHANGE, 0, 64, 127);
-                                if (data[1] == 0x01)
+                                if (data[1] == 0x01) {
                                     susMessage = new ShortMessage(ShortMessage.CONTROL_CHANGE, 0, 64, 0);
+                                }
 
                                 MidiEvent susEvent = new MidiEvent(susMessage, event.getTick());
                                 for (int q = 0; q < 16; q++) {
@@ -1423,24 +1498,28 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             boolean noteIsOn = false;
             for (int i = 0; i < track.size(); i++) {
                 ShortMessage sm = null;
-                if (track.get(i).getMessage() instanceof ShortMessage)
+                if (track.get(i).getMessage() instanceof ShortMessage) {
                     sm = (ShortMessage) track.get(i).getMessage();
+                }
                 long time = track.get(i).getTick();
 
                 if (time == timeStamp && sm != null &&
-                        sm.getCommand() == ShortMessage.NOTE_ON && sm.getData2() != 0)
+                        sm.getCommand() == ShortMessage.NOTE_ON && sm.getData2() != 0) {
                     return true;
+                }
 
-                if (time > timeStamp)
+                if (time > timeStamp) {
                     return false;
+                }
             }
             return false;
         }
 
         public void highlightIndex(Graphics g) {
             int terminus = size();
-            if (!displayFullProjection)
+            if (!displayFullProjection) {
                 terminus = endDisplay;
+            }
             for (int i = 0; i < terminus; i++) {
                 Chord c = get(i);
                 c.unhighlightSigns(g);
@@ -1460,23 +1539,26 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                 Chord c = get(i);
                 Color color = Color.BLACK;
                 int n = i - 1;
-                while (n > 0 && get(n).noPitches())
+                while (n > 0 && get(n).noPitches()) {
                     n--;
-                if (n > -1 && !c.hasCommonTones(get(n)))
+                }
+                if (n > -1 && !c.hasCommonTones(get(n))) {
                     color = Color.RED;
-                if (i == index)
+                }
+                if (i == index) {
                     color = Color.BLUE;
+                }
                 c.draw(g, x, y, color);
-                if (x < getWidth() - 50)
+                if (x < getWidth() - 50) {
                     x += 50;
-                else {
+                } else {
                     x = 30;
                     y += 150;
                 }
             }
-            if (x < getWidth() - 50)
+            if (x < getWidth() - 50) {
                 x += 50;
-            else {
+            } else {
                 x = 30;
                 y += 150;
             }
@@ -1515,8 +1597,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             if (sm.getCommand() == ShortMessage.NOTE_ON
                     || sm.getCommand() == ShortMessage.NOTE_OFF) {
                 int chnl = sm.getData1() % 12;
-                if (chnl == 9)
+                if (chnl == 9) {
                     chnl = 13;
+                }
                 try {
                     sm.setMessage(sm.getCommand(), chnl, sm.getData1(), sm.getData2());
                 } catch (Exception ex) {
@@ -1526,8 +1609,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
 
             add(sm);
             String n = getName(sm);
-            if (!name.contains(n))
+            if (!name.contains(n)) {
                 name += n;
+            }
         }
 
         public String getName(ShortMessage sm) {
@@ -1574,8 +1658,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             }
 
             for (ShortMessage sm : this) {
-                if (sm.getCommand() != ShortMessage.NOTE_ON)
+                if (sm.getCommand() != ShortMessage.NOTE_ON) {
                     continue;
+                }
                 int midiNumber = sm.getData1();
                 double pb = pbs[midiNumber % 12];
                 s += NOTE_NAMES[midiNumber % 12] + ": " + 440 * Math.pow(2, (midiNumber - 69) / 12.0) * Math.pow(2, 2 * (pb - 64) / (12.0 * 64.0))
@@ -1597,20 +1682,22 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
         }
 
         public void highlightSigns(Graphics g) {
-            if (signs != null)
+            if (signs != null) {
                 for (Letter l : signs) {
                     l.highlight();
                     l.draw(g);
                 }
+            }
         }
 
         public void unhighlightSigns(Graphics g) {
-            if (signs != null)
+            if (signs != null) {
                 for (Letter l : signs) {
                     l.unhighlight();
                     //if(letters.contains(signs))
                     l.draw(g);
                 }
+            }
         }
 
         public void needsUpdate() {
@@ -1625,10 +1712,12 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
 
         @Override
         public int compareTo(MidiEvent me) {
-            if (timeStamp > me.getTick())
+            if (timeStamp > me.getTick()) {
                 return 1;
-            if (timeStamp < me.getTick())
+            }
+            if (timeStamp < me.getTick()) {
                 return -1;
+            }
             return 0;
         }
 
@@ -1636,37 +1725,45 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
 
             Color color = g.getColor();
             g.setColor(c);
-            if (isGreen)
+            if (isGreen) {
                 g.setColor(Color.GREEN);
+            }
             String displayName = name;
-            for (int i = 0; i < 12; i++)
-                if (set[i])
+            for (int i = 0; i < 12; i++) {
+                if (set[i]) {
                     displayName += "\n" + NOTE_NAMES[i];
+                }
+            }
             if (name.length() > 0) {
                 g.drawString(name, x, y);
                 y += 15;
             }
-            for (int i = 11; i >= 0; i--)
+            for (int i = 11; i >= 0; i--) {
                 if (set[i]) {
                     g.drawString(NOTE_NAMES[i], x, y);
                     y += 15;
                 }
+            }
             //System.out.println("DISPLAY " + dispXY[0] +"," + dispXY[1]);
             g.setFont(font);
             g.setColor(color);
         }
 
         public boolean hasCommonTones(Chord c) {
-            for (int i = 0; i < 12; i++)
-                if (set[i] && c.set[i])
+            for (int i = 0; i < 12; i++) {
+                if (set[i] && c.set[i]) {
                     return true;
+                }
+            }
             return false;
         }
 
         public boolean noPitches() {
-            for (int i = 0; i < 12; i++)
-                if (set[i])
+            for (int i = 0; i < 12; i++) {
+                if (set[i]) {
                     return false;
+                }
+            }
             return true;
         }
     }
@@ -1693,13 +1790,15 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
                 anArch.updateIntonation(targetPitches);
                 int[] actualRelativeCoordinates = anArch.lastSet.getCenter().getTransformation(mySource.getCenter());
                 boolean pedalingIsCorrect = true;
-                for (int n = 0; n < 2; n++)
+                for (int n = 0; n < 2; n++) {
                     if (actualRelativeCoordinates[n] != myDesiredRelativeCoordinates[n]) {
                         pedalingIsCorrect = false;
                         break;
                     }
-                if (pedalingIsCorrect)
+                }
+                if (pedalingIsCorrect) {
                     return i;
+                }
             }
             return -1;
         }
@@ -1717,8 +1816,9 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             myString = myString.substring(0, myString.length() - 2);
             myString += "\n       DESTINATION: ";
             for (int i = 0; i < 12; i++) {
-                if (targetPitches[i])
+                if (targetPitches[i]) {
                     myString += NOTE_NAMES[i] + ", ";
+                }
             }
             myString = myString.substring(0, myString.length() - 2);
             myString += "\n       RECOMMENDED PEDAL: " + findCorrectPedaling();

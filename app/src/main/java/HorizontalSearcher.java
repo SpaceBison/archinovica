@@ -55,8 +55,9 @@ public class HorizontalSearcher extends GenerativeSearcher {
                     Interval transposition = untransposedSet.getArray()[projectionIndex].getInterval(rsp);
                     transposedSet.transpose(transposition);
                     transposedSet.registerPitch(rsp);
-                    if (setting == 0)
+                    if (setting == 0) {
                         return transposedSet;
+                    }
                     transposedSet.setCentralityIndex(potentialSets.size());
                     if (transposedSet.fullyRegistered()
                             && !solutions.contains(transposedSet) && !foundThisIteration.contains(transposedSet)) {
@@ -79,8 +80,9 @@ public class HorizontalSearcher extends GenerativeSearcher {
             //solutions.addAll(foundThisIteration);
         }
         //System.out.println("NUMBER OF HORIZONTAL SOLUTIONS: " + solutions.size());
-        while (solutions.size() > 4)
+        while (solutions.size() > 4) {
             solutions.remove(solutions.size() - 1);
+        }
         /*System.out.println("SOLUTIONS ARRAY: ");
         for(PitchSet s: solutions)
         System.out.println("        " + s);
@@ -124,8 +126,9 @@ public class HorizontalSearcher extends GenerativeSearcher {
 
         public double getPbTotal(HorizontalSet hs) {
             int total = 0;
-            for (PitchClass pc : hs)
+            for (PitchClass pc : hs) {
                 total += pc.getMidiPb();
+            }
             return total;
         }
     }
@@ -145,8 +148,9 @@ public class HorizontalSearcher extends GenerativeSearcher {
             if (Math.random() > 0.5) {
                 pitchBinary[i] = new PitchClass(i);
                 hasAtleastOnePitch = true;
-            } else
+            } else {
                 hasAtLeastOneNull = true;
+            }
         }
         if (!hasAtleastOnePitch) {
             int randomIndex = (int) (12 * Math.random());
@@ -168,8 +172,9 @@ public class HorizontalSearcher extends GenerativeSearcher {
             if (Math.random() > 0.25 && pitchBinary[i] == null) {
                 pitchBinary1[i] = new PitchClass(i);
                 hasAtleastOnePitch = true;
-            } else
+            } else {
                 hasAtLeastOneNull = true;
+            }
         }
         while (!hasAtleastOnePitch) {
             int randomIndex = (int) (12 * Math.random());
@@ -199,8 +204,9 @@ public class HorizontalSearcher extends GenerativeSearcher {
             if (Math.random() > 0.25 && pitchBinary[i] == null) {
                 pitchBinary1[i] = new PitchClass(i);
                 hasAtleastOnePitch = true;
-            } else
+            } else {
                 hasAtLeastOneNull = true;
+            }
         }
         while (!hasAtleastOnePitch) {
             int randomIndex = (int) (12 * Math.random());
@@ -232,8 +238,9 @@ public class HorizontalSearcher extends GenerativeSearcher {
             long runTime = System.currentTimeMillis() - milis;
             max = Math.max(max, runTime);
             System.out.println("Test Number: " + i + " run time: " + runTime + " max run time: " + max);
-            if (i % 1000 == 0)
+            if (i % 1000 == 0) {
                 max = 0;
+            }
         }
     }
 

@@ -14,8 +14,9 @@ public class PitchClass extends SemioticFunction {
     public PitchClass(int[] transformation, PitchClass pc) {
         super(transformation, pc);
         signified = new int[2];
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++) {
             signified[i] = pc.signified[i] + transformation[i];
+        }
         signifier = getSignifier(signified);
         limited = true;
         //myClass = this;
@@ -37,8 +38,9 @@ public class PitchClass extends SemioticFunction {
 
     @Override
     public PitchClass clone() {
-        if (limited)
+        if (limited) {
             return new PitchClass(new int[]{signified[0], signified[1]});
+        }
         return new PitchClass(signifier);
     }
 
@@ -46,28 +48,32 @@ public class PitchClass extends SemioticFunction {
         /*if(interval.limited)
         interval.delimit();  // is this necessary?
          */
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++) {
             signified[i] = signified[i] + interval.signified[i];
+        }
         signifier = getSignifier(signified);
         return this;
     }
 
     public int getDistance(PitchClass p) {
-        if (!limited || !p.limited)
+        if (!limited || !p.limited) {
             return -1;
+        }
         return getInterval(p).expressDistance();
     }
 
     public Interval getEmpericalInterval(PitchClass pc) {
         int empInt = (pc.signifier - signifier) % 12;
-        if (empInt < 0)
+        if (empInt < 0) {
             empInt += 12;
+        }
         return new Interval(empInt);
     }
 
     public Interval getInterval(PitchClass pc) {
-        if (limited && pc.limited)
+        if (limited && pc.limited) {
             return new Interval(getTransformation(pc));
+        }
         return getEmpericalInterval(pc);
     }
 

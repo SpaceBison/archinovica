@@ -43,8 +43,9 @@ public class IntervalSet extends SemioticGroup<Interval> {
     public IntervalSet(ArrayList<PitchClass> pitches, int index) {
         super();
         projectedReferencePitch = pitches.get(index).clone();
-        for (int n = index + 1; n < index + pitches.size(); n++)
+        for (int n = index + 1; n < index + pitches.size(); n++) {
             add(pitches.get(index).getInterval(pitches.get(n % pitches.size())));
+        }
         //System.out.print("pitches.size() " + pitches.size() + " number of interv " + size() + " starting index " + index);
     }
 
@@ -60,23 +61,28 @@ public class IntervalSet extends SemioticGroup<Interval> {
      */
 
     public boolean overlays(IntervalSet subsumingSet) {
-        if (size() == 0)
+        if (size() == 0) {
             return true;
+        }
         int n = 0;
         int start = -1;
-        for (int i = 0; i < subsumingSet.size(); i++)
+        for (int i = 0; i < subsumingSet.size(); i++) {
             if (get(0).equals(subsumingSet.get(i))) {
                 start = i;
                 n++;
                 break;
             }
-        if (start == -1)
+        }
+        if (start == -1) {
             return false;
+        }
         for (int i = start + 1; i < subsumingSet.size() + start + 1; i++) {
-            if (n == size())
+            if (n == size()) {
                 return true;
-            if (get(n).equals(subsumingSet.get(i % subsumingSet.size())))
+            }
+            if (get(n).equals(subsumingSet.get(i % subsumingSet.size()))) {
                 n++;
+            }
         }
         return false;
     }
@@ -85,8 +91,9 @@ public class IntervalSet extends SemioticGroup<Interval> {
         Archinovica.initializeSpace();
         PitchClass[] pitchBinary = new PitchClass[12];
         for (int i = 0; i < 12; i++) {
-            if (Math.random() > 0.5)
+            if (Math.random() > 0.5) {
                 pitchBinary[i] = new PitchClass(i);
+            }
         }
         System.out.println(Arrays.asList(pitchBinary));
         return pitchBinary;

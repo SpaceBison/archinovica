@@ -66,13 +66,15 @@ public class LiveReceiver implements Receiver {
         damperMessages = new ArrayList<ShortMessage>();
         gui = new GUI(this);
         pitchSet = new boolean[12];
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 12; i++) {
             pitchSet[i] = false;
+        }
         try {
-            if (useVirtualPiano)
+            if (useVirtualPiano) {
                 rec = new Piano();
-            else
+            } else {
                 rec = MidiSystem.getReceiver();
+            }
             synth = MidiSystem.getSynthesizer();
             Transmitter trans = MidiSystem.getTransmitter();
             trans.setReceiver(this);
@@ -169,8 +171,9 @@ public class LiveReceiver implements Receiver {
         System.out.print(" " + aByte);
         System.out.println(" ]");
          */
-        if (useBuiltIn)
+        if (useBuiltIn) {
             transposition = 0;
+        }
         if (message instanceof ShortMessage) {
             ShortMessage sm = (ShortMessage) message;
 
@@ -186,8 +189,9 @@ public class LiveReceiver implements Receiver {
                 case ShortMessage.NOTE_ON:
                     try {
                         int channel = sm.getData1() % 12; // why was there + 1?
-                        if (channel == 9)
+                        if (channel == 9) {
                             channel = 13;
+                        }
                         int type = ShortMessage.NOTE_ON;
                         if (sm.getData2() == 0) {
                             type = ShortMessage.NOTE_OFF;
@@ -233,8 +237,9 @@ public class LiveReceiver implements Receiver {
                             if (recordOutput) {
                                 commands.add(aSM);
                                 //playNotes(timeStamp);
-                            } else
+                            } else {
                                 damperMessages.add(aSM);
+                            }
 
                             //System.out.println("DAMPER: " + damperMessages);
                         }
@@ -287,21 +292,25 @@ public class LiveReceiver implements Receiver {
 
                     int pedalOn = -1;
                     int pedal = 0;
-                    if (sm.getData2() > 0)
+                    if (sm.getData2() > 0) {
                         pedalOn = 1;
+                    }
                     switch (sm.getData1()) {
                         case RIGHTPED:
 
                             pedaling = 0;
-                            if (leftPedal)
+                            if (leftPedal) {
                                 pedaling += 1;
-                            if (sm.getData2() > 0)
+                            }
+                            if (sm.getData2() > 0) {
                                 pedaling += 2;
+                            }
 
                             if (rightPedal != sm.getData2() > 0) {
                                 gui.archinovica.setPedaling(pedaling);
-                                if (compositionMode)
+                                if (compositionMode) {
                                     playUndeterminedSet();
+                                }
                             }
                             rightPedal = sm.getData2() > 0;
                             //System.out.println("RP: " + rightPedal);
@@ -325,29 +334,34 @@ public class LiveReceiver implements Receiver {
                      */
                             if (middlePedal && rightPedal) {
                                 sustainMode = !sustainMode;
-                                if (!sustainMode)
+                                if (!sustainMode) {
                                     dampen();
+                                }
                             }
                             break;
                         case LEFTPED:
 
                             pedaling = 0;
-                            if (sm.getData2() > 0)
+                            if (sm.getData2() > 0) {
                                 pedaling += 1;
-                            if (rightPedal)
+                            }
+                            if (rightPedal) {
                                 pedaling += 2;
+                            }
                             if (leftPedal != (sm.getData2() > 0)) {
                                 gui.archinovica.setPedaling(pedaling);
-                                if (compositionMode)
+                                if (compositionMode) {
                                     playUndeterminedSet();
+                                }
                             }
 
                             leftPedal = sm.getData2() > 0;
 
                             if (middlePedal && leftPedal) {
                                 gui.archinovica.undoProgression();
-                                if (compositionMode)
+                                if (compositionMode) {
                                     playCurrentSet();
+                                }
                             }
                             //System.out.println("LP: " + leftPedal);
                             //System.out.println("PEDALING: " + pedaling);
@@ -369,14 +383,16 @@ public class LiveReceiver implements Receiver {
 
                             if (middlePedal && leftPedal) {
                                 gui.archinovica.undoProgression();
-                                if (compositionMode)
+                                if (compositionMode) {
                                     playCurrentSet();
+                                }
                             }
 
                             if (middlePedal && rightPedal) {
                                 sustainMode = !sustainMode;
-                                if (!sustainMode)
+                                if (!sustainMode) {
                                     dampen();
+                                }
                             }
                             break;
                     }
@@ -389,8 +405,9 @@ public class LiveReceiver implements Receiver {
                 case ShortMessage.NOTE_OFF:
                     //System.out.println("note off: " + sm.getData1() + ", " + sm.getData2());
                     int channel = sm.getData1() % 12; // + 1;?
-                    if (channel == 9)
+                    if (channel == 9) {
                         channel = 13;
+                    }
                     try {
                         //System.out.println("channel = " + channel);
                         //access transposition value associated with this midi input key
@@ -402,8 +419,9 @@ public class LiveReceiver implements Receiver {
                         if (recordOutput) {
                             commands.add(aSM);
                             //playNotes(timeStamp);
-                        } else
+                        } else {
                             damperMessages.add(aSM);
+                        }
                     /*else
                     processMessage(aSM, delay);
                      */
@@ -415,7 +433,7 @@ public class LiveReceiver implements Receiver {
 
             }
             if (sm.getCommand() == 240)
-                // System.out.println("240 message: " + sm.getData1());
+            // System.out.println("240 message: " + sm.getData1());
             {
             }
             //System.out.println(sm.getCommand());
@@ -431,8 +449,9 @@ public class LiveReceiver implements Receiver {
             time = -1L;
             return;
         }
-        if (useBuiltIn)
+        if (useBuiltIn) {
             transposition = 0;
+        }
         //boolean containsOnEvent = false;
         boolean[] ps = new boolean[12];
         ArrayList<ShortMessage> noteOns = new ArrayList<ShortMessage>();
@@ -480,8 +499,9 @@ public class LiveReceiver implements Receiver {
             //System.out.println("NO NOTE ON");
         }
 
-        if (compositionMode)
+        if (compositionMode) {
             undeterminedSet.addAll(commands);
+        }
         while (commands.size() > 0) {
             ShortMessage sm = commands.get(0);
             commands.remove(0);
@@ -501,20 +521,26 @@ public class LiveReceiver implements Receiver {
 
     public void playUndeterminedSet() {
         //System.out.println("PLAY UNDETERMINED SET");
-        if (undeterminedSet.size() == 0)
+        if (undeterminedSet.size() == 0) {
             return;
+        }
         boolean[] ps = new boolean[12];
-        for (ShortMessage sm : undeterminedSet)
-            if (sm.getCommand() == ShortMessage.NOTE_ON)
+        for (ShortMessage sm : undeterminedSet) {
+            if (sm.getCommand() == ShortMessage.NOTE_ON) {
                 ps[sm.getData1() % 12] = true;
+            }
+        }
 
         for (int i = 0; i < 12; i++) // what's the point of this
+        {
             ps[i] = ps[i] || pitchSet[i];
+        }
 
         gui.archinovica.undoProgression();
         updateIntonation(ps, undeterminedSet);
-        for (ShortMessage sm : undeterminedSet)
+        for (ShortMessage sm : undeterminedSet) {
             processMessage(sm, 0L);
+        }
 
         time = -1L;//what's the point of this?
     }
@@ -523,14 +549,16 @@ public class LiveReceiver implements Receiver {
         PitchClass[] pcs = gui.archinovica.soundingPitchClasses;
         for (int i = 0; i < 12; i++) {
             PitchClass p = pcs[i];
-            if (p != null)
+            if (p != null) {
                 try {
                     int channel = i;
-                    if (channel == 9)
+                    if (channel == 9) {
                         channel = 13;
+                    }
                     synth.getChannels()[channel].setPitchBend((int) (p.getMidiPb() * 128));
                 } catch (Exception e) {
                 }
+            }
         }
         for (int i = 0; i < 12; i++) {
             if (pcs[i] != null) {
@@ -551,7 +579,9 @@ public class LiveReceiver implements Receiver {
                 try {
                     ShortMessage noteOff = new ShortMessage(ShortMessage.NOTE_OFF, sm.getChannel(), sm.getData1(), 0);
                     if (!recordOutput)//for cons Milano avoid staccato!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    {
                         rec.send(noteOff, d);
+                    }
                     /*for(ShortMessage dm: damperMessages){
                     if(dm.getData1() == sm.getData1()){
                     damperMessages.remove(dm);
@@ -559,8 +589,9 @@ public class LiveReceiver implements Receiver {
                     }
                     }
                      */
-                    if (recordOutput)
+                    if (recordOutput) {
                         outFile.getTracks()[0].add(new MidiEvent(noteOff, d));
+                    }
                 } catch (Exception e) {//System.out.println(e);
                 }
             }
@@ -665,7 +696,7 @@ public class LiveReceiver implements Receiver {
         PitchClass[] pcs = gui.archinovica.updateIntonation(ps);
         for (int i = 0; i < 12; i++) { // calculate the transposition of all pitches
             PitchClass p = pcs[i];
-            if (p != null && !useBuiltIn)
+            if (p != null && !useBuiltIn) {
                 try {
 
                     //synth.getChannels()[channel].setPitchBend((int)(p.getMidiPb() * 128));
@@ -684,7 +715,7 @@ public class LiveReceiver implements Receiver {
                         transposition--;
                         deltaTransposition--;
                     }
-                    if (deltaTransposition != 0)
+                    if (deltaTransposition != 0) {
                         for (ShortMessage sm : sms) {
                             int thisKey = sm.getData1();
                             int thisKeyTransIndex = sm.getData1() - originalTransposition;
@@ -692,16 +723,19 @@ public class LiveReceiver implements Receiver {
                             sm.setMessage(sm.getCommand(), sm.getChannel(),
                                     sm.getData1() + 2 * deltaTransposition, sm.getData2());
                         }
+                    }
                 } catch (Exception e) {
                 }
+            }
         }
 
         for (int i = 0; i < 12; i++) {//after values are stable (transpostion and bendAdjustment) send PB messages
             PitchClass p = pcs[i];
             if (p != null) {
                 int channel = i;//IS THIS RIGHT????????
-                if (channel == 9)
+                if (channel == 9) {
                     channel = 13;
+                }
                 int bend = (int) p.getMidiPb();
                 try {
                     ShortMessage pbM = new ShortMessage(ShortMessage.PITCH_BEND, channel, 127, bend + bendAdjustment);
@@ -735,11 +769,13 @@ public class LiveReceiver implements Receiver {
     }
 
     public void displayPitchSet() {
-        for (boolean b : pitchSet)
-            if (b)
+        for (boolean b : pitchSet) {
+            if (b) {
                 System.out.print("1");
-            else
+            } else {
                 System.out.print("0");
+            }
+        }
         System.out.println();
     }
 

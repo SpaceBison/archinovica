@@ -31,8 +31,9 @@ public abstract class GenerativeSearcher {
         // System.out.println("MYGRID: " + myGrid);
         while (solutions.size() == 0) {
             //System.out.println("SEARCHING SEARCHABLE SOURCES...");
-            for (PitchClass source : mySearchableSources)
+            for (PitchClass source : mySearchableSources) {
                 solutions.addAll(((RecursiveSearchPoint) source).generateNeighbors(myProjectedSet, animate));
+            }
         }
         //System.out.println("Solutions: " + solutions);
         myGrid.addPitches(solutions);
@@ -94,8 +95,9 @@ public abstract class GenerativeSearcher {
         }
 
         public void setCenter(SemioticFunction sf) {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++) {
                 offSets[i] = 25 - sf.signified[i];
+            }
         }
 
         public PotentialPitch generatePP(RecursiveSearchPoint rsp) {
@@ -108,8 +110,9 @@ public abstract class GenerativeSearcher {
         public PotentialPitch getPP(RecursiveSearchPoint rsp) {
             //System.out.println("getPP: " + rsp + " offSets: " + offSets[0] + "," + offSets[1]);
             PotentialPitch pp = myGrid[rsp.signified[0] + offSets[0]][rsp.signified[1] + offSets[1]];
-            if (pp == null)
+            if (pp == null) {
                 pp = generatePP(rsp);
+            }
             return pp;
         }
 
@@ -119,8 +122,9 @@ public abstract class GenerativeSearcher {
         }
 
         public void addPitches(ArrayList<RecursiveSearchPoint> rsp) {
-            for (RecursiveSearchPoint anRSP : rsp)
+            for (RecursiveSearchPoint anRSP : rsp) {
                 addRSP(anRSP);
+            }
         }
     }
 

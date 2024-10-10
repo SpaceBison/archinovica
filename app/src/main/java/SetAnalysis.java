@@ -27,18 +27,21 @@ public class SetAnalysis {
         for (boolean[] aSet : allSets) {
             set = new ArrayList<Integer>();
             for (int i = 0; i < 12; i++) {
-                if (aSet[i])
+                if (aSet[i]) {
                     set.add(Integer.valueOf(i));
+                }
             }
-            if (set.size() != 7)
+            if (set.size() != 7) {
                 continue;
+            }
             double[] vector = average5LimVector1();
             if (vector[0] < 0 || vector[1] < 0) {
                 System.out.print("[");
                 for (int i = 0; i < set.size(); i++) {
                     System.out.print(set.get(i));
-                    if (i < set.size() - 1)
+                    if (i < set.size() - 1) {
                         System.out.print(",");
+                    }
                 }
                 System.out.print("] ");
                 System.out.println("<" + vector[0] + "," + vector[1] + ">");
@@ -54,8 +57,9 @@ public class SetAnalysis {
         int lastInd = 0;
         do {
             int index = input.indexOf(",", lastInd);
-            if (index < 0)
+            if (index < 0) {
                 break;
+            }
             String a = input.substring(lastInd, index);
             //System.out.println(a);
             set.add(Integer.parseInt(a));
@@ -101,8 +105,9 @@ public class SetAnalysis {
             PitchClass firstPitch = null;
             PitchClass lastPitch = null;
             System.out.print("     [");
-            for (Integer note : perm)
+            for (Integer note : perm) {
                 System.out.print(note + ",");
+            }
             System.out.print("]");
             for (int i = 0; i < perm.size(); i++) {
                 boolean[] pitchBinary = new boolean[12];
@@ -142,8 +147,9 @@ public class SetAnalysis {
                 boolean[] pitchBinary = new boolean[12];
                 Basket chord = sequence.get(i);
 
-                for (Integer pc : chord)
+                for (Integer pc : chord) {
                     pitchBinary[pc] = true;
+                }
                 anArch.updateIntonation(pitchBinary);
                 PitchClass[] archiArray = anArch.soundingPitchClasses;
                 if (i == 0) {
@@ -280,8 +286,9 @@ public class SetAnalysis {
             a += "[";
             for (int i = 0; i < size(); i++) {
                 a += get(i);
-                if (i < size() - 1)
+                if (i < size() - 1) {
                     a += ",";
+                }
             }
             a += "] ";
 
@@ -323,8 +330,9 @@ public class SetAnalysis {
                 a += "[";
                 for (int i = 0; i < b.size(); i++) {
                     a += b.get(i);
-                    if (i < b.size() - 1)
+                    if (i < b.size() - 1) {
                         a += ",";
+                    }
                 }
                 a += "] ";
             }

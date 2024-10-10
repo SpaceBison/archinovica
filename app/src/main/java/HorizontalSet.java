@@ -41,8 +41,9 @@ public class HorizontalSet extends PitchSet {
 
     //@Precondition: contains(pc)
     public boolean registerPitch(PitchClass pc) {
-        if (registeredPitches.contains(pc))
+        if (registeredPitches.contains(pc)) {
             return false;
+        }
         registeredPitches.add(pc.clone());
         return true;
     }

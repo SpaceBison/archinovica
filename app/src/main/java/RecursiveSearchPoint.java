@@ -41,9 +41,11 @@ public class RecursiveSearchPoint extends PitchClass {
         addNeighbor(source, (neighborIndex + 2) % 4);
         RecursiveSearchPoint[] kittyCorners = new RecursiveSearchPoint[]{source.neighbors[(neighborIndex + 3) % 4],
                 source.neighbors[(neighborIndex + 1) % 4]};
-        for (RecursiveSearchPoint r : kittyCorners)
-            if (r != null && r.neighbors[neighborIndex] != null)
+        for (RecursiveSearchPoint r : kittyCorners) {
+            if (r != null && r.neighbors[neighborIndex] != null) {
                 addNeighbor(r.neighbors[neighborIndex]);
+            }
+        }
         //mySearcher.addSubSpace(this);
         //System.out.println(this);
         if (animate) {
@@ -54,19 +56,24 @@ public class RecursiveSearchPoint extends PitchClass {
     public ArrayList<RecursiveSearchPoint> generateNeighbors(PitchSet searchDestination, boolean animate) {
         boolean found = false;
         ArrayList<RecursiveSearchPoint> solutions = new ArrayList<RecursiveSearchPoint>();
-        if (parent == this)
+        if (parent == this) {
             generations++;
+        }
         if (children.size() == 0) {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++) {
                 if (neighbors[i] == null) {
                     RecursiveSearchPoint child = bearChild(i, animate);
                     children.add(child);
-                    if (searchDestination.isProjected(child))
+                    if (searchDestination.isProjected(child)) {
                         solutions.add(child);
+                    }
                 }
-        } else
-            for (RecursiveSearchPoint child : children)
+            }
+        } else {
+            for (RecursiveSearchPoint child : children) {
                 solutions.addAll(child.generateNeighbors(searchDestination, animate));
+            }
+        }
         return solutions;
         /*
         ArrayList<SubSpace> newborns = new ArrayList<SubSpace>();
@@ -136,8 +143,9 @@ public class RecursiveSearchPoint extends PitchClass {
     public int getTransType(int[] trans) {
         for (int i = 0; i < 4; i++) {
             //System.out.println(TRANSFORMATION_GROUP[i][0] + ", " + TRANSFORMATION_GROUP[i][1]);
-            if (TRANSFORMATION_GROUP[i][0] == trans[0] && TRANSFORMATION_GROUP[i][1] == trans[1])
+            if (TRANSFORMATION_GROUP[i][0] == trans[0] && TRANSFORMATION_GROUP[i][1] == trans[1]) {
                 return i;
+            }
         }
         System.out.println("ERROR! INVALID NEIGHBOR TRANFORMATION: [" + trans[0] + ", " + trans[1] + "]");
         //System.exit(-1);

@@ -82,10 +82,12 @@ public class Archinovica {
                 if (soundingPitchClasses[n] != null) {
                     pitches[n] = soundingPitchClasses[n];
                     commonTone = n;
-                } else
+                } else {
                     pitches[n] = new PitchClass(n);
-            } else
+                }
+            } else {
                 pitches[n] = null;
+            }
         }
         soundingPitchClasses = pitches;
         return commonTone;
@@ -95,21 +97,24 @@ public class Archinovica {
         PitchClass initialPitch = lastSet.getArray()[transpositionIndex];
         PitchClass finalPitch = soundingPitchClasses[transpositionIndex];
         Interval transposition = initialPitch.getInterval(finalPitch);
-        if (!transposition.limited)
+        if (!transposition.limited) {
             transposition.delimit();
+        }
         lastSet.transpose(transposition);
     }
 
     public PitchClass[] updateIntonation(boolean[] pitchBinary) {
 
         boolean isntEmptySet = false;
-        for (boolean b : pitchBinary)
+        for (boolean b : pitchBinary) {
             if (b) {
                 isntEmptySet = true;
                 break;
             }
-        if (!isntEmptySet)
+        }
+        if (!isntEmptySet) {
             return new PitchClass[12];
+        }
         if (lastSet != null) {
             backupSets.add(lastSet.clone());
             if (backupSets.size() > 10) {
@@ -131,8 +136,9 @@ public class Archinovica {
                 lastSet = searcher.limitSet(setting);
                 //System.out.println(lastSet);
                 int i = 0;
-                while (soundingPitchClasses[i] == null)
+                while (soundingPitchClasses[i] == null) {
                     i++;
+                }
                 transposeSet(i);
             } else {
                 HorizontalSet projectedSet = new HorizontalSet(soundingPitchClasses);
@@ -147,23 +153,28 @@ public class Archinovica {
             transposeSet(commonTone);
         }
         soundingPitchClasses = lastSet.getArray();
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 12; i++) {
             if (soundingPitchClasses[i] != null && !soundingPitchClasses[i].equals(temperedScale[i])) {
                 temperedScale[i] = soundingPitchClasses[i];
                 int channel = soundingPitchClasses[i].signifier + 1;
                 if (channel == 10) // a hack for MIDI issues (see MIDI module)
+                {
                     channel = 13;
+                }
 //                try{ myCsound.InputMessage("i \"pitchBend\" 0 0 " + channel + " " + soundingPitchClasses[i].getMidiPb());}
 //                catch(NullPointerException e){}
             }
+        }
         //System.out.println("DONE");
         //System.out.println("SCALE: " + Arrays.asList(temperedScale));
         //System.out.println("UPDATED SOUNDING PCS: " + Arrays.asList(soundingPitchClasses));
-        if (gui != null)
-            if (LiveReceiver.compositionMode)
+        if (gui != null) {
+            if (LiveReceiver.compositionMode) {
                 gui.displayStaticPitches(soundingPitchClasses);
-            else
+            } else {
                 gui.displayPitches(soundingPitchClasses);
+            }
+        }
 
         return soundingPitchClasses;
         //System.out.println("PITCHES FOUND: " + currentSet.getFoundPitches());
@@ -187,8 +198,9 @@ public class Archinovica {
     }
 
     public void inifinitTest() {
-        while (true)
+        while (true) {
             randomSpotCheck();
+        }
     }
 
     public static PitchClass[] parsePitchBinary(String binary) {
@@ -198,8 +210,9 @@ public class Archinovica {
         }
         PitchClass[] pitchBinary = new PitchClass[12];
         for (int i = 0; i < 12; i++) {
-            if (binary.charAt(i) == '1')
+            if (binary.charAt(i) == '1') {
                 pitchBinary[i] = new PitchClass(i);
+            }
         }
         initializeSpace();
         return pitchBinary;
@@ -216,8 +229,9 @@ public class Archinovica {
     }
 
     public static void displaySigns(ArrayList<SemioticFunction> s) {
-        if (gui != null)
+        if (gui != null) {
             gui.displaySigns(s);
+        }
     }
 
 
@@ -229,15 +243,17 @@ public class Archinovica {
 
     public void undoProgression() {
         System.out.println("UNDO PROGRESSION");
-        if (backupSets.size() == 0 || backUpSoundingPCs.size() == 0)
+        if (backupSets.size() == 0 || backUpSoundingPCs.size() == 0) {
             return;
+        }
 
         lastSet = backupSets.get(backupSets.size() - 1);
         backupSets.remove(backupSets.size() - 1);
         soundingPitchClasses = backUpSoundingPCs.get(backUpSoundingPCs.size() - 1);
         backUpSoundingPCs.remove(backUpSoundingPCs.size() - 1);
-        if (gui != null)
+        if (gui != null) {
             gui.eraseLastChord();
+        }
     }
 
     public void setLastChord(PitchSet aSet) {

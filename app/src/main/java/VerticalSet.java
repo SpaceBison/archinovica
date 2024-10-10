@@ -56,12 +56,14 @@ public class VerticalSet extends PitchSet {
 
             boolean oneToOneCorrispondent(ArrayList<IntervalSet> availableOverlayedSets) {
                 for (IntervalSet overlayedSet : branches) {
-                    if (!availableOverlayedSets.contains(overlayedSet))
+                    if (!availableOverlayedSets.contains(overlayedSet)) {
                         continue;
+                    }
                     ArrayList<IntervalSet> subAvailable = (ArrayList) availableOverlayedSets.clone();
                     subAvailable.remove(overlayedSet);
-                    if (child == null || child.oneToOneCorrispondent(subAvailable))
+                    if (child == null || child.oneToOneCorrispondent(subAvailable)) {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -75,19 +77,21 @@ public class VerticalSet extends PitchSet {
         for (IntervalSet is : intervalSets) {
             boolean acceptablePitch = false;
             subTree = new IntervalSetTree(is);
-            for (IntervalSet projectedSet : myIntervalSets)
+            for (IntervalSet projectedSet : myIntervalSets) {
                 if (is.overlays(projectedSet)) {
                     acceptablePitch = true;
                     subTree.addOverlayed(projectedSet);
                 }
+            }
             if (!acceptablePitch) {
                 remove(projectedPitch);
                 return false;
             }
-            if (completeTree == null)
+            if (completeTree == null) {
                 completeTree = subTree;
-            else
+            } else {
                 completeTree.addChild(subTree);
+            }
         }
         remove(projectedPitch);
         return completeTree.oneToOneCorrispondent(myIntervalSets);
@@ -106,8 +110,9 @@ public class VerticalSet extends PitchSet {
         //new Archinovica();
         PitchClass[] pitchBinary = new PitchClass[12];
         for (int i = 0; i < 12; i++) {
-            if (Math.random() > 0.5)
+            if (Math.random() > 0.5) {
                 pitchBinary[i] = new PitchClass(i);
+            }
         }
         VerticalSet vs = new VerticalSet(pitchBinary);
         return vs.mySearcher;

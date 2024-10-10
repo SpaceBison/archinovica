@@ -55,8 +55,9 @@ public class Interval extends SemioticFunction {
      */
 
     public void addInterval(Interval interval) {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++) {
             signified[i] = signified[i] + interval.signified[i];
+        }
 
     }
 
@@ -86,11 +87,13 @@ public class Interval extends SemioticFunction {
     }
 
     public int expressDistance() {
-        if (!limited)
+        if (!limited) {
             return -1;
+        }
         int d = 0;
-        for (int i : signified)
+        for (int i : signified) {
             d += Math.abs(i);
+        }
         return d;
     }
 
@@ -101,8 +104,9 @@ public class Interval extends SemioticFunction {
 
     @Override
     public Interval clone() {
-        if (limited)
+        if (limited) {
             return new Interval(new int[]{signified[0], signified[1]});
+        }
         return new Interval(signifier);
     }
 
@@ -111,11 +115,13 @@ public class Interval extends SemioticFunction {
 
         String a = "[";
         if (limited) {
-            for (int i : signified)
+            for (int i : signified) {
                 a += i + " ";
+            }
             a = a.substring(0, a.length() - 1) + "]";
-        } else
+        } else {
             a += signifier + "]";
+        }
         return a;
     }
 

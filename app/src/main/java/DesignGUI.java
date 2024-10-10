@@ -79,13 +79,17 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         int originX = 0;
         int originY = 0;
         noteSpace = new String[12][3];
-        while (originX < 0)
+        while (originX < 0) {
             originX += 12;
-        while (originY < 0)
+        }
+        while (originY < 0) {
             originY += 12;
-        for (int n = 0; n < 3; n++)
-            for (int i = 0; i < 12; i++)
+        }
+        for (int n = 0; n < 3; n++) {
+            for (int i = 0; i < 12; i++) {
                 noteSpace[i][n] = NOTE_NAMES[((n + originX) * 4 + (i + originY) * 7) % 12];
+            }
+        }
     }
 
     /*public void buildSandbox(int originX, int originY){
@@ -132,10 +136,11 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
     @Override
     public void paint(Graphics g) {
-        if (sandboxMode)
+        if (sandboxMode) {
             mySandbox.display(g);
-        else
+        } else {
             myCompositionSpace.display(g);
+        }
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -153,8 +158,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         } else if (aCom != null && aCom.equals("Hide Sandbox")) {
             sandboxMode = false;
         } else if (aCom != null && aCom.equals("Export Object")) {
-            if (sandboxMode)
+            if (sandboxMode) {
                 mySandbox.exportObject();
+            }
         } else if (aCom != null && aCom.startsWith("FOCUS: ")) {
             if (!sandboxMode) {
                 myCompositionSpace.focusOnObject(aCom.substring(7));
@@ -166,8 +172,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                 myCompositionSpace.highlightGroup(aCom.substring(11));
             }
         } else if (aCom != null && aCom.equals("Duplicate Object")) {
-            if (!sandboxMode)
+            if (!sandboxMode) {
                 myCompositionSpace.duplicate();
+            }
         } else if (aCom != null && aCom.equals("Create Highlighted Group")) {
             if (!sandboxMode) {
                 myCompositionSpace.createHighlightedGroup();
@@ -219,10 +226,11 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         clickPoint = new int[]{e.getX(), e.getY()};
         System.out.println(clickPoint);
         if (!sandboxMode) {
-            if (shiftIsOn)
+            if (shiftIsOn) {
                 myCompositionSpace.addToChord();
-            else
+            } else {
                 myCompositionSpace.removeFromChord();
+            }
             System.out.println("CLICKED");
         }
     }
@@ -277,57 +285,66 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
                 return;
             case KeyEvent.VK_UP:
-                if (sandboxMode)
+                if (sandboxMode) {
                     mySandbox.moveUp();
-                else
+                } else {
                     myCompositionSpace.moveUp();
+                }
                 return;
             case KeyEvent.VK_DOWN:
-                if (sandboxMode)
+                if (sandboxMode) {
                     mySandbox.moveDown();
-                else
+                } else {
                     myCompositionSpace.moveDown();
+                }
                 return;
             case KeyEvent.VK_RIGHT:
-                if (sandboxMode)
+                if (sandboxMode) {
                     mySandbox.moveRight();
-                else
+                } else {
                     myCompositionSpace.moveRight();
+                }
                 return;
 
             case KeyEvent.VK_LEFT:
-                if (sandboxMode)
+                if (sandboxMode) {
                     mySandbox.moveLeft();
-                else
+                } else {
                     myCompositionSpace.moveLeft();
+                }
                 return;
             case KeyEvent.VK_SPACE:
                 if (sandboxMode) {
-                    if (shiftIsOn)
+                    if (shiftIsOn) {
                         mySandbox.addToSubgroup();
-                    else
+                    } else {
                         mySandbox.selectOrDeselectPitch();
+                    }
                 } else {
-                    if (shiftIsOn)
+                    if (shiftIsOn) {
                         myCompositionSpace.addToChord();
-                    else
+                    } else {
                         myCompositionSpace.removeFromChord();
+                    }
                 }
 
                 return;
             case KeyEvent.VK_BACK_SPACE:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.deleteChord();
+                }
                 return;
             case KeyEvent.VK_R:
-                if (sandboxMode)
+                if (sandboxMode) {
                     mySandbox.reset();
-                else
+                } else {
                     myCompositionSpace.resetProgression();
+                }
                 return;
             case KeyEvent.VK_ENTER:
-                if (sandboxMode)
+                if (sandboxMode) {
                     mySandbox.exportObject();
+                }
                 return;
             case KeyEvent.VK_SHIFT:
                 shiftIsOn = true;
@@ -335,74 +352,90 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             case KeyEvent.VK_W:
                 if (sandboxMode) {
 
-                } else
+                } else {
                     myCompositionSpace.transpose(1, 0);
+                }
                 return;
             case KeyEvent.VK_S:
                 if (sandboxMode) {
 
-                } else
+                } else {
                     myCompositionSpace.transpose(-1, 0);
+                }
                 return;
             case KeyEvent.VK_D:
                 if (sandboxMode) {
 
-                } else
+                } else {
                     myCompositionSpace.transpose(0, 1);
+                }
                 return;
             case KeyEvent.VK_A:
                 if (sandboxMode) {
 
-                } else
+                } else {
                     myCompositionSpace.transpose(0, -1);
+                }
                 return;
             case KeyEvent.VK_G:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.moveBySubgroups = true;
+                }
                 return;
             case KeyEvent.VK_P:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.moveBySubgroups = false;
+                }
                 return;
             case KeyEvent.VK_1:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.focusOnObject(1);
+                }
                 return;
             case KeyEvent.VK_2:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.focusOnObject(2);
+                }
                 return;
             case KeyEvent.VK_3:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.focusOnObject(3);
+                }
                 return;
             case KeyEvent.VK_4:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.focusOnObject(4);
+                }
                 return;
             case KeyEvent.VK_5:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.focusOnObject(5);
+                }
                 return;
             case KeyEvent.VK_6:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.focusOnObject(6);
+                }
                 return;
             case KeyEvent.VK_7:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.focusOnObject(7);
+                }
                 return;
             case KeyEvent.VK_8:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.focusOnObject(8);
+                }
                 return;
             case KeyEvent.VK_9:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.focusOnObject(9);
+                }
                 return;
             case KeyEvent.VK_0:
-                if (!sandboxMode)
+                if (!sandboxMode) {
                     myCompositionSpace.focusOnObject(10);
+                }
                 return;
             case KeyEvent.VK_E:
                 recordPitches();
@@ -424,9 +457,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
             shiftIsOn = false;
-            if (sandboxMode)
+            if (sandboxMode) {
                 mySandbox.completeSubgroup();
-            else {
+            } else {
                 myCompositionSpace.exportChord();
             }
             validate();
@@ -474,10 +507,12 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         public String getNoteName() {
             int fifths = myFifths;
             int thirds = myThirds;
-            while (fifths < 0)
+            while (fifths < 0) {
                 fifths += 12;
-            while (thirds < 0)
+            }
+            while (thirds < 0) {
                 thirds += 3;
+            }
             return noteSpace[fifths % 12][thirds % 3];
         }
 
@@ -485,10 +520,12 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
             int fifths = myFifths;
             int thirds = myThirds;
-            while (fifths < 0)
+            while (fifths < 0) {
                 fifths += 12;
-            while (thirds < 0)
+            }
+            while (thirds < 0) {
                 thirds += 3;
+            }
             return 60 + (fifths * 7 + thirds * 4) % 12;
 
         }
@@ -555,8 +592,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
         public void addBySubgroup(ArrayList<PitchGroup> subgroups) {
             myDimensions = null;
-            for (PitchGroup pg : subgroups)
+            for (PitchGroup pg : subgroups) {
                 addAll(pg);
+            }
             mySubgroups = subgroups;
         }
 
@@ -568,8 +606,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
         //returns fifthsmin, fifthsMax, thirdsMin, thirdsMax
         public int[] getDimensions() {
-            if (myDimensions != null)
+            if (myDimensions != null) {
                 return myDimensions;
+            }
             int fifthsMin = Integer.MAX_VALUE;
             int fifthsMax = -Integer.MAX_VALUE;
             int thirdsMin = Integer.MAX_VALUE;
@@ -604,15 +643,18 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
         public boolean[] getPitchBinary() {
             boolean[] binary = new boolean[12];
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 12; i++) {
                 binary[i] = false;
+            }
             for (Pitch p : this) {
                 int fifths = p.getFifths();
                 int thirds = p.getThirds();
-                while (fifths < 0)
+                while (fifths < 0) {
                     fifths += 12;
-                while (thirds < 0)
+                }
+                while (thirds < 0) {
                     thirds += 12;
+                }
                 binary[((fifths * 7) + (thirds * 4)) % 12] = true;
             }
             return binary;
@@ -623,10 +665,12 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             for (Pitch p : this) {
                 int fifths = p.getFifths();
                 int thirds = p.getThirds();
-                while (fifths < 0)
+                while (fifths < 0) {
                     fifths += 12;
-                while (thirds < 0)
+                }
+                while (thirds < 0) {
                     thirds += 12;
+                }
                 pitches[((fifths * 7) + (thirds * 4)) % 12] = p;
             }
             return pitches;
@@ -634,8 +678,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
         public void transpose(int fifths, int thirds) {
             myDimensions = null;
-            for (Pitch p : this)
+            for (Pitch p : this) {
                 p.transpose(fifths, thirds);
+            }
         }
 
         public void createSeed() {
@@ -684,8 +729,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
         public Pitch[][] getGrid() {
             Pitch[][] grid = new Pitch[getHeight()][getWidth()];
-            for (Pitch p : this)
+            for (Pitch p : this) {
                 grid[p.getFifths() + getMinFifths()][p.getThirds() + getMinThirds()] = p;
+            }
             return grid;
         }
 
@@ -737,19 +783,23 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         @Override
         public PitchGroup clone() { // make a deep copy
             PitchGroup clone = new PitchGroup(myName);
-            if (mySubgroups.size() != 0)
-                for (PitchGroup subgroup : mySubgroups)
+            if (mySubgroups.size() != 0) {
+                for (PitchGroup subgroup : mySubgroups) {
                     clone.addSubgroup(subgroup.clone());
-            else
-                for (Pitch p : this)
+                }
+            } else {
+                for (Pitch p : this) {
                     clone.add(p.clone());
+                }
+            }
             return clone;
         }
 
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof PitchGroup))
+            if (!(o instanceof PitchGroup)) {
                 return false;
+            }
             PitchGroup pg = (PitchGroup) o;
             for (Pitch p1 : pg) {
                 boolean found = false;
@@ -759,8 +809,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                         break;
                     }
                 }
-                if (!found)
+                if (!found) {
                     return false;
+                }
             }
 
             return true;
@@ -863,13 +914,15 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             }
             for (Pitch p : this) {
                 boolean grouped = false;
-                for (PitchGroup subgroup : mySubgroups)
+                for (PitchGroup subgroup : mySubgroups) {
                     if (subgroup.contains(p)) {
                         grouped = true;
                         break;
                     }
-                if (!grouped)
+                }
+                if (!grouped) {
                     a += p;
+                }
             }
             a += "}\n";
             return a;
@@ -934,13 +987,16 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                                     centered = false;
                                 }
                                 myCollisions++;
-                            } else
+                            } else {
                                 centered = true;
-                            if (!isNatural(pitch))
-                                if (useSharps1)
+                            }
+                            if (!isNatural(pitch)) {
+                                if (useSharps1) {
                                     drawables.add(new Drawable(myX, myY + 11, 1, positionNumber, pitch));
-                                else
+                                } else {
                                     drawables.add(new Drawable(myX, myY + 11, 2, positionNumber, pitch));
+                                }
+                            }
                             drawables.add(new Drawable(myX + 20, myY, 0, positionNumber, pitch));
                             lastY = myY;
                         }
@@ -951,8 +1007,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                         for (int n = i + 1; n < drawables.size(); n++) {
                             Drawable d1 = drawables.get(i);
                             Drawable d2 = drawables.get(n);
-                            if (d1.myType == 0 && d2.myType == 0 && d1.intervalIsMisspelled(d2))
+                            if (d1.myType == 0 && d2.myType == 0 && d1.intervalIsMisspelled(d2)) {
                                 myMisspellings++;
+                            }
                         }
                     }
                     if (myMisspellings < misspellings) {
@@ -966,8 +1023,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             Sketcher sketcher = new Sketcher();
             ArrayList<Drawable> drawables = sketcher.getDrawables(useSharps);
             drawables = sketcher.getDrawables(!useSharps);
-            for (Drawable d : drawables)
+            for (Drawable d : drawables) {
                 d.draw(g);
+            }
 
             String pedaling = "";
             switch (myPedaling) {
@@ -1014,28 +1072,33 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
             public boolean intervalIsMisspelled(Drawable d) {
                 int intervalType = getIntervalType(d);
-                if (intervalType == 4)
+                if (intervalType == 4) {
                     return false;
+                }
                 return intervalType != getWrittenIntervalType(d);
             }
 
             public int getWrittenIntervalType(Drawable d) {
                 int intervalType = d.myPositionNumber - myPositionNumber;
-                while (intervalType < 0)
+                while (intervalType < 0) {
                     intervalType += 7;
+                }
                 intervalType = intervalType % 7;
-                if (intervalType > 3)
+                if (intervalType > 3) {
                     intervalType = 7 - intervalType;
+                }
                 return intervalType;
             }
 
             public int getIntervalType(Drawable d) {
                 int interval = d.myPitch - myPitch;
-                while (interval < 0)
+                while (interval < 0) {
                     interval += 12;
+                }
                 interval = interval % 12;
-                if (interval > 6)
+                if (interval > 6) {
                     interval = 12 - interval;
+                }
                 switch (interval) {
                     case 0:
                         return 0;
@@ -1057,15 +1120,17 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         }
 
         public int getLineOrSpace(int pitch, boolean useSharps) {
-            if (!isNatural(pitch))
-                if (useSharps)
+            if (!isNatural(pitch)) {
+                if (useSharps) {
                     pitch--;
-                else {
-                    if (pitch == 1)
+                } else {
+                    if (pitch == 1) {
                         return 15;
-                    else
+                    } else {
                         pitch++;
+                    }
                 }
+            }
             switch (pitch) {
                 case 0:
                     return 20;
@@ -1121,8 +1186,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             for (Pitch p : selectedPoints) {
                 if (p.getFifths() == cursorY && p.getThirds() == cursorX) {
                     selectedPoints.remove(p);
-                    for (PitchGroup subgroup : selectedPoints.mySubgroups)
+                    for (PitchGroup subgroup : selectedPoints.mySubgroups) {
                         subgroup.remove(p);
+                    }
                     return;
                 }
             }
@@ -1130,28 +1196,34 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         }
 
         public void addToSubgroup() {
-            for (Pitch p : selectedPoints)
-                if (p.getFifths() == cursorY & p.getThirds() == cursorX)
-                    if (mySubgroup.contains(p))
+            for (Pitch p : selectedPoints) {
+                if (p.getFifths() == cursorY & p.getThirds() == cursorX) {
+                    if (mySubgroup.contains(p)) {
                         mySubgroup.remove(p);
-                    else
+                    } else {
                         mySubgroup.add(p);
+                    }
+                }
+            }
         }
 
         public void completeSubgroup() {
-            if (mySubgroup.size() == 0)
+            if (mySubgroup.size() == 0) {
                 return;
+            }
             selectedPoints.mySubgroups.add(mySubgroup);
             mySubgroup = new PitchGroup("My Subgroup");
         }
 
         public void exportObject() {
-            if (selectedPoints.size() == 0)
+            if (selectedPoints.size() == 0) {
                 return;
+            }
             JOptionPane optionPane = new JOptionPane();
             String name = JOptionPane.showInputDialog("Object Name:");
-            if (name == null)
+            if (name == null) {
                 return;
+            }
 
             selectedPoints.myName = name;
             selectedPoints.createSeed();
@@ -1171,8 +1243,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         }
 
         public void moveDown() {
-            if (cursorY > 0)
+            if (cursorY > 0) {
                 cursorY--;
+            }
         }
 
         public void moveRight() {
@@ -1180,8 +1253,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         }
 
         public void moveLeft() {
-            if (cursorX > 0)
+            if (cursorX > 0) {
                 cursorX--;
+            }
         }
 
         public void display(Graphics g) {
@@ -1190,22 +1264,28 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             g.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 
             g.setColor(Color.BLACK);
-            for (int x = 0; x < getWidth() / 40.0 - 1; x++)
-                for (int y = 1; y < getWidth() / 40.0; y++)
+            for (int x = 0; x < getWidth() / 40.0 - 1; x++) {
+                for (int y = 1; y < getWidth() / 40.0; y++) {
                     g.drawString(noteSpace[y % 12][x % 3], 40 + x * 40, getWidth() - (40 + y * 40));
+                }
+            }
 
             g.setFont(new Font("Times New Roman", Font.BOLD, 16));
             g.setColor(Color.RED);
-            for (Pitch p : selectedPoints)
+            for (Pitch p : selectedPoints) {
                 g.drawString(p.getNoteName(), 40 + p.getThirds() * 40, getWidth() - (40 + p.getFifths() * 40));
+            }
             g.setColor(Color.PINK);
-            for (PitchGroup subgroup : selectedPoints.mySubgroups)
-                for (Pitch p : subgroup)
+            for (PitchGroup subgroup : selectedPoints.mySubgroups) {
+                for (Pitch p : subgroup) {
                     g.drawString(p.getNoteName(), 40 + p.getThirds() * 40, getWidth() - (40 + p.getFifths() * 40));
+                }
+            }
 
             g.setColor(Color.GREEN);
-            for (Pitch p : mySubgroup)
+            for (Pitch p : mySubgroup) {
                 g.drawString(p.getNoteName(), 40 + p.getThirds() * 40, getWidth() - (40 + p.getFifths() * 40));
+            }
 
             g.setColor(Color.BLUE);
             g.drawString(noteSpace[cursorY % 12][cursorX % 3], 40 + cursorX * 40, getWidth() - (40 + cursorY * 40));
@@ -1265,17 +1345,20 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         }
 
         public void setCursorToFocusObject() {
-            if (focusObject.size() == 0)
+            if (focusObject.size() == 0) {
                 return;
+            }
             if (moveBySubgroups) {
-                if (cursorObject != null)
+                if (cursorObject != null) {
                     focusObject.sortSubgroups(cursorObject);
+                }
                 cursorObject = focusObject.mySubgroups.get(0);
                 cursorObject.cursorCalls = 0;
                 lastStableCursor = cursorObject;
             } else {
-                if (cursorObject != null)
+                if (cursorObject != null) {
                     focusObject.sort(cursorObject.get(0));
+                }
                 cursorObject = new PitchGroup("Cursor");
                 cursorObject.add(focusObject.get(0));
                 cursorObject.cursorCalls = 0;
@@ -1288,18 +1371,21 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             grid = new Pitch[composite.getHeight()][composite.getWidth()];
             gridOriginFifths = composite.getMinFifths();
             gridOriginThirds = composite.getMinThirds();
-            for (Pitch p : composite)
+            for (Pitch p : composite) {
                 grid[p.getFifths() - gridOriginFifths][p.getThirds() - gridOriginThirds] = p;
+            }
             updateSubgroupGrid();
         }
 
         public void updateSubgroupGrid() {
-            if (focusObject == null)
+            if (focusObject == null) {
                 return;
+            }
             subgroupGrid = new PitchGroup[grid.length][grid[0].length];
             for (PitchGroup subgroup : focusObject.mySubgroups) {
-                for (Pitch p : subgroup)
+                for (Pitch p : subgroup) {
                     subgroupGrid[p.getFifths() - gridOriginFifths][p.getThirds() - gridOriginThirds] = subgroup;
+                }
             }
         }
 
@@ -1308,8 +1394,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             for (PitchGroup object : myObjects) {
                 composite.addAll(object);
                 for (PitchGroup subgroup : object.mySubgroups) {
-                    if (!containsSubgroup(composite.mySubgroups, subgroup))
+                    if (!containsSubgroup(composite.mySubgroups, subgroup)) {
                         composite.mySubgroups.add(subgroup);
+                    }
                 }
             }
             composite.createSeed();
@@ -1326,7 +1413,7 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                 updateSubgroupGrid();
                 return;
             }
-            for (PitchGroup object : myObjects)
+            for (PitchGroup object : myObjects) {
                 if (object.myName.equals(name)) {
                     focusObject = object;
                     setCursorToFocusObject();
@@ -1334,6 +1421,7 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                     updateSubgroupGrid();
                     return;
                 }
+            }
 
         }
 
@@ -1345,22 +1433,26 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         }
 
         public boolean containsSubgroup(ArrayList<PitchGroup> subgroups, PitchGroup subgroup) {
-            for (PitchGroup sg : subgroups)
-                if (sg.equals(subgroup))
+            for (PitchGroup sg : subgroups) {
+                if (sg.equals(subgroup)) {
                     return true;
+                }
+            }
             return false;
         }
 
         public void highlightGroup(String name) {
-            for (PitchGroup object : myHighlightedGroups)
+            for (PitchGroup object : myHighlightedGroups) {
                 if (object.myName.equals(name)) {
                     myHighlightedGroup = object;
                 }
+            }
         }
 
         public void stopHighlighting() {
-            if (!myHighlightedGroups.contains(myHighlightedGroup))
+            if (!myHighlightedGroups.contains(myHighlightedGroup)) {
                 myHighlightedGroups.add(myHighlightedGroup);
+            }
             myHighlightedGroup = null;
         }
 
@@ -1376,8 +1468,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         }
 
         public void callCursor() {
-            if (cursorObject == null)
+            if (cursorObject == null) {
                 return;
+            }
             if (cursorObject.cursorCalls < 10) {
                 cursorObject.cursorCalls++;
                 return;
@@ -1406,8 +1499,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                 for (PitchGroup subgroup : focusObject.mySubgroups) {
                     if (!subgroup.equals(cursorObject) && !containsSubgroup(neighbors, subgroup)) {
                         neighbors.add(subgroup);
-                        if (neighbors.size() == 4)
+                        if (neighbors.size() == 4) {
                             break;
+                        }
                     }
                 }
 
@@ -1423,15 +1517,18 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                 for (Pitch p : focusObject) {
                     if (!new PitchGroup(p).equals(cursorObject)) {
                         boolean isUnique = true;
-                        for (Pitch p1 : neighbors)
+                        for (Pitch p1 : neighbors) {
                             if (p1.equals(p)) {
                                 isUnique = false;
                                 break;
                             }
-                        if (isUnique)
+                        }
+                        if (isUnique) {
                             neighbors.add(p);
-                        if (neighbors.size() == 4)
+                        }
+                        if (neighbors.size() == 4) {
                             break;
+                        }
                     }
                 }
 
@@ -1470,12 +1567,14 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             public int compare(Pitch p1, Pitch p2) {
                 double distance1 = Math.abs(Math.atan2((myOrigin.getFifths() - p1.getFifths()),
                         myOrigin.getThirds() - p1.getThirds()) - myAngle);
-                if (distance1 > Math.PI)
+                if (distance1 > Math.PI) {
                     distance1 = 2 * Math.PI - distance1;
+                }
                 double distance2 = Math.abs(Math.atan2((myOrigin.getFifths() - p2.getFifths()),
                         myOrigin.getThirds() - p2.getThirds()) - myAngle);
-                if (distance2 > Math.PI)
+                if (distance2 > Math.PI) {
                     distance2 = 2 * Math.PI - distance2;
+                }
                 int difference = (int) ((distance1 - distance2) * 10000);
                 return difference;
             }
@@ -1496,12 +1595,14 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
                 double distance1 = Math.abs(Math.atan2(myOrigin[0] - p1[0], myOrigin[1] - p1[1])
                         - myAngle);
-                if (distance1 > Math.PI)
+                if (distance1 > Math.PI) {
                     distance1 = 2 * Math.PI - distance1;
+                }
                 double distance2 = Math.abs(Math.atan2(myOrigin[0] - p2[0], myOrigin[1] - p2[1])
                         - myAngle);
-                if (distance2 > Math.PI)
+                if (distance2 > Math.PI) {
                     distance2 = 2 * Math.PI - distance2;
+                }
                 int difference = (int) ((distance1 - distance2) * 10000);
                 return difference;
             }
@@ -1510,8 +1611,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         public void createHighlightedGroup() {
             JOptionPane optionPane = new JOptionPane();
             String name = JOptionPane.showInputDialog("Group Name:");
-            if (name == null)
+            if (name == null) {
                 return;
+            }
             myHighlightedGroup = new PitchGroup(name);
             MenuItem item = new MenuItem(name);
             item.addActionListener(DesignGUI.this);
@@ -1521,10 +1623,12 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         }
 
         public void addProgressionPitches() {
-            if (myHighlightedGroup == null)
+            if (myHighlightedGroup == null) {
                 createHighlightedGroup();
-            for (PitchGroup chord : myProgression)
+            }
+            for (PitchGroup chord : myProgression) {
                 myHighlightedGroup.addAll(chord);
+            }
 
         }
 
@@ -1546,19 +1650,24 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
 
         public void addToChord() {
             PitchGroup group = myChord;
-            if (myHighlightedGroup != null)
+            if (myHighlightedGroup != null) {
                 group = myHighlightedGroup;
-            for (Pitch p : cursorObject)
-                if (!group.contains(p) || myHighlightedGroup != null)
+            }
+            for (Pitch p : cursorObject) {
+                if (!group.contains(p) || myHighlightedGroup != null) {
                     group.add(p);
+                }
+            }
         }
 
         public void removeFromChord() {//currenlty only used for highlighting
             PitchGroup group = myChord;
-            if (myHighlightedGroup != null)
+            if (myHighlightedGroup != null) {
                 group = myHighlightedGroup;
-            for (Pitch p : cursorObject)
+            }
+            for (Pitch p : cursorObject) {
                 group.remove(p);
+            }
 
         }
 
@@ -1599,23 +1708,27 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             JDialog dialog = optionPane.createDialog(display, "Set Alpha of " + focusObject.myName);
             dialog.setVisible(true);
             System.out.println("Input: " + optionPane.getInputValue());
-            if (optionPane.getValue().equals(JOptionPane.CANCEL_OPTION))
+            if (optionPane.getValue().equals(JOptionPane.CANCEL_OPTION)) {
                 return;
+            }
             int value = 50;
             if (optionPane.getInputValue() instanceof Integer) {
                 value = (Integer) optionPane.getInputValue();
             }
             if (focusObject.myName.equals("Composite")) {
-                for (PitchGroup object : myObjects)
+                for (PitchGroup object : myObjects) {
                     object.myColor = new Color(0, 0, 0, (int) Math.rint(255 * value / 100.0));
-            } else
+                }
+            } else {
                 focusObject.myColor = new Color(0, 0, 0, (int) Math.rint(255 * value / 100.0));
+            }
             focusOnObject("Composite");
         }
 
         public void setCursorToNearestGroup(int dispX, int dispY) {
-            if (focusObject.mySubgroups.size() == 0)
+            if (focusObject.mySubgroups.size() == 0) {
                 return;
+            }
             double thirds = (getWidth() * 0.5 - displaceDisplayX
                     - ((getWidth() * 0.5 - dispX) / scaleDisplay)) / 30.0;
 
@@ -1625,8 +1738,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             //focusObject.sortSubgroups(fifths, thirds);
             //cursorObject = focusObject.mySubgroups.get(0);
 
-            if (thirds == cursorThirds && fifths == cursorFifths)
+            if (thirds == cursorThirds && fifths == cursorFifths) {
                 return;
+            }
 
             cursorThirds = (int) thirds;// - 1;
             cursorFifths = (int) fifths;
@@ -1639,8 +1753,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                 } catch (Exception ex) {
                     return;
                 }
-                if (pg == null)
+                if (pg == null) {
                     return;
+                }
                 cursorObject = pg;
             } else {
                 //cursorObject = focusObject.getClosestPitch(fifths, thirds);
@@ -1651,8 +1766,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                 } catch (Exception ex) {
                     return;
                 }
-                if (p == null)
+                if (p == null) {
                     return;
+                }
                 cursorObject = new PitchGroup(p);
             }
             cursorObject.cursorCalls = 0;
@@ -1671,52 +1787,58 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, getWidth(), getHeight());
 
-            if (myObjects.size() == 0)
+            if (myObjects.size() == 0) {
                 return;
+            }
             g.setFont(new Font("Times New Roman", Font.PLAIN, (int) (20 * scaleDisplay)));
 
             for (PitchGroup object : myObjects) {
                 g.setColor(object.myColor);
-                for (Pitch p : object)
+                for (Pitch p : object) {
                     g.drawString(p.getNoteName(), (int) (getWidth() * 0.5 -
                                     (getWidth() * 0.5 - (p.getThirds() * 30 + displaceDisplayX))
                                             * scaleDisplay),
                             (int) (getWidth() - (getWidth() * 0.5 -
                                     (getWidth() * 0.5 - (p.getFifths() * 30 + displaceDisplayY))
                                             * scaleDisplay)));
+                }
             }
             if (!focusObject.myName.equals("Composite")) {
                 g.setColor(Color.BLACK);
-                for (Pitch p : focusObject)
+                for (Pitch p : focusObject) {
                     g.drawString(p.getNoteName(), (int) (getWidth() * 0.5 -
                                     (getWidth() * 0.5 - (p.getThirds() * 30 + displaceDisplayX))
                                             * scaleDisplay),
                             (int) (getWidth() - (getWidth() * 0.5 -
                                     (getWidth() * 0.5 - (p.getFifths() * 30 + displaceDisplayY))
                                             * scaleDisplay)));
+                }
             }
 
             if (shiftIsOn) {
                 g.setColor(Color.GREEN);
-                for (PitchGroup chord : myProgression)
-                    for (Pitch p : chord)
+                for (PitchGroup chord : myProgression) {
+                    for (Pitch p : chord) {
                         g.drawString(p.getNoteName(), (int) (getWidth() * 0.5 -
                                         (getWidth() * 0.5 - (p.getThirds() * 30 + displaceDisplayX))
                                                 * scaleDisplay),
                                 (int) (getWidth() - (getWidth() * 0.5 -
                                         (getWidth() * 0.5 - (p.getFifths() * 30 + displaceDisplayY))
                                                 * scaleDisplay)));
+                    }
+                }
             }
 
             if (myHighlightedGroup != null) {
                 g.setColor(Color.GREEN);
-                for (Pitch p : myHighlightedGroup)
+                for (Pitch p : myHighlightedGroup) {
                     g.drawString(p.getNoteName(), (int) (getWidth() * 0.5 -
                                     (getWidth() * 0.5 - (p.getThirds() * 30 + displaceDisplayX))
                                             * scaleDisplay),
                             (int) (getWidth() - (getWidth() * 0.5 -
                                     (getWidth() * 0.5 - (p.getFifths() * 30 + displaceDisplayY))
                                             * scaleDisplay)));
+                }
             }
 
             myProgression.display(g);
@@ -1749,13 +1871,14 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         public void displayCursor(Graphics g) {
             g.setFont(new Font("Times New Roman", Font.BOLD, (int) (20 * scaleDisplay)));
             g.setColor(Color.BLUE);
-            for (Pitch p : cursorObject)
+            for (Pitch p : cursorObject) {
                 g.drawString(p.getNoteName(), (int) (getWidth() * 0.5 -
                                 (getWidth() * 0.5 - (p.getThirds() * 30 + displaceDisplayX))
                                         * scaleDisplay),
                         (int) (getWidth() - (getWidth() * 0.5 -
                                 (getWidth() * 0.5 - (p.getFifths() * 30 + displaceDisplayY))
                                         * scaleDisplay)));
+            }
         }
 
         public void moveScreen(int deltaX, int deltaY) {
@@ -1764,8 +1887,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         }
 
         public void regressCursor() {
-            if (lastStableCursor == null)
+            if (lastStableCursor == null) {
                 return;
+            }
             cursorObject = lastStableCursor;
             getGraphics().drawImage(imageWithoutCursor, 0, 0, null);
             displayCursor(getGraphics());
@@ -1798,32 +1922,37 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                     JOptionPane.PLAIN_MESSAGE,
                     null,
                     highlightGroupNames, "NEW");
-            if (highlightedProgressionName == null)
+            if (highlightedProgressionName == null) {
                 return;
+            }
 
             if (highlightedProgressionName.equals("NEW")) {
                 createHighlightedGroup();
 
             } else {
                 int index = 1;
-                while (index < highlightGroupNames.length && !highlightGroupNames[index].equals(highlightedProgressionName))
+                while (index < highlightGroupNames.length && !highlightGroupNames[index].equals(highlightedProgressionName)) {
                     index++;
+                }
                 myHighlightedGroup = myHighlightedGroups.get(index - 1);
             }
 
-            for (PitchGroup chord : myProgression)
+            for (PitchGroup chord : myProgression) {
                 myHighlightedGroup.addAll(chord);
+            }
         }
 
         @Override
         public String toString() {
             String a = "CompositionSpace {\n";
-            for (PitchGroup g : myObjects)
+            for (PitchGroup g : myObjects) {
                 a += g;
+            }
             if (myHighlightedGroups.size() > 0) {
                 a += "Highlighted Groups {\n";
-                for (PitchGroup g : myHighlightedGroups)
+                for (PitchGroup g : myHighlightedGroups) {
                     a += g;
+                }
                 a += "}\n";
             }
             a += "}\n";
@@ -1905,12 +2034,13 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                 int destinationIndex = -1;
                 Pitch progressionDestination = null;
                 PitchClass archiDestination = null;
-                for (int i = 0; i < 12; i++)
+                for (int i = 0; i < 12; i++) {
                     if (progressionArray[i] != null) {
                         progressionDestination = progressionArray[i];
                         archiDestination = archiArray[i];
                         destinationIndex = i;
                     }
+                }
                 if (progressionPointOfReference != null) {
                     int[] progressionTransformation = progressionPointOfReference.getTransformation(progressionDestination);
                     int[] archiTransformation = archiPointOfReference.getTransformation(archiDestination);
@@ -1944,16 +2074,18 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
             Pitch chordRef = null;
             PitchClass setRef = null;
             for (int i = 0; i < 12; i++) {
-                if (chord[i] == null)
+                if (chord[i] == null) {
                     continue;
+                }
                 if (chordRef == null) {
                     chordRef = chord[i];
                     setRef = set[i];
                 } else {
                     int[] chordTrans = chordRef.getTransformation(chord[i]);//relative coordinates
                     int[] setTrans = setRef.getTransformation(set[i]);
-                    if (chordTrans[0] != setTrans[0] || chordTrans[1] != setTrans[1])
+                    if (chordTrans[0] != setTrans[0] || chordTrans[1] != setTrans[1]) {
                         return false;
+                    }
                 }
             }
 
@@ -1961,8 +2093,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         }
 
         public void display(Graphics g) {
-            if (size() == 0)
+            if (size() == 0) {
                 return;
+            }
             int topOfStaff = 30;
             drawStaff(g, topOfStaff);
             int x = 103;
@@ -1981,8 +2114,9 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
         public void drawStaff(Graphics g, int startY) {
             g.drawImage(treble, 20, startY - 10, Color.WHITE, null);
             g.setColor(Color.BLACK);
-            for (int y = startY; y < startY + 50; y += 10)
+            for (int y = startY; y < startY + 50; y += 10) {
                 g.drawLine(0, y, getWidth(), y);
+            }
         }
     }
 

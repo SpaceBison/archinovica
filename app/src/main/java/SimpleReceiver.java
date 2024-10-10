@@ -68,14 +68,15 @@ public class SimpleReceiver implements Receiver {
 
                     //determine appropriate parameters for message to send
                     int channel = sm.getData1() % 12; // why was there + 1?
-                    if (channel == 9)
+                    if (channel == 9) {
                         channel = 13;
+                    }
 
                     //synonym for note off (ignored)
                     if (sm.getData2() == 0) {
-                        if (sustain)
+                        if (sustain) {
                             return;
-                        else {
+                        } else {
                             try {
                                 ShortMessage aSM = new ShortMessage(ShortMessage.NOTE_ON, channel, sm.getData1() + 2 * chanTrans[channel], sm.getData2());
                                 rec.send(aSM, 0L);
@@ -87,8 +88,9 @@ public class SimpleReceiver implements Receiver {
                     }
 
                     //it's really a noteON, so cancel any pending commands
-                    if (timerTask != null)
+                    if (timerTask != null) {
                         timerTask.cancel();
+                    }
 
                     int type = ShortMessage.NOTE_ON;
                     try {
@@ -110,11 +112,13 @@ public class SimpleReceiver implements Receiver {
 
                     break;
                 case ShortMessage.NOTE_OFF:
-                    if (sustain)
+                    if (sustain) {
                         return;
+                    }
                     channel = sm.getData1() % 12; // why was there + 1?
-                    if (channel == 9)
+                    if (channel == 9) {
                         channel = 13;
+                    }
                     try {
                         ShortMessage aSM = new ShortMessage(ShortMessage.NOTE_OFF, channel, sm.getData1() + 2 * chanTrans[channel], sm.getData2());
                         rec.send(aSM, 0L);
@@ -127,10 +131,12 @@ public class SimpleReceiver implements Receiver {
                     switch (sm.getData1()) {
                         case RIGHTPED:
                             int pedaling = 0;
-                            if (leftPedal)
+                            if (leftPedal) {
                                 pedaling += 1;
-                            if (sm.getData2() > 0)
+                            }
+                            if (sm.getData2() > 0) {
                                 pedaling += 2;
+                            }
 
                             if (rightPedal != sm.getData2() > 0) {
                                 gui.archinovica.setPedaling(pedaling);
@@ -139,10 +145,12 @@ public class SimpleReceiver implements Receiver {
                             break;
                         case LEFTPED:
                             pedaling = 0;
-                            if (sm.getData2() > 0)
+                            if (sm.getData2() > 0) {
                                 pedaling += 1;
-                            if (rightPedal)
+                            }
+                            if (rightPedal) {
                                 pedaling += 2;
+                            }
                             if (leftPedal != (sm.getData2() > 0)) {
                                 gui.archinovica.setPedaling(pedaling);
                             }
@@ -230,7 +238,7 @@ public class SimpleReceiver implements Receiver {
         PitchClass[] pcs = gui.archinovica.updateIntonation(ps);
         for (int i = 0; i < 12; i++) { // calculate the transposition of all pitches
             PitchClass p = pcs[i];
-            if (p != null)
+            if (p != null) {
                 try {
 
                     //synth.getChannels()[channel].setPitchBend((int)(p.getMidiPb() * 128));
@@ -249,7 +257,7 @@ public class SimpleReceiver implements Receiver {
                         transposition--;
                         deltaTransposition--;
                     }
-                    if (deltaTransposition != 0)
+                    if (deltaTransposition != 0) {
                         for (ShortMessage sm : sms) {
                             int thisKey = sm.getData1();
                             int thisKeyTransIndex = sm.getData1() - originalTransposition;
@@ -257,16 +265,19 @@ public class SimpleReceiver implements Receiver {
                             sm.setMessage(sm.getCommand(), sm.getChannel(),
                                     sm.getData1() + 2 * deltaTransposition, sm.getData2());
                         }
+                    }
                 } catch (Exception e) {
                 }
+            }
         }
 
         for (int i = 0; i < 12; i++) {//after values are stable (transpostion and bendAdjustment) send PB messages
             PitchClass p = pcs[i];
             if (p != null) {
                 int channel = i;//IS THIS RIGHT????????
-                if (channel == 9)
+                if (channel == 9) {
                     channel = 13;
+                }
                 int bend = (int) p.getMidiPb();
                 try {
                     ShortMessage pbM = new ShortMessage(ShortMessage.PITCH_BEND, channel, 127, bend + bendAdjustment);
