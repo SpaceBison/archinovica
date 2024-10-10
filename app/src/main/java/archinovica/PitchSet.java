@@ -1,3 +1,5 @@
+package archinovica;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -32,7 +34,7 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
         for (PitchClass pc : ps) {
             add(pc.clone());
         }
-        //pitchArray = new PitchClass[12];
+        //pitchArray = new archinovica.PitchClass[12];
     }
 
     public ArrayList<IntervalSet> analyseIntervals(ArrayList<PitchClass> pitches) {
@@ -44,7 +46,7 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
     }
 
     public abstract boolean isProjected(PitchClass rsp);
-    /*public PitchSet transformSet(PitchClass[] pP, int setting){
+    /*public archinovica.PitchSet transformSet(archinovica.PitchClass[] pP, int setting){
     //clear(); // why is this here?
     return this;
     }
@@ -62,7 +64,7 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
     generations++;
     for(int i = 0; i < size(); i++){
     if(((SubSpace)get(i)).generateNeighbors()){
-    for(SemioticFunction s: this){
+    for(archinovica.SemioticFunction s: this){
     ((SubSpace)s).declareIndependence();
     }
     resetSpaceCode(); // is this fully necessary? is there a work around?
@@ -156,17 +158,17 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
         super.clear();
     }
 
-    /*public HorizontalSearcher randomTransformationCheck(){
-    PitchClass[] pitchBinary = new PitchClass[12];
+    /*public archinovica.HorizontalSearcher randomTransformationCheck(){
+    archinovica.PitchClass[] pitchBinary = new archinovica.PitchClass[12];
     for(int i = 0; i < 12; i++){
     if(Math.random() > 0.5)
-    pitchBinary[i] = new PitchClass(i);
+    pitchBinary[i] = new archinovica.PitchClass(i);
     }
-    HorizontalSearcher hs = new HorizontalSearcher(pitchBinary, this);
+    archinovica.HorizontalSearcher hs = new archinovica.HorizontalSearcher(pitchBinary, this);
     System.out.println(hs);
     print();
-    Archinovica.gui.clearSigns();
-    Archinovica.gui.displaySigns(this);
+    archinovica.Archinovica.gui.clearSigns();
+    archinovica.Archinovica.gui.displaySigns(this);
     return hs;
     }
      */
@@ -182,7 +184,7 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
 
     @Override
     public String toString() {
-        return "PitchSet | PROJECTED: " + totalProjectedPitches + " " + Arrays.asList(projectedPitches) + " | FOUND: " + size() + " " + super.toString();
+        return "archinovica.PitchSet | PROJECTED: " + totalProjectedPitches + " " + Arrays.asList(projectedPitches) + " | FOUND: " + size() + " " + super.toString();
     }
 
     @Override
@@ -208,19 +210,19 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
         return a.substring(0, a.length() - 1);
     }
 
-    /*public class VerticalSearcher extends GenerativeSearcher
+    /*public class archinovica.VerticalSearcher extends archinovica.GenerativeSearcher
     {
 
     public int totalProjectedPitches;
 
-    public VerticalSearcher(PitchSet ps, PitchClass[] pP){
+    public archinovica.VerticalSearcher(archinovica.PitchSet ps, archinovica.PitchClass[] pP){
     super(ps);
     projectedPitches = pP;
     totalProjectedPitches = 0;
-    PitchSet.this.myIntervalSets = new ArrayList<IntervalSet>();
+    archinovica.PitchSet.this.myIntervalSets = new ArrayList<archinovica.IntervalSet>();
     for(int i = 0; i < 12; i++)
     if(pP[i] != null){
-    PitchSet.this.myIntervalSets.add(new IntervalSet(pP, i));
+    archinovica.PitchSet.this.myIntervalSets.add(new archinovica.IntervalSet(pP, i));
     totalProjectedPitches++;
     }
     System.out.println(myIntervalSets);
@@ -234,9 +236,9 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
     //System.out.println("GS!!!! " + this);
     generativeSearch();
     }
-    PitchSet.this.addAll((ArrayList<E>)this);
+    archinovica.PitchSet.this.addAll((ArrayList<E>)this);
     //setArray();
-    // Archinovica.gui.displayPitches(myPitchSet.getArray());
+    // archinovica.Archinovica.gui.displayPitches(myPitchSet.getArray());
 
     }
 
@@ -260,11 +262,11 @@ public abstract class PitchSet extends SemioticGroup<PitchClass> implements Clon
     }
 
     public boolean isValidSet(){
-    IntervalSet overlayedSet = null;
+    archinovica.IntervalSet overlayedSet = null;
     for(int i = 0; i < size(); i++){
-    IntervalSet is = new IntervalSet(this, i);
+    archinovica.IntervalSet is = new archinovica.IntervalSet(this, i);
     boolean acceptablePitch = false;
-    for(IntervalSet projectedSet: PitchSet.this.myIntervalSets){
+    for(archinovica.IntervalSet projectedSet: archinovica.PitchSet.this.myIntervalSets){
     overlayedSet = projectedSet;
     if(is.overlays(projectedSet)){
     acceptablePitch = true;

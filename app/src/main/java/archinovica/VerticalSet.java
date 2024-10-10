@@ -1,8 +1,10 @@
+package archinovica;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Aggiungi qui una descrizione della classe VerticalSet
+ * Aggiungi qui una descrizione della classe archinovica.VerticalSet
  *
  * @author (il tuo nome)
  * @version (un numero di versione o una data)
@@ -11,7 +13,7 @@ public class VerticalSet extends PitchSet {
     public VerticalSearcher mySearcher;
 
     /**
-     * Costruttore degli oggetti di classe  VerticalSet
+     * Costruttore degli oggetti di classe  archinovica.VerticalSet
      */
     public VerticalSet() {
 
@@ -106,8 +108,8 @@ public class VerticalSet extends PitchSet {
     }
 
     public static VerticalSearcher spotCheck() {
-        //Archinovica.initializeSpace();
-        //new Archinovica();
+        //archinovica.Archinovica.initializeSpace();
+        //new archinovica.Archinovica();
         PitchClass[] pitchBinary = new PitchClass[12];
         for (int i = 0; i < 12; i++) {
             if (Math.random() > 0.5) {

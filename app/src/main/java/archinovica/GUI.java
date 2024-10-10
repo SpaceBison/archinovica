@@ -1,4 +1,6 @@
-import javax.annotation.Nullable;
+package archinovica;
+
+ 
 import javax.imageio.ImageIO;
 import javax.sound.midi.*;
 import javax.swing.*;
@@ -29,7 +31,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
     public boolean animating, displayFullProjection, showProgression, autoCenter;
     public final Archinovica archinovica;
     public LiveReceiver myRec;
-    //public ArrayList<ArrayList<SemioticFunction>> mySigns, animationQueue;
+    //public ArrayList<ArrayList<archinovica.SemioticFunction>> mySigns, animationQueue;
     public ArrayList<ArrayList<Letter>> letters;
     public ArrayList<MiscellaneousLetter> miscellaneousLetters;
     public ArrayList<LegacyChordProgression> legacyProgressions;
@@ -43,10 +45,10 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             KeyEvent.VK_H, KeyEvent.VK_I, KeyEvent.VK_J, KeyEvent.VK_K, KeyEvent.VK_L, KeyEvent.VK_M, KeyEvent.VK_N, KeyEvent.VK_O, KeyEvent.VK_P,
             KeyEvent.VK_Q, KeyEvent.VK_R, KeyEvent.VK_S, KeyEvent.VK_T, KeyEvent.VK_U, KeyEvent.VK_V, KeyEvent.VK_W, KeyEvent.VK_X, KeyEvent.VK_Y, KeyEvent.VK_Z};
 
-    public GUI(Archinovica archinovica, @Nullable LiveReceiver r) {
+    public GUI(Archinovica archinovica,  LiveReceiver r) {
         addKeyBindings();
         if (r != null) {
-            r.setListener(chordProgression::recordPitchBend);
+            r.setListener((pbM, timeStamp) -> chordProgression.recordPitchBend(pbM, timeStamp));
             myRec = r;
         }
 
@@ -69,7 +71,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
 
         archinovica.setGenerateNeighborsCallback(this::animateGeneration);
 
-        display = new JFrame("Archinovica");
+        display = new JFrame("archinovica.Archinovica");
         display.setBounds(0, 0, 600, 600);
         display.add(this);
         display.setMenuBar(createMenu());
@@ -87,8 +89,8 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
         numberOfSigns = 0;
         totals = new double[]{0, 0};
         netCenter = new double[]{0, 0};
-        // mySigns = new ArrayList<ArrayList<SemioticFunction>>();
-        //animationQueue = new ArrayList<ArrayList<SemioticFunction>>();
+        // mySigns = new ArrayList<ArrayList<archinovica.SemioticFunction>>();
+        //animationQueue = new ArrayList<ArrayList<archinovica.SemioticFunction>>();
         letters = new ArrayList<ArrayList<Letter>>();
         miscellaneousLetters = new ArrayList<MiscellaneousLetter>();
         black = Color.BLACK;
@@ -214,7 +216,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             public void actionPerformed(ActionEvent arg0) {
                 try {
                     clearSigns();
-                    //LiveReceiver rec = archinovica.liveRec;
+                    //archinovica.LiveReceiver rec = archinovica.liveRec;
                     archinovica.reset();
                     LiveReceiver.transposition = 0;
                     LiveReceiver.bendAdjustment = 0;
@@ -489,13 +491,13 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
         }
         animating = fallingLetters || miscellaneousLetters.size() > 0;
         /*
-        for(ArrayList<SemioticFunction> signs: mySigns){
+        for(ArrayList<archinovica.SemioticFunction> signs: mySigns){
 
         g.setColor(new Color(255, 255, 255, 95));
         g.fillRect(0, 0, 600, 600);
 
         g.setColor(black);
-        for(SemioticFunction s: signs){
+        for(archinovica.SemioticFunction s: signs){
         int x = s.signified[1];
         int y = s.signified[0];
         g.drawString(NOTE_NAMES[s.signifier], (x * (getHeight() / 30) + (int)offsets[1]) + 300, 300 - (y * (getHeight() / 30) + (int)offsets[0]));
@@ -513,7 +515,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
         }
         animating = isAnimating;
         if(!animating){
-        ArrayList<SemioticFunction> signs = new ArrayList<SemioticFunction>();
+        ArrayList<archinovica.SemioticFunction> signs = new ArrayList<archinovica.SemioticFunction>();
         for(FallingLetter f: fallingLetters)
         signs.add(f.mySign);
         mySigns.add(signs);
@@ -1502,7 +1504,7 @@ public class GUI extends JPanel implements KeyListener, ActionListener, MouseLis
             }
 
             if (setRecords.size() > 0) {
-                if (JOptionPane.showConfirmDialog(null, "Would you like to export Archinovica states?") == JOptionPane.YES_OPTION) {
+                if (JOptionPane.showConfirmDialog(null, "Would you like to export archinovica.Archinovica states?") == JOptionPane.YES_OPTION) {
                     TextIO.writeFile("setrecords.txt");
                     for (String set : setRecords) {
                         TextIO.putln("NEW SET");

@@ -1,7 +1,9 @@
+package archinovica;
+
 import java.util.ArrayList;
 
 /**
- * Aggiungi qui una descrizione della classe PotentialPitch
+ * Aggiungi qui una descrizione della classe archinovica.PotentialPitch
  *
  * @author (il tuo nome)
  * @version (un numero di versione o una data)

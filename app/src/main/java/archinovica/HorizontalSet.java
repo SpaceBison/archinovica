@@ -1,9 +1,12 @@
-import javax.annotation.Nullable;
+package archinovica;
+
+ 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Aggiungi qui una descrizione della classe HorizontalSet
+ * Aggiungi qui una descrizione della classe archinovica.HorizontalSet
  *
  * @author (il tuo nome)
  * @version (un numero di versione o una data)
@@ -19,7 +22,7 @@ public class HorizontalSet extends PitchSet {
         registeredPitches = new ArrayList<PitchClass>();
     }
 
-    public HorizontalSet(PitchClass[] pP, @Nullable RecursiveSearchPoint.GenerateNeighborsCallback callback) {
+    public HorizontalSet(PitchClass[] pP,  RecursiveSearchPoint.GenerateNeighborsCallback callback) {
         super(pP);
         //System.out.println("H: constructing verticalSet");
         VerticalSet vs = new VerticalSet(pP);

@@ -1,8 +1,10 @@
+package archinovica;
+
 import javax.swing.*;
 import java.util.ArrayList;
 
 /**
- * Write a description of class SetAnalysis here.
+ * Write a description of class archinovica.SetAnalysis here.
  *
  * @author (your name)
  * @version (a version number or a date)

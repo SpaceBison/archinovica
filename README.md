@@ -4,7 +4,7 @@ A digital augmented instrument (DAI) for extended just intonation
 This read me file focuses on using the instrument in performance; more information to come for developers.
 
 To use the instrument:
-1. Download 'Archinovica.jar'
+1. Download 'archinovica.Archinovica.jar'
 2. Connect your electronic piano/keyboard to the computer
 3. Turn 'local off' on your keyboard (consult the manual for your keyboard)
 4. Double click the .jar file

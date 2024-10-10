@@ -1,3 +1,5 @@
+package archinovica;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -11,7 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * Write a description of class DesignGUI here.
+ * Write a description of class archinovica.DesignGUI here.
  *
  * @author (your name)
  * @version (a version number or a date)
@@ -1974,7 +1976,7 @@ public class DesignGUI extends JPanel implements KeyListener, ActionListener, Mo
                 addObject(pg);
                 line = TextIO.getln();
             }
-            //line = TextIO.getln();
+            //line = archinovica.TextIO.getln();
             if (line.startsWith("Highlighted Groups {")) {
                 line = TextIO.getln();
                 while (line.startsWith("Pitch Group ")) {

@@ -1,4 +1,6 @@
-import javax.annotation.Nullable;
+package archinovica;
+
+ 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,7 +27,7 @@ public abstract class GenerativeSearcher {
      * @return il risultato prodotto dal metodo
      */
 
-    public GenerativeSearcher(PitchSet source, PitchSet projected, @Nullable RecursiveSearchPoint.GenerateNeighborsCallback callback) {
+    public GenerativeSearcher(PitchSet source, PitchSet projected,  RecursiveSearchPoint.GenerateNeighborsCallback callback) {
         mySourceSet = source;
         myProjectedSet = projected;
         this.callback = callback;
@@ -47,9 +49,9 @@ public abstract class GenerativeSearcher {
     }
 
     /*public void search(){
-    ArrayList<RecursiveSearchPoint> solutions = new ArrayList<RecursiveSearchPoint>();
-    for(PitchClass source: mySearchableSources){
-    solutions.addAll(((RecursiveSearchPoint)source).generateNeighbors(myProjectedSet));
+    ArrayList<archinovica.RecursiveSearchPoint> solutions = new ArrayList<archinovica.RecursiveSearchPoint>();
+    for(archinovica.PitchClass source: mySearchableSources){
+    solutions.addAll(((archinovica.RecursiveSearchPoint)source).generateNeighbors(myProjectedSet));
     System.out.println("PITCHESFOUND: " + solutions);
     }
     myGrid.addPitches(solutions);
@@ -60,14 +62,14 @@ public abstract class GenerativeSearcher {
 
     public abstract PitchSet getSearchableSources();
 
-    /*private PitchSet getCentricityOrderedSet(PitchSet ps){
-    PitchSet orderedSet = new PitchSet();
-    PitchClass center = ps.getCenter();
+    /*private archinovica.PitchSet getCentricityOrderedSet(archinovica.PitchSet ps){
+    archinovica.PitchSet orderedSet = new archinovica.PitchSet();
+    archinovica.PitchClass center = ps.getCenter();
     orderedSet.add(center);
     int upperBound = orderedSet.size();
     int lowerBound = 0;
     while(orderedSet.size() < ps.size()){
-    for(PitchClass pc: ps){
+    for(archinovica.PitchClass pc: ps){
     while(upperBound - lowerBound > 1){
     int index = (upperBound + lowerBound) / 2;
     if(orderedSet.get(index).getInterval(center).expressDistance() <

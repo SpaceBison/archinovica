@@ -1,8 +1,10 @@
+package archinovica;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Aggiungi qui una descrizione della classe IntervalSet
+ * Aggiungi qui una descrizione della classe archinovica.IntervalSet
  *
  * @author (il tuo nome)
  * @version (un numero di versione o una data)
@@ -11,13 +13,13 @@ public class IntervalSet extends SemioticGroup<Interval> {
 
     public PitchClass projectedReferencePitch;
 
-    /*public IntervalSet(PitchClass[] pitches, int index)
+    /*public archinovica.IntervalSet(archinovica.PitchClass[] pitches, int index)
     {
     super();
     System.out.println("CONSTRUCTING ISET");
-    projectedReferencePitch = new PitchClass(index);
+    projectedReferencePitch = new archinovica.PitchClass(index);
     for(int n = 1; n < 12; n++){
-    PitchClass pitch = pitches[(n + index) % 12];
+    archinovica.PitchClass pitch = pitches[(n + index) % 12];
     if(pitch != null){
     add(pitches[index].getInterval(pitch));
     System.out.println("INTERVALADDED");
@@ -26,7 +28,7 @@ public class IntervalSet extends SemioticGroup<Interval> {
 
     }
 
-    /*public IntervalSet(Interval i){
+    /*public archinovica.IntervalSet(archinovica.Interval i){
     super();
     System.out.println("CONSTRUNCTOR WITHOUT PROJECTED INTERVALS");
     i.setSearcher(this);
@@ -34,7 +36,7 @@ public class IntervalSet extends SemioticGroup<Interval> {
     }
      */
 
-    /*public IntervalSet(ArrayList<Interval> intervals){
+    /*public archinovica.IntervalSet(ArrayList<archinovica.Interval> intervals){
     super();
     System.out.println("CONSTRUNCTOR WITHOUT PROJECTED INTERVALS");
     }
@@ -49,13 +51,13 @@ public class IntervalSet extends SemioticGroup<Interval> {
         //System.out.print("pitches.size() " + pitches.size() + " number of interv " + size() + " starting index " + index);
     }
 
-    /*public IntervalSet(Interval i){
+    /*public archinovica.IntervalSet(archinovica.Interval i){
     super();
     add(i);
-    PitchClass[] pitches = new PitchClass[12];
+    archinovica.PitchClass[] pitches = new archinovica.PitchClass[12];
     int[] origin = new int[]{0, 0};
-    pitches[0] = new PitchClass(origin);
-    lastSet = new PitchSet(new PitchClass(this), pitches);
+    pitches[0] = new archinovica.PitchClass(origin);
+    lastSet = new archinovica.PitchSet(new archinovica.PitchClass(this), pitches);
 
     }
      */
@@ -99,13 +101,13 @@ public class IntervalSet extends SemioticGroup<Interval> {
         return pitchBinary;
     }
 
-    /*public static void printIntervalSet(PitchClass[] pitchBinary, int i){
-    ArrayList<PitchClass> pitchSet = new ArrayList<PitchClass>();
-    for(PitchClass p: pitchBinary)
+    /*public static void printIntervalSet(archinovica.PitchClass[] pitchBinary, int i){
+    ArrayList<archinovica.PitchClass> pitchSet = new ArrayList<archinovica.PitchClass>();
+    for(archinovica.PitchClass p: pitchBinary)
     if(p != null){
     pitchSet.add(p);
     }
-    System.out.println(new IntervalSet(pitchSet, i));
+    System.out.println(new archinovica.IntervalSet(pitchSet, i));
     }*/
 
 }

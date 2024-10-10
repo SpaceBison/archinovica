@@ -1,15 +1,17 @@
-import javax.annotation.Nullable;
+package archinovica;
+
+ 
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Aggiungi qui una descrizione della classe VerticalSearcher
+ * Aggiungi qui una descrizione della classe archinovica.VerticalSearcher
  *
  * @author (il tuo nome)
  * @version (un numero di versione o una data)
  */
 public class VerticalSearcher extends GenerativeSearcher {
-    public VerticalSearcher(PitchSet unlimitedSet, @Nullable RecursiveSearchPoint.GenerateNeighborsCallback callback) {
+    public VerticalSearcher(PitchSet unlimitedSet,  RecursiveSearchPoint.GenerateNeighborsCallback callback) {
         super(unlimitedSet, unlimitedSet, callback);
     }
 
@@ -56,10 +58,10 @@ public class VerticalSearcher extends GenerativeSearcher {
         Collections.sort(searchableSources, new Excentricity(mySourceSet.getCenter()));
         /*int minMPD = getMinMPD();
         int maxSearchablePitches = 0;
-        Hashtable<RecursiveSearchPoint, Integer> sourceMPDCode = new Hashtable<RecursiveSearchPoint, Integer>();
-        for(PotentialPitch pp: myGrid)
+        Hashtable<archinovica.RecursiveSearchPoint, Integer> sourceMPDCode = new Hashtable<archinovica.RecursiveSearchPoint, Integer>();
+        for(archinovica.PotentialPitch pp: myGrid)
         if(getMinimumPotentialDistance(pp) == minMPD)
-        for(RecursiveSearchPoint source: pp.getSources()){
+        for(archinovica.RecursiveSearchPoint source: pp.getSources()){
         int numberOfSearchablePitches = sourceMPDCode.get(source) + 1;
         maxSearchablePitches = Math.max(numberOfSearchablePitches, maxSearchablePitches);
         sourceMPDCode.put(source, numberOfSearchablePitches);
@@ -73,8 +75,8 @@ public class VerticalSearcher extends GenerativeSearcher {
         System.out.println("sorceMPDCode is USELESS");
         }
         else{
-        for(PitchClass pc: mySourceSet)
-        if(sourceMPDCode.get((RecursiveSearchPoint)pc) == maxSearchablePitches){
+        for(archinovica.PitchClass pc: mySourceSet)
+        if(sourceMPDCode.get((archinovica.RecursiveSearchPoint)pc) == maxSearchablePitches){
         int insertionIndex = Collections.binarySearch(searchableSources, pc, new Centricity(mySourceSet.getCenter()));
         searchableSources.add(pc);
         }

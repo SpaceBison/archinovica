@@ -1,3 +1,5 @@
+package archinovica;
+
 import javax.sound.midi.*;
 import java.util.*;
 
@@ -633,9 +635,9 @@ public class LiveReceiver implements Receiver {
 
     /*
     public void updateIntonation(boolean[] ps){
-    PitchClass[] pcs = gui.archinovica.updateIntonation(ps);
+    archinovica.PitchClass[] pcs = gui.archinovica.updateIntonation(ps);
     for(int i = 0; i < 12; i++){
-    PitchClass p = pcs[i];
+    archinovica.PitchClass p = pcs[i];
     if(p != null)
     try{
     int channel = i;

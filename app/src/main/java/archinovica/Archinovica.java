@@ -1,3 +1,5 @@
+package archinovica;
+
 import java.util.ArrayList;
 
 /**
@@ -18,20 +20,20 @@ public class Archinovica {
     private Listener listener = null;
     private RecursiveSearchPoint.GenerateNeighborsCallback generateNeighborsCallback = null;
 
-    //public LiveReceiver liveRec;
+    //public archinovica.LiveReceiver liveRec;
 
-    /*public Archinovica(GUI aGui){
-    soundingPitchClasses = new PitchClass[12];
-    backUpSoundingPCs =  new ArrayList<PitchClass[]>();
-    backupSets = new ArrayList<PitchSet>();
-    temperedScale = new PitchClass[12];
+    /*public archinovica.Archinovica(archinovica.GUI aGui){
+    soundingPitchClasses = new archinovica.PitchClass[12];
+    backUpSoundingPCs =  new ArrayList<archinovica.PitchClass[]>();
+    backupSets = new ArrayList<archinovica.PitchSet>();
+    temperedScale = new archinovica.PitchClass[12];
     initializeSpace();
-    PitchClass[] initialScale = new PitchClass[12];
+    archinovica.PitchClass[] initialScale = new archinovica.PitchClass[12];
     gui = aGui;
     if(gui == null)
-    gui = new GUI(this);
+    gui = new archinovica.GUI(this);
     //lastCenter = pitchSpace;
-    //new PitchSet(new PitchClass[]{new PitchClass(0), null, null, null, new PitchClass(4), null, null, new PitchClass(7), null, null, null, null});
+    //new archinovica.PitchSet(new archinovica.PitchClass[]{new archinovica.PitchClass(0), null, null, null, new archinovica.PitchClass(4), null, null, new archinovica.PitchClass(7), null, null, null, null});
 
     //myCsound = new Csound();
     }
@@ -43,7 +45,7 @@ public class Archinovica {
 
         //liveRec = lr;
         //lastCenter = pitchSpace;
-        //new PitchSet(new PitchClass[]{new PitchClass(0), null, null, null, new PitchClass(4), null, null, new PitchClass(7), null, null, null, null});
+        //new archinovica.PitchSet(new archinovica.PitchClass[]{new archinovica.PitchClass(0), null, null, null, new archinovica.PitchClass(4), null, null, new archinovica.PitchClass(7), null, null, null, null});
 
         //myCsound = new Csound();
     }
@@ -59,7 +61,7 @@ public class Archinovica {
     /* public void updatePitches(boolean[] pitchBinary){
     // System.out.println("UPDATE PITCHES");
     commonTone = -1;
-    PitchClass[] pitches = new PitchClass[12];
+    archinovica.PitchClass[] pitches = new archinovica.PitchClass[12];
     for(int n = 0; n < 12; n++){
     if(pitchBinary[n]){
     if(soundingPitchClasses[n] != null){
@@ -67,7 +69,7 @@ public class Archinovica {
     commonTone = n;
     }
     else
-    pitches[n] = new PitchClass(n);
+    pitches[n] = new archinovica.PitchClass(n);
     }
     else
     pitches[n] = null;

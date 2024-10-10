@@ -1,3 +1,5 @@
+package archinovica;
+
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
@@ -9,7 +11,7 @@ import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Write a description of class SimpleReceiver here.
+ * Write a description of class archinovica.SimpleReceiver here.
  *
  * @author (your name)
  * @version (a version number or a date)

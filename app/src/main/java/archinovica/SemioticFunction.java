@@ -1,8 +1,10 @@
+package archinovica;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Classe astratta SemioticFunction - descrivi qui la classe
+ * Classe astratta archinovica.SemioticFunction - descrivi qui la classe
  *
  * @author: Date:
  */
@@ -71,7 +73,7 @@ public abstract class SemioticFunction implements Comparable<SemioticFunction>, 
     }
 
     /*public int[] getSignified(int ep){
-    IntervalSet is = new IntervalSet(new Interval(ep));
+    archinovica.IntervalSet is = new archinovica.IntervalSet(new archinovica.Interval(ep));
 
     return null;
     }

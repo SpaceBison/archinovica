@@ -1,4 +1,6 @@
-import javax.annotation.Nullable;
+package archinovica;
+
+ 
 import java.util.ArrayList;
 
 /**
@@ -49,7 +51,7 @@ public class RecursiveSearchPoint extends PitchClass {
         }
     }
 
-    public ArrayList<RecursiveSearchPoint> generateNeighbors(PitchSet searchDestination, @Nullable GenerateNeighborsCallback callback) {
+    public ArrayList<RecursiveSearchPoint> generateNeighbors(PitchSet searchDestination,  GenerateNeighborsCallback callback) {
         boolean found = false;
         ArrayList<RecursiveSearchPoint> solutions = new ArrayList<RecursiveSearchPoint>();
         if (parent == this) {
@@ -107,7 +109,7 @@ public class RecursiveSearchPoint extends PitchClass {
     }
 
     //allows THIS to function independently, reseting search generations, returns THIS
-    /* public RecursiveSearchPoint declareIndependence(){
+    /* public archinovica.RecursiveSearchPoint declareIndependence(){
     children = new ArrayList<SubSpace>();
     neighbors = new SubSpace[4];
     return this;
@@ -118,8 +120,8 @@ public class RecursiveSearchPoint extends PitchClass {
         return new RecursiveSearchPoint(i, this);
     }
 
-    /*public boolean isLastChild(RecursiveSearchPoint child){
-    Archinovica.gui.animateGeneration(child, signified);
+    /*public boolean isLastChild(archinovica.RecursiveSearchPoint child){
+    archinovica.Archinovica.gui.animateGeneration(child, signified);
     //System.out.println("CHILD: " + child);
     return (child.getSubSpaces() == mySearcher.size()) && mySearcher.pitchFound(child);
     }
@@ -162,7 +164,7 @@ public class RecursiveSearchPoint extends PitchClass {
     return mySearcher.getSubSpaces(this);
     }
 
-    public void setSearcher(GenerativeSearcher gs){
+    public void setSearcher(archinovica.GenerativeSearcher gs){
     mySearcher = gs;
     gs.addSubSpace(this);
     }

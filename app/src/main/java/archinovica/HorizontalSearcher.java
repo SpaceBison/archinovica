@@ -1,10 +1,12 @@
-import javax.annotation.Nullable;
+package archinovica;
+
+ 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * Aggiungi qui una descrizione della classe HorizontalSearcher
+ * Aggiungi qui una descrizione della classe archinovica.HorizontalSearcher
  *
  * @author (il tuo nome)
  * @version (un numero di versione o una data)
@@ -14,7 +16,7 @@ public class HorizontalSearcher extends GenerativeSearcher {
     public ArrayList<HorizontalSet> solutions = new ArrayList<HorizontalSet>();
     public HorizontalSet untransposedSet;
 
-    public HorizontalSearcher(PitchSet source, HorizontalSet projection, @Nullable RecursiveSearchPoint.GenerateNeighborsCallback callback) {
+    public HorizontalSearcher(PitchSet source, HorizontalSet projection,  RecursiveSearchPoint.GenerateNeighborsCallback callback) {
         super(source, projection, callback);
         untransposedSet = projection;
     }
@@ -85,7 +87,7 @@ public class HorizontalSearcher extends GenerativeSearcher {
             solutions.remove(solutions.size() - 1);
         }
         /*System.out.println("SOLUTIONS ARRAY: ");
-        for(PitchSet s: solutions)
+        for(archinovica.PitchSet s: solutions)
         System.out.println("        " + s);
          */
         solutions.remove(0); // the defalut, case 0 (already returned)
@@ -98,7 +100,7 @@ public class HorizontalSearcher extends GenerativeSearcher {
             case 3:
                 return solutions.get(1);
         }
-        // VerticalSet vs = new VerticalSet(solution);
+        // archinovica.VerticalSet vs = new archinovica.VerticalSet(solution);
 
         return null;
     }
@@ -108,7 +110,7 @@ public class HorizontalSearcher extends GenerativeSearcher {
         PitchClass center = mySourceSet.getCenter();
         Collections.sort(searchableSources, new Centricity(center));
         /*System.out.println("SEARCHABLE SOURCES: ");
-        for(PitchClass pc: searchableSources)
+        for(archinovica.PitchClass pc: searchableSources)
             System.out.println("    " + pc + " (aka " + pc.signifier + ")");
             */
 
@@ -141,7 +143,7 @@ public class HorizontalSearcher extends GenerativeSearcher {
         }
     }
 
-    /*public HorizontalSearcher(PitchClass[] pP, PitchSet lastSet){
+    /*public archinovica.HorizontalSearcher(archinovica.PitchClass[] pP, archinovica.PitchSet lastSet){
     super(lastSet);
     centerSpace(lastSet.mySearcher.get(0));
     addAll(lastSet.mySearcher);
@@ -152,19 +154,19 @@ public class HorizontalSearcher extends GenerativeSearcher {
     }
     projectedPitches = pP;
 
-    untransposedSet = new PitchSet(pP);
+    untransposedSet = new archinovica.PitchSet(pP);
 
     System.out.println(untransposedSet);
     System.out.println(untransposedSet.mySearcher);
 
-    registeredPitches = new Hashtable<PitchSet, Integer>();
-    potentialSets = new ArrayList<PitchSet>();
-    solutions = new ArrayList<PitchSet>();
+    registeredPitches = new Hashtable<archinovica.PitchSet, Integer>();
+    potentialSets = new ArrayList<archinovica.PitchSet>();
+    solutions = new ArrayList<archinovica.PitchSet>();
     System.out.println(this);
 
-    // Archinovica.gui.displayPitches(myPitchSet.getArray());
+    // archinovica.Archinovica.gui.displayPitches(myPitchSet.getArray());
     }
-    public PitchSet search(int setting){
+    public archinovica.PitchSet search(int setting){
     int limit = 1;
     if(setting > 0)
     limit = 4;
@@ -176,7 +178,7 @@ public class HorizontalSearcher extends GenerativeSearcher {
     generativeSearch();
 
     }
-    PitchSet solution = null;
+    archinovica.PitchSet solution = null;
     if(setting == 0){
     solution = solutions.get(0);
     return solution;
@@ -199,7 +201,7 @@ public class HorizontalSearcher extends GenerativeSearcher {
     }
 
     @Override
-    public boolean pitchFound(RecursiveSearchPoint s){
+    public boolean pitchFound(archinovica.RecursiveSearchPoint s){
     // System.out.println("SUBSPACEFOUND? " + s);
     int projectedIndex = Arrays.asList(projectedPitches).indexOf(s);
     if(getSubSpaces(s) < size() || projectedIndex < 0){
@@ -207,7 +209,7 @@ public class HorizontalSearcher extends GenerativeSearcher {
     return false;
     }
     //System.out.println("CONTAINED");
-    for(PitchSet ps: potentialSets){
+    for(archinovica.PitchSet ps: potentialSets){
     if(ps.contains(s)){
     if(ps.registerPitch(s)){
     if(ps.fullyRegistered())
@@ -217,12 +219,12 @@ public class HorizontalSearcher extends GenerativeSearcher {
     else
     return false;
     }
-    //System.out.println("PitchSet size: " + ps.size());
+    //System.out.println("archinovica.PitchSet size: " + ps.size());
     }
-    Interval transposition = untransposedSet.getArray()[projectedIndex].getInterval(s);
-    PitchSet ps = untransposedSet.getTransposedSet(transposition);
+    archinovica.Interval transposition = untransposedSet.getArray()[projectedIndex].getInterval(s);
+    archinovica.PitchSet ps = untransposedSet.getTransposedSet(transposition);
     ps.registerPitch(s);
-    Archinovica.gui.displayStaticSigns(ps);
+    archinovica.Archinovica.gui.displayStaticSigns(ps);
     //registeredPitches.put(ps, 1);
     potentialSets.add(ps);
     return true;

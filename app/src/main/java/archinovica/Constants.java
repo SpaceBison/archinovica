@@ -1,3 +1,5 @@
+package archinovica;
+
 public class Constants {
     public static final int MIDPED = 66;
     public static final int LEFTPED = 67;

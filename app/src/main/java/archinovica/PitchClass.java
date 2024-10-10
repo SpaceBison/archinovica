@@ -1,5 +1,7 @@
+package archinovica;
+
 /**
- * Aggiungi qui una descrizione della classe PitchClass
+ * Aggiungi qui una descrizione della classe archinovica.PitchClass
  *
  * @author (il tuo nome)
  * @version (un numero di versione o una data)

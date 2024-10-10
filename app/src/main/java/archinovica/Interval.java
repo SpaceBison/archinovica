@@ -1,7 +1,9 @@
+package archinovica;
+
 import java.util.ArrayList;
 
 /**
- * Aggiungi qui una descrizione della classe Interval
+ * Aggiungi qui una descrizione della classe archinovica.Interval
  *
  * @author (il tuo nome)
  * @version (un numero di versione o una data)
@@ -11,7 +13,7 @@ public class Interval extends SemioticFunction {
     public ArrayList<SemioticFunction> solutions;
 
     /**
-     * Costruttore degli oggetti di classe  Interval
+     * Costruttore degli oggetti di classe  archinovica.Interval
      */
     public Interval(int empInt) {
         super(null, empInt);
@@ -25,14 +27,14 @@ public class Interval extends SemioticFunction {
         super(sf.signified, sf.signifier);
     }
 
-    /*public Interval(SemioticFunction anInt, int nt)
+    /*public archinovica.Interval(archinovica.SemioticFunction anInt, int nt)
     {
     signifier = anInt.signifier % 12;
     if(anInt.limited){
     signified = anInt.signified;
     }
     else{
-    solutions = new ArrayList<SemioticFunction>();
+    solutions = new ArrayList<archinovica.SemioticFunction>();
     normativeType = nt;
     //generativeSearch();
 
@@ -78,7 +80,7 @@ public class Interval extends SemioticFunction {
     while(!s.generateNeighbors()){
 
     }
-    Archinovica.pitchSpace.resetSpaceCode();
+    archinovica.Archinovica.pitchSpace.resetSpaceCode();
     return true;
     }
      */

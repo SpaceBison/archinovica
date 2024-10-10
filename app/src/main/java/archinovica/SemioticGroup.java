@@ -1,7 +1,9 @@
+package archinovica;
+
 import java.util.ArrayList;
 
 /**
- * Classe astratta SemioticGroup - descrivi qui la classe
+ * Classe astratta archinovica.SemioticGroup - descrivi qui la classe
  *
  * @author: Date:
  */
