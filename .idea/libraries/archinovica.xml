@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="archinovica">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Harmonic Design.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Archinovica.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
